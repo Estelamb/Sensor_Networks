@@ -1,0 +1,50 @@
+\documentclass[10pt,a4paper]{article}
+\input{config.tex}
+
+\title{Embedded Platforms and Communications for IoT}
+\author{Alejandro Botas Bárcena}
+\author{Estela Mora Barba}
+\date{MIoT 2025-2026}
+
+\begin{document}
+\frontmatter
+\include{cover}
+
+\addcontentsline{toc}{section}{List of Contents}
+\tableofcontents
+\clearpage
+
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+\addcontentsline{toc}{section}{List of Listings}
+\lstlistoflistings
+
+\include{files/Glossary}
+
+
+\mainmatter
+\pagestyle{fancy}
+\lhead[]{\href{https://github.com/Estelamb/Embedded_IoT}{\textbf{Plant Monitoring System}}}
+\rhead[]{\textbf{EMB-MIoT}}
+\cfoot{\thepage}
+
+\include{files/1-Introduction}
+\include{files/2-Specifications}
+\include{files/3-Hardware}
+\include{files/4-Software} 
+\include{files/5-Results}
+\include{files/6-Advanced}
+\include{files/7-Conclusions}
+
+\nocite{*}
+\printbibliography[title={Bibliography}, heading=bibnumbered]
+
+\begin{appendices}
+\include{files/A-GitHub}
+\end{appendices}
+
+\end{document}

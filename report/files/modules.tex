@@ -1,0 +1,246 @@
+\subsection{Modules}
+
+The program is structured into several self-contained modules, each responsible for a specific hardware interface or functionality.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.55\textwidth]{images/modules.png}
+    \caption{Modules overview}
+    \label{fig:modules}
+\end{figure}
+
+The main modules are used by the main program and the threads to interact with sensors and peripherals. This is done by adding them as source files and include directories in the \texttt{CMakeLists.txt} file, as shown below:
+
+\begin{lstlisting}[caption={CMakeLists.txt module integration}]
+    # SPDX-License-Identifier: Apache-2.0
+
+    cmake_minimum_required(VERSION 3.20.0)
+
+    find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
+    project(plant_monitoring_system)
+
+    target_sources(app PRIVATE 
+        src/main.c
+        src/sensors_thread.c
+        src/gps_thread.c
+        src/sensors/led/rgb_led.c
+        src/sensors/led/board_led.c
+        src/sensors/adc/adc.c
+        src/sensors/user_button/user_button.c
+        src/sensors/i2c/i2c.c
+        src/sensors/i2c/accel.c
+        src/sensors/i2c/color.c
+        src/sensors/i2c/temp_hum.c
+        src/sensors/gps/gps.c
+    )
+
+    target_include_directories(app PRIVATE
+        src/sensors/led
+        src/sensors/adc
+        src/sensors/user_button
+        src/sensors/i2c
+        src/sensors/gps
+    )
+\end{lstlisting}
+
+\subsubsection{adc.c and adc.h}
+
+The \texttt{adc.c} and \texttt{adc.h} modules provide a hardware abstraction layer for reading analogue values from the phototransistor and soil-moisture sensors using the Zephyr \gls{ADC} \gls{API}. Their purpose is to encapsulate \gls{ADC} initialisation, configuration, and acquisition into a self-contained interface that the sensors thread can use without exposing low-level driver details.
+
+This library is responsible for preparing the \gls{ADC} peripheral, configuring its channels, and performing synchronous conversions on demand. It ensures that all \gls{ADC} reads comply with a consistent configuration (resolution, reference, acquisition time, and oversampling) and that raw sample values are returned in a unified format to the rest of the system.
+
+\begin{itemize}
+    \item \textbf{Peripheral Initialisation}: Loads the \gls{ADC} device from the device tree and configures the hardware according to project requirements. This includes selecting resolution, reference voltage, acquisition time, and optional oversampling.
+
+    \item \textbf{Channel Setup}: Each analogue sensor has an associated \gls{ADC} channel configured through a dedicated structure. The module ensures correct pin routing and channel mapping according to the board overlay.
+
+    \item \textbf{Synchronous ADC Sampling}: Provides a blocking \gls{API} that triggers a single conversion and returns the measured sample. This prevents concurrency issues by guaranteeing that read operations finish before returning control.
+
+    \item \textbf{Unified Abstraction for Higher-Level Modules}: The sensors thread and the system context only interact with a clean, high-level interface without needing to manage \gls{ADC} device handles, channels, or Zephyr-specific configuration fields.
+
+    \item \textbf{Validation and Error Handling}: Detects device-not-found conditions, invalid configurations, or read failures, forwarding errors to the main system so that appropriate recovery or safe behaviour can occur.
+
+    \item \textbf{Scalability for Additional Channels}: The design allows new analogue sensors to be added by defining a new channel configuration and calling the same acquisition \gls{API}, without modifying existing code.
+    
+    \item \textbf{Separation of Configuration from Logic}: The module centralises all \gls{ADC} configuration parameters in one place, ensuring future modifications (e.g., resolution, gain, sampling frequency) do not propagate across the project.
+\end{itemize}
+
+This \gls{ADC} library is intended to be reused by any component that requires analogue-to-digital conversions while maintaining a clean separation between hardware-specific details and system-level functionality.
+
+\subsubsection{gps.c and gps.h}
+
+The \texttt{gps.c} and \texttt{gps.h} modules implement a GPS interface based on \gls{UART}-driven reception of \gls{NMEA} sentences. Their purpose is to offer a simple, self-contained parser for \gls{GGA} (or \gls{GNGGA}) frames and provide the rest of the system with clean, validated geographic data without exposing \gls{UART} or interrupt logic.
+
+The library configures the \gls{UART} peripheral, enables interrupt-driven reception, reconstructs \gls{NMEA} lines in the background, and parses the relevant fields when a complete \gls{GGA} sentence is detected. Once valid GPS information is available, the module updates an internal \texttt{gps\_data\_t} structure and releases a semaphore so that higher-level threads can safely retrieve the most recent fix.
+
+\begin{itemize}
+    \item \textbf{\gls{UART}-Based \gls{GPS} Initialisation}: The module validates the configuration, checks device readiness, attaches the \gls{ISR}, and enables \gls{RX} interrupts. This ensures autonomous background reception of \gls{NMEA} data.
+
+    \item \textbf{Interrupt-Driven \gls{NMEA} Line Reconstruction}: Bytes received from the \gls{UART} \gls{FIFO} are accumulated into an internal buffer until a newline character is found.
+
+    \item \textbf{\gls{GGA} Sentence Parsing}: Extracts latitude, longitude, altitude, \gls{HDOP}, satellite count, and \gls{UTC} time from a standard \gls{GGA} frame. The parser handles missing or malformed fields gracefully and only accepts complete, coherent entries.
+
+    \item \textbf{\gls{NMEA}-to-Degrees Conversion}: Converts coordinates from \gls{NMEA} format (DDMM.MMMM or DDDMM.MMMM) to decimal degrees, applying hemisphere correction. This provides the system with immediately usable geographic values.
+
+    \item \textbf{Thread Synchronisation via Semaphore}: When new valid data is parsed, a semaphore is released so that the \gls{GPS} thread or main thread can block until a fresh fix is available. This avoids polling and reduces \gls{CPU} usage.
+
+    \item \textbf{Internal Data Buffering}: The module maintains an internal instance of \texttt{gps\_data\_t} storing the last valid parsed frame. Consumers obtain a copy, ensuring thread safety without exposing shared mutable structures.
+
+    \item \textbf{Timeout-Aware Data Retrieval}: The high-level \gls{API} allows callers to wait indefinitely, for a fixed period, or return immediately if no new \gls{GGA} sentence has been received.
+\end{itemize}
+
+This \gls{GPS} interface provides a robust and maintainable foundation for acquiring geographic data in real time, isolating UART management and parsing details from the rest of the application.
+
+\subsubsection{i2c.c and i2c.h}
+
+The \texttt{i2c.c} and \texttt{i2c.h} modules implement a small set of helper functions designed to simplify register-level communication with \gls{I2C} devices in Zephyr. Their purpose is to provide a clean, reusable interface for reading and writing device registers using only a devicetree \texttt{i2c\_dt\_spec}, avoiding repetitive low-level code in sensor drivers.
+
+The library encapsulates common \gls{I2C} access patterns into concise functions. These utilities internally rely on Zephyr's \texttt{i2c\_write\_read\_dt}, \texttt{i2c\_write\_dt}, and \texttt{i2c\_is\_ready\_dt} \glspl{API}, ensuring compatibility with any \gls{I2C} peripheral described in the system devicetree.
+
+Because many sensors require register-based configuration and multi-byte reads, this module centralises these operations and presents a uniform interface that higher-level modules can reuse safely.
+
+\begin{itemize}
+    \item \textbf{Multi-Register Read Helper}: Reads an arbitrary number of consecutive registers starting at a given address, abstracting the common write-then-read transaction pattern.
+
+    \item \textbf{Single-Register Write Helper}: Writes one byte to a specified register, a frequent requirement for sensor configuration and control registers.
+
+    \item \textbf{Device Readiness Check}: Verifies that the \gls{I2C} device is present, powered, and ready before attempting communication. Provides clear error reporting if the device is not reachable.
+
+    \item \textbf{Consistent Devicetree-Based Access}: All functions operate on \texttt{i2c\_dt\_spec} descriptors, ensuring that pin routing, bus selection, addressing and timing come directly from the devicetree.
+
+    \item \textbf{Reusability for Multiple Sensor Drivers}: Higher-level modules (accelerometer, colour sensor, temperature/humidity sensor, etc.) use these helpers to avoid code duplication and maintain consistency across all \gls{I2C} devices.
+    
+    \item \textbf{Error Propagation}: Returns standard negative errno codes, allowing calling modules to handle failures predictably and implement fallback or retry mechanisms.
+\end{itemize}
+
+This \gls{I2C} helper library provides a clean and robust foundation for register-based communication with any \gls{I2C} sensor or peripheral in the system.
+
+\subsubsection{accel.c and accel.h}
+
+The \texttt{accel.c} and \texttt{accel.h} modules implement a 3-axis accelerometer driver over \gls{I2C}, providing initialization, configuration, raw data acquisition, and unit conversion utilities. The module abstracts all register-level interaction and exposes a clean interface for obtaining acceleration data in either raw counts, g units, or m/s².
+
+During initialization, the library verifies device identity via the \texttt{WHO\_AM\_I} register, transitions the sensor into standby mode, configures its measurement range, and finally activates continuous measurement mode. The project uses the ±2g range, which maximizes sensitivity for environmental and motion-tracking applications.
+
+Raw acceleration values for X, Y, and Z axes are obtained through a single burst read of six consecutive registers. This ensures atomic acquisition of all three axes and prevents axis desynchronization. Each pair of bytes contains a 14-bit left-aligned signed measurement, which the library re-aligns before returning to higher-level modules.
+
+All \gls{I2C} communication relies on the generic register helpers defined in the \gls{I2C} module, keeping the driver compact and uniform with the rest of the system.
+
+\begin{itemize}
+    \item \textbf{Device Initialization and Identity Check}: Reads the \texttt{WHO\_AM\_I} register to validate the sensor's presence before configuration or data acquisition.
+
+    \item \textbf{Standby and Active Mode Control}: Ensures that configuration registers are only modified while the device is in standby mode, as required by the hardware design. The module automatically returns the device to active mode after configuration.
+
+    \item \textbf{Measurement Range Configuration}: Supports ±2g, ±4g, and ±8g ranges via the \texttt{XYZ\_DATA\_CFG} register. The system uses ±2g for improved resolution and noise performance. 
+
+    \item \textbf{Burst Read of 6 Output Registers}: Performs a single multi-register transaction to retrieve X, Y, and Z values consistently, minimizing communication overhead and avoiding partial updates.
+
+    \item \textbf{Raw Data Alignment and Extraction}: Converts the sensor's 14-bit left-aligned format into signed 14-bit integers usable by higher-level modules.
+
+    \item \textbf{Conversion to g Units}: Applies sensitivity scaling based on the configured range, providing a convenient floating-point representation.
+
+    \item \textbf{Conversion to m/s²}: Converts from g units to SI units using standard gravity, enabling direct use in physical calculations or movement detection algorithms.
+\end{itemize}
+
+This accelerometer module provides a robust basis for motion sensing, offering clean abstractions for configuration, raw acquisition, and physical-unit conversion while preserving full compatibility with the system's \gls{I2C} infrastructure.
+
+\subsubsection{color.c and color.h}
+
+The \texttt{color.c} and \texttt{color.h} modules implement a driver for the TCS34725 RGB colour sensor using the Zephyr \gls{I2C} \gls{API}. Their purpose is to provide a clean, high-level interface for configuring the device, and acquiring raw Clear/Red/Green/Blue measurements without exposing low-level register logic to the rest of the system.
+
+During initialization, the module validates \gls{I2C} bus readiness, powers on the device, enables the internal \gls{ADC}, and applies the user-specified gain and integration time. Raw colour values are retrieved through a single auto-increment burst read of the sensor's \gls{RGBC} output registers, ensuring consistent sampling of all channels.
+
+\begin{itemize}
+    \item \textbf{\gls{I2C}-Based Sensor Initialisation}: The module verifies that the \gls{I2C} bus is ready, sends the power-on command, enables the \gls{RGBC} \gls{ADC}, and configures the device using register writes to \texttt{ATIME} and \texttt{CONTROL}. Any communication error propagates as a negative \texttt{errno} code.
+
+    \item \textbf{Gain Configuration}: The driver supports all hardware gain settings (1$\times$, 4$\times$, 16$\times$, 60$\times$). Gain determines the analogue pre-amplification applied to each colour photodiode. Lower gains avoid saturation in bright environments, while higher gains improve low-light sensitivity.
+
+    \item \textbf{Integration Time Configuration}: Integration time controls the duration of the \gls{ADC} light accumulation interval. Short times (e.g. 2.4ms) allow fast updates but with lower resolution, while long times (up to 700ms) significantly improve sensitivity. The selected timing constant is written directly to the \texttt{ATIME} register.
+
+    \item \textbf{Burst Read of \gls{RGBC} Channels}: The function \texttt{color\_read\_rgb()} performs a single multi-register transaction starting at \texttt{COLOR\_CLEAR\_L}, retrieving all Clear, Red, Green, and Blue low/high bytes using auto-increment addressing. This guarantees coherence between channels and minimizes \gls{I2C} overhead.
+
+    \item \textbf{16-bit Data Reconstruction}: Raw samples are assembled from consecutive low/high bytes and stored into a \texttt{ColorSensorData} structure. The Clear channel is reported alongside \gls{RGB} values, enabling normalisation or illumination-compensation algorithms at higher layers.
+
+    \item \textbf{Error Handling and Consistent \gls{API}}: All functions return standard negative \texttt{errno} values on failure, ensuring predictable error reporting and uniform behaviour across all \gls{I2C}-based sensor modules.
+\end{itemize}
+
+This colour-sensor driver offers a compact and maintainable interface for acquiring raw \gls{RGBC} data, abstracting all register and timing details while remaining fully consistent with the system's \gls{I2C} infrastructure.
+
+\subsubsection{temp\_hum.c and temp\_hum.h} 
+
+The \texttt{temp\_hum.c} and \texttt{temp\_hum.h} modules implement a driver for the Si7021 temperature and humidity sensor over \gls{I2C}. Their purpose is to provide a synchronous, resolution-configurable interface for acquiring relative humidity (\%\gls{RH}) and temperature (C) values while abstracting all low-level \gls{I2C} communication.
+
+The library initializes the sensor, performs a soft reset, sets the desired measurement resolution, and provides functions for reading both temperature and humidity using \textbf{Hold Master mode}. In this mode, the sensor holds the \gls{SCL} line low while a measurement is in progress, ensuring that the master waits synchronously until the data is ready.
+
+\begin{itemize}
+    \item \textbf{Device Initialization and Soft Reset}: \texttt{temp\_hum\_init()} validates the \gls{I2C} bus, issues a soft reset (\texttt{TH\_RESET}), waits for the sensor to stabilize, and writes the resolution to User Register 1.
+
+    \item \textbf{Hold Master Mode Measurements}: Both \texttt{temp\_hum\_read\_humidity()} and \texttt{temp\_hum\_read\_} \texttt{temperature()} use Hold Master mode commands (\texttt{TH\_MEAS\_RH\_HOLD} and \texttt{TH\_MEAS\_TEMP\_HOLD}) to ensure synchronous reading without the need for polling or manual delays.
+
+    \item \textbf{Relative Humidity Conversion}: Converts the 16-bit raw measurement from the sensor into \%\gls{RH} according to the Si7021 datasheet formula, clamping values to the physical range of 0-100\%.
+
+    \item \textbf{Temperature Conversion}: Converts the 16-bit raw measurement into degrees Celsius using the datasheet formula, providing accurate environmental temperature readings.
+
+    \item \textbf{Error Handling}: All functions return standard negative \texttt{errno} codes in case of communication or configuration failures, allowing higher-level modules to react accordingly.
+\end{itemize}
+
+This \gls{I2C}-based temperature and humidity driver offers a simple, reliable, and synchronous interface, isolating low-level communication and Hold Master timing from the rest of the application.
+
+\subsubsection{rgb\_led.c and rgb\_led.h}
+
+The \texttt{rgb\_led.c} and \texttt{rgb\_led.h} modules implement control of a \gls{RGB} \gls{LED} connected via three \gls{GPIO} pins (Red, Green, Blue). This module provides initialization, individual color control, and mixed color combinations through a bitmask-based bus interface. It is important to note that the \gls{RGB} \gls{LED} channels are \textbf{active-low}, meaning a logical 0 turns the \gls{LED} on, and a logical 1 turns it off.
+
+The library initializes all \gls{GPIO} pins, verifies device readiness, and sets them to an inactive state by default. Functions allow activation of standard colors, full white, or complete off states.  
+
+\begin{itemize}
+    \item \textbf{Bus-Based \gls{GPIO} Initialization}: \texttt{rgb\_led\_init()} iterates over all pins defined in the \texttt{bus\_rgb\_led} structure, ensures the associated \gls{GPIO} device is ready, and configures the pins as outputs with an initial inactive state.
+
+    \item \textbf{Bitmask-Controlled Color Output}: \texttt{rgb\_led\_write()} maps each bit of a 3-bit value to a corresponding \gls{LED} channel (bit0=Red, bit1=Green, bit2=Blue). This bus-like approach allows simultaneous activation of multiple channels to produce mixed colors.
+
+    \item \textbf{Convenience Color Functions}: Functions such as \texttt{rgb\_red()}, \texttt{rgb\_green()}, \texttt{rgb\_blue()}, \texttt{rgb\_yellow()}, \texttt{rgb\_cyan()}, \texttt{rgb\_purple()}, \texttt{rgb\_white()}, and \texttt{rgb\_black()} call \texttt{rgb\_led\_write()} internally with predefined bitmasks, providing simple color selection.
+
+    \item \textbf{Active-Low Behavior}: Since the \gls{RGB} \gls{LED} channels are active-low, a logical 0 on a \gls{GPIO} pin activates the \gls{LED}, while a logical 1 turns it off. All helper functions and the bus interface respect this behavior.
+
+    \item \textbf{Error Handling}: Initialisation and write operations check for \gls{GPIO} device readiness and return standard negative \texttt{errno} codes on failure, allowing safe integration with higher-level modules.
+\end{itemize}
+
+This \gls{RGB} \gls{LED} module provides a reliable, bus-oriented, and reusable interface for color control, abstracting low-level active-low pin management while supporting individual colors and combined outputs.
+
+\subsubsection{board\_led.c and board\_led.h}
+
+The \texttt{board\_led.c} and \texttt{board\_led.h} modules implement an abstraction for controlling board \glspl{LED} using \gls{GPIO} pins. Their purpose is to provide a clean and reusable interface for turning board \glspl{LED} on/off, setting specific colors, and combining color channels via bitmask control.
+
+The library initializes the \gls{GPIO} pins, verifies device readiness, configures outputs, and exposes functions to control individual colors or common combinations. Bitmask-based operations allow multiple channels to be activated simultaneously, producing standard colors (e.g., yellow, cyan, magenta, white).
+
+\begin{itemize}
+    \item \textbf{\gls{GPIO} Initialization}: \texttt{led\_init()} iterates over all configured pins in the \texttt{bus\_led} structure, checks device readiness, and configures each pin as an output with a default off state. Errors are reported if a pin or device is not ready.
+
+    \item \textbf{Bitmask-Based Color Control}: \texttt{led\_write()} maps each bit of the input value to a corresponding \gls{LED} channel (bit0=Red, bit1=Green, bit2=Blue). This allows direct control of \gls{RGB} combinations in a single function call.
+
+    \item \textbf{Convenience Functions for Colors}: The module provides higher-level functions (\texttt{red()}, \texttt{green()}, \texttt{blue()}, \texttt{red\_green()}, \texttt{green\_blue()}, \texttt{red\_blue()}, \texttt{led\_on()}, \texttt{led\_off()}) that internally call \texttt{led\_} \texttt{write()} with predefined bitmask values to simplify usage.
+
+    \item \textbf{Error Handling}: All \gls{GPIO} operations check for errors and return standard negative \texttt{errno} codes if configuration or write fails, enabling higher-level modules to respond appropriately.
+\end{itemize}
+
+This \gls{GPIO}-based \gls{LED} driver provides a simple, reliable, and reusable interface for \gls{LED} control, isolating low-level pin management while enabling flexible color and combination handling.
+
+\subsubsection{user\_button.c and user\_button.h}
+
+The \texttt{user\_button.c} and \texttt{user\_button.h} modules implement a \gls{GPIO}-based user button interface with interrupt support. This driver allows initialization of a button input pin, configuration of edge-triggered interrupts, and registration of a callback function to handle button press and release events. It is designed for use with a single \gls{GPIO} pin per button, using pull-up configuration and detecting both rising and falling edges.
+
+The library provides a clean abstraction for integrating physical buttons into the system without exposing low-level \gls{GPIO} interrupt setup details.
+
+\begin{itemize}
+    \item \textbf{\gls{GPIO}-Based Button Initialization}: \texttt{button\_init()} verifies the \gls{GPIO} device is ready, configures the pin as input with pull-up, and enables interrupts on both edges to detect presses and releases.
+
+    \item \textbf{Edge-Triggered Interrupts}: Both rising and falling edges are detected, allowing the application to respond to button presses and releases independently.
+
+    \item \textbf{Callback Registration}: \texttt{button\_set\_callback()} allows the application to attach an \gls{ISR} handler that will be executed in interrupt context when the configured edge is detected.
+
+    \item \textbf{Safe Error Handling}: All functions return standard negative \texttt{errno} codes on failure (e.g., \gls{GPIO} device not ready, invalid configuration), allowing the calling module to handle errors predictably.
+
+    \item \textbf{Lightweight \gls{ISR} Support}: The module leaves the implementation of press/release logic to the application via the registered callback, ensuring \gls{ISR} code remains minimal and safe.
+
+    \item \textbf{Integration with Zephyr \gls{GPIO} \gls{API}}: Uses \texttt{gpio\_pin\_configure\_dt()}, \texttt{gpio\_pin\_interrupt\_} \texttt{configure\_dt()}, and \texttt{gpio\_add\_callback()} internally, abstracting Zephyr-specific details from higher-level code.
+\end{itemize}
+
+This user button module provides a robust and reusable interface for integrating physical buttons with interrupt-driven event handling, isolating low-level \gls{GPIO} configuration and edge detection logic from the application.

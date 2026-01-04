@@ -1,0 +1,133 @@
+\section{Specifications}
+
+\subsection{Specifications required}
+
+\subsubsection{Hardware}
+
+The \gls{IoT} system is based on the STM32WL55JC microcontroller. Several sensors are required to monitor plant-related environmental and physical parameters. \autoref{tab:hardware_summary} summarizes the recommended hardware components, electrical interfaces, and approximate costs.
+
+\begin{table}[H]
+    \centering
+    \caption{Summary of Suggested Hardware for the IoT System}
+    \label{tab:hardware_summary}
+    \begin{tabular}{p{0.25\textwidth}p{0.25\textwidth}p{0.2\textwidth}}
+        \toprule
+        \textbf{Parameter} & \textbf{Sensor / Module} & \textbf{Interface}  \\ 
+        \midrule
+        \gls{MCU} Board & STM32WL55JC & --  \\ 
+        Status Indicator & \gls{RGB} \gls{LED} & Digital  \\ 
+        Ambient Light & HW5P-1 Phototransistor & Analog  \\ 
+        Soil Moisture & SEN-13322 & Analog  \\ 
+        Temperature / Humidity & Si7021 & \gls{I2C}  \\ 
+        Leaf Colour & TCS34725 & \gls{I2C}  \\ 
+        Accelerometer & MMA8451Q & \gls{I2C}  \\ 
+        Global Location & Adafruit \gls{GPS} & \gls{UART}  \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsubsection{Software}
+
+The software stack required for the development of the IoT system is summarized in \autoref{tab:software_tools}.
+
+\begin{table}[H]
+    \centering
+    \caption{Software Requirements}
+    \label{tab:software_tools}
+    \begin{tabular}{p{0.2\textwidth}p{0.6\textwidth}}
+        \toprule
+        \textbf{Software Tool} & \textbf{Description} \\ 
+        \midrule
+        Zephyr \acrshort{RTOS} & \gls{RTOS} for \gls{ARM} Cortex-M devices, used for all system tasks and drivers. \\ 
+        Visual Studio Code & Primary development environment with C/C++, CMake, and Cortex-Debug extensions. \\ 
+        Git / TortoiseGit / GitHub & Version control for project source code. \\ 
+        TeraTerm / PuTTY & Serial terminal emulator for debugging and mode output. \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsubsection{System Requirements}
+
+The \gls{IoT} system must measure environmental and physical parameters and operate in three modes: Test, Normal, and Advanced (optional). \autoref{tab:sensing_reqs}-\autoref{tab:mode_requirements} present the system requirements. 
+
+\begin{table}[H]
+    \centering
+    \caption{Sensing Requirements}
+    \label{tab:sensing_reqs}
+    \begin{tabular}{p{0.08\textwidth}p{0.2\textwidth}p{0.55\textwidth}}
+        \toprule
+        \textbf{ID} & \textbf{Requirement} & \textbf{Specification} \\
+        \midrule
+        SR1 & Temperature & Range: -10°C to 50°C. Resolution: 0.1°C \\ 
+        SR2 & Relative Humidity & Range: 25\%-75\% RH. Resolution: 0.1\% \\ 
+        SR3 & Ambient Light & 0-100\%. Resolution: 0.1\% \\ 
+        SR4 & Soil Moisture & 0-100\%. Resolution: 0.1\% \\ 
+        SR5 & Leaf Colour & Clear, red, green, blue values \\ 
+        SR6 & \gls{GPS} Location & Coordinates + \gls{UTC} time \\ 
+        SR7 & Acceleration & X, Y, Z axes. Formatted output \\ 
+        SR8 & Robustness & System must be stable and robust \\ 
+        SR9 & Thread Management & Tasks must be partitioned using multitasking \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+    \centering
+    \caption{Operating Modes Requirements}
+    \label{tab:mode_requirements}
+    \begin{tabular}{p{0.17\textwidth}p{0.05\textwidth}p{0.6\textwidth}}
+        \toprule
+        \textbf{Mode} & \textbf{ID} & \textbf{Description} \\
+        \midrule
+        
+        \multirow{5}{*}{Test Mode} 
+        & TM1 & Verify sensor connections and operation. \\ 
+        & TM2 & Sampling period: 2 seconds. \\ 
+        & TM3 & Send all measurements every 2 seconds via \gls{USB} virtual \gls{COM}. \\ 
+        & TM4 & \gls{RGB} \gls{LED} indicates dominant leaf colour. \\ 
+        & TM5 & Blue \gls{LED} (\gls{LED}1) must remain ON. \\ 
+        \midrule
+
+        \multirow{7}{*}{Normal Mode}
+        & NM1 & Sampling period: 30 seconds. \\ 
+        & NM2 & Send all measurements every 30 seconds. \\ 
+        & NM3 & Compute hourly mean, max, min for temperature, humidity, light, moisture. \\ 
+        & NM4 & Compute hourly dominant colour (frequency-based). \\ 
+        & NM5 & Compute hourly max and min accelerometer values. \\ 
+        & NM6 & Send \gls{GPS} location + local time every 30 seconds. \\ 
+        & NM7 & Color-coded \gls{RGB} alert when limits exceeded. \\ 
+        & NM8 & Green \gls{LED} (\gls{LED}2) must remain ON. \\ 
+        \midrule
+        
+        \multirow{2}{*}{\makecell[l]{Advanced Mode \\ (Optional)}}
+        & AM1 & Requirements provided during validation stage. \\ 
+        & AM2 & Red \gls{LED} (\gls{LED}3) must remain ON. \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+
+\subsection{Additional specifications implemented}
+
+In addition to the mandatory requirements defined in the project specifications, several extended functionalities and robustness mechanisms were implemented to improve system reliability, diagnostic capability, maintainability, and user feedback. These additional specifications are summarized in \autoref{tab:additional_specs}.
+
+\begin{table}[H]
+    \centering
+    \caption{Additional Specifications Implemented}
+    \label{tab:additional_specs}
+    \begin{tabular}{p{0.05\textwidth}p{0.17\textwidth}p{0.75\textwidth}}
+        \toprule
+        \textbf{ID} & \textbf{Additional Requirement} & \textbf{Description} \\ 
+        \midrule
+        AS1 & \textbf{Sensor configuration} & All sensors are configured during system initialization, including adjustable internal parameters such as the colour sensor gain and integration time. \\ 
+        AS2 & \textbf{Fail-safe initialization} & If any sensor fails to initialize correctly, the entire application halts execution and enters a safe error state. \\ 
+        AS3 & \textbf{Sensor reconnection} & If a sensor becomes disconnected, a fault condition is reported. If the sensor is later reconnected, the system automatically reinitializes it and resumes normal measurement without requiring a reset. \\ 
+        AS4 & \textbf{Alarm sequencing} & When operating in NORMAL mode, all active alarms are cycled through sequentially using the \gls{RGB} \gls{LED}, with a display cadence of \textbf{0.5 seconds per alarm}. \\ 
+        AS5 & \textbf{Advanced Mode behaviour} & In ADVANCED mode, the system extends the behaviour of the NORMAL mode by reproducing on the \gls{RGB} \gls{LED} the exact colour intensity measured by the TCS34725 sensor. Since the existing \gls{LED} pins cannot be modified, \gls{PWM} operation is emulated in software to match \gls{LED} brightness with the \gls{RGB} sensor readings proportionally. All remaining system behaviour matches NORMAL mode. \\ 
+        AS6 & \textbf{Stack usage measurement} & The system includes automatic instrumentation to evaluate thread stack consumption at runtime. \\ 
+        AS7 & \textbf{Verification tools} & External analysis tools were used to inspect the system. \\ 
+        AS8 & \textbf{Documentation} & All modules, drivers, data-processing routines, and operating modes are fully documented. \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}

@@ -1,0 +1,286 @@
+\subsection{Description of the Global Software Architecture}
+
+The Plant Monitoring System is a multi-threaded embedded application developed using the Zephyr \gls{RTOS}. It integrates multiple sensors and peripherals, manages several execution threads, uses atomic shared structures for inter-thread communication, and supports three distinct operating modes that govern its behaviour.
+
+This section provides a unified description of system operation, the behaviour of each mode, the internal synchronization mechanisms, and the shared peripheral configuration structures.
+
+\subsubsection{Detailed System Behaviour per Operating Mode}
+
+The system operates according to the value of the \texttt{system\_mode\_t} enumeration, which cycles through three states: \textbf{TEST\_MODE}, \textbf{NORMAL\_MODE}, and \textbf{ADVANCED\_MODE}. The user button triggers the transitions.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{images/state_machine.png}
+    \caption{System behaviour}
+    \label{fig:state_machine}
+\end{figure}
+
+In \textbf{TEST\_MODE}, the system performs simple acquisition and visualisation tasks:
+
+\begin{enumerate}
+    \item The periodic measurement timer (\texttt{main\_timer}) is started with the test-mode rate (2 seconds).
+    \item The sensor and \gls{GPS} threads are triggered to acquire new samples.
+    \item The main thread waits for:
+    \begin{itemize}
+        \item \texttt{main\_sensors\_sem}: Signals completion of environmental sensor acquisition,
+        \item \texttt{main\_gps\_sem}: Signals completion of \gls{GPS} sampling.
+    \end{itemize}
+    \item The main thread reads the shared atomic measurement structure and determines the dominant colour measured by the \gls{RGB} sensor.
+    \item The \gls{RGB} \gls{LED} is set to the dominant raw channel (red, green, or blue).
+    \item The measurements are displayed via the serial console.
+    \item At each timer expiration, the \texttt{main\_sem} semaphore is released to repeat the mode.
+    \item No limit checking, no statistics, and no warning indicators are active.
+\end{enumerate}
+
+TEST\_MODE is primarily a hardware validation mode to verify that all sensors are functional.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/test_mode.png}
+    \caption{Test mode behaviour}
+    \label{fig:test_mode}
+\end{figure}
+
+In \textbf{NORMAL\_MODE}, the system executes the full environmental monitoring workflow:
+
+\begin{enumerate}
+    \item The measurement timer is started with the normal-mode sampling rate (30 seconds).
+    \item Sensor and \gls{GPS} threads acquire data and raise their semaphores.
+    \item The main thread retrieves all sensor values from the atomic shared structure.
+    \item Limit checking is performed for temperature, humidity, moisture, brightness, and acceleration parameters.
+    \item Violations raise bits of the atomic \texttt{rgb\_flags} field, allowing multiple alarms simultaneously.
+    \item A dedicated \gls{RGB} warning timer is active: at each tick it reads the \texttt{rgb\_flags} and updates the \gls{RGB} \gls{LED} with colour-coded warnings.
+    \item The system maintains statistical data, which is shown every hour:
+    \begin{itemize}
+        \item running minimum and maximum,
+        \item running mean values,
+        \item colour frequency counts.
+    \end{itemize}
+    \item At each timer expiration, the \texttt{main\_sem} semaphore is released to repeat the mode.
+\end{enumerate}
+
+NORMAL\_MODE is the complete monitoring and alert mode.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{images/normal_mode.png}
+    \caption{Normal mode behaviour}
+    \label{fig:normal_mode}
+\end{figure}
+
+In \textbf{ADVANCED\_MODE}, the system focuses on reproducing the sensed colour with high fidelity:
+
+\begin{enumerate}
+    \item The measurement timer is started with the advanced-mode sampling rate (30 seconds).
+    \item Sensor and \gls{GPS} threads acquire data and raise their semaphores.
+    \item The main thread retrieves all sensor values from the atomic shared structure.
+    \item Colour normalization is performed using the clear channel of the colour sensor, and shown.
+    \item The \gls{RGB} \gls{LED} is set to the normalized colour values for accurate reproduction (emulated PWM).
+    \item At each timer expiration, the \texttt{main\_sem} semaphore is released to repeat the mode.
+    \item No limit checking, no statistics, and no warning indicators are active.
+\end{enumerate}
+
+ADVANCED\_MODE is a pure high-resolution colour rendering mode.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/advanced_mode.png}
+    \caption{Advanced mode behaviour}
+    \label{fig:advanced_mode}
+\end{figure}
+
+
+\subsubsection{Mode Transition Mechanism}
+
+The user button controls mode transitions. The button interrupt triggers a deferred work handler, ensuring transitions occur in thread context. The mode progression is cyclic:
+
+\[
+\texttt{TEST\_MODE} \rightarrow \texttt{NORMAL\_MODE} \rightarrow \texttt{ADVANCED\_MODE} \rightarrow \texttt{TEST\_MODE}
+\]
+
+During a mode change:
+
+\begin{itemize}
+    \item Timers associated with the previous mode are stopped,
+    \item Mode-specific timers are started (measurement, \gls{RGB} warning, statistics),
+    \item \glspl{LED} are updated to reflect the new mode,
+    \item \texttt{main\_sem} is released to unblock the main loop.
+\end{itemize}
+
+\subsubsection{Semaphore Synchronization and Thread Interactions}
+
+Inter-thread coordination relies on multiple named semaphores.
+
+\begin{itemize}
+    \item \textbf{Measurement Timer Semaphore (\texttt{main\_sem})}
+    
+    Released by \texttt{main\_timer} to:
+
+    \begin{itemize}
+        \item Wake the main thread at the configured sampling frequency to repeat the mode.
+        \item Wake the main thread when a mode transition occurs (button pressed).
+    \end{itemize}
+
+    \item \textbf{Trigger Semaphores (\texttt{sensors\_sem} and \texttt{gps\_sem})}
+
+    These semaphores are released by \texttt{main\_timer} to notify the respective threads to begin their measurement cycles.
+
+    \item \textbf{Sensor Data Semaphore (\texttt{main\_sensors\_sem})}
+
+    Raised by the sensor acquisition thread after reading:
+
+    \begin{itemize}
+        \item Temperature and humidity.
+        \item \gls{RGB} colour channels.
+        \item Brightness.
+        \item Soil moisture.
+        \item Accelerometer values.
+    \end{itemize}
+
+    The main thread blocks until this semaphore is obtained, ensuring consistent data.
+
+    \item \textbf{\gls{GPS} Data Semaphore (\texttt{main\_gps\_sem})}
+
+    Raised by the \gls{GPS} thread when new \gls{GPS} information (latitude, longitude, altitude, satellites, timestamp) is available.
+
+    The main thread blocks until this semaphore is obtained, ensuring consistent data.
+\end{itemize}
+
+Together, these semaphores serialize measurement flow and guarantee no partial or inconsistent samples.
+
+\subsubsection{Atomic Shared Measurement Structure}
+
+Sensor data is stored in a global structure using only atomic variables:
+
+\begin{lstlisting}[language=C, caption={Sensor data structure with atomic fields}]
+struct system_measurement {
+    atomic_t brightness;  /**< Latest ambient brightness (0-100%). */
+    atomic_t moisture;    /**< Latest soil moisture (0-100%). */
+
+    atomic_t accel_x_g;   /**< Latest X-axis acceleration (in g). */
+    atomic_t accel_y_g;   /**< Latest Y-axis acceleration (in g). */
+    atomic_t accel_z_g;   /**< Latest Z-axis acceleration (in g). */
+
+    atomic_t temp;        /**< Latest temperature (C). */
+    atomic_t hum;         /**< Latest relative humidity (%RH). */
+
+    atomic_t red;         /**< Latest red color value (raw). */
+    atomic_t green;       /**< Latest green color value (raw). */
+    atomic_t blue;        /**< Latest blue color value (raw). */
+    atomic_t clear;       /**< Latest clear color channel value (raw). */
+
+    atomic_t gps_lat;     /**< Latest GPS latitude (degrees). */
+    atomic_t gps_lon;     /**< Latest GPS longitude (degrees). */
+    atomic_t gps_alt;     /**< Latest GPS altitude (meters). */
+    atomic_t gps_sats;    /**< Latest number of satellites in view. */
+    atomic_t gps_time;    /**< Latest GPS timestamp (float or encoded). */
+};
+\end{lstlisting}
+
+Properties:
+
+\begin{itemize}
+    \item Lock-free thread-safe communication.
+    \item Each measurement updated independently.
+    \item the main thread reads all values without risk of torn writes.
+\end{itemize}
+
+\subsubsection{Peripheral Configuration Structure}
+
+All peripherals and synchronization objects are referenced through a single shared structure:
+
+\begin{lstlisting}[language=C, caption={Peripheral configuration and synchronization structure}]
+struct system_context {
+    struct adc_config *phototransistor; /**< Phototransistor ADC configuration. */
+    struct adc_config *soil_moisture;   /**< Soil moisture ADC configuration. */
+
+    struct i2c_dt_spec *accelerometer;  /**< Accelerometer I2C device specification. */
+    uint8_t accel_range;                /**< Accelerometer full-scale range (e.g., 2G, 4G, 8G). */
+
+    struct i2c_dt_spec *temp_hum;       /**< Temperature and humidity sensor I2C specification. */
+    struct i2c_dt_spec *color;          /**< Color sensor I2C device specification. */
+    struct gps_config *gps;             /**< GPS module configuration. */
+
+    struct k_sem *main_sensors_sem;     /**< Semaphore for main-to-sensors synchronization. */
+    struct k_sem *main_gps_sem;         /**< Semaphore for main-to-GPS synchronization. */
+    struct k_sem *sensors_sem;          /**< Semaphore to trigger sensor measurement. */
+    struct k_sem *gps_sem;              /**< Semaphore to trigger GPS measurement. */
+};
+\end{lstlisting}
+
+In this way, the peripherals are configured once at startup and passed to all threads and modules that require access.
+
+\subsubsection{Secure Initialization}
+
+In case of initialization failures (e.g., \gls{I2C} device not found), the system doesn't execute the program:
+
+\begin{lstlisting}[language=C, caption={Secure initialization code}]
+    /* Initialize peripherals */
+    if (gps_init(&gps)) {
+        printk("GPS initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (adc_init(&pt)) {
+        printk("Phototransistor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (adc_init(&sm)) {
+        printk("Soil moisture sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (accel_init(&accel, ACCEL_RANGE)) {
+        printk("Accelerometer initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (temp_hum_init(&th, TEMP_HUM_RESOLUTION)) {
+        printk("Temperature/Humidity sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (color_init(&color, COLOR_GAIN, COLOR_INTEGRATION_TIME)) {
+        printk("Color sensor initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (led_init(&leds) || led_off(&leds)) {
+        printk("LED initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (rgb_led_init(&rgb_leds) || rgb_led_off(&rgb_leds)) {
+        printk("RGB LED initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (button_init(&button))  {
+        printk("Button initialization failed - Program stopped\n");
+        return -1;
+    }
+    if (button_set_callback(&button, button_isr)) {
+        printk("Button callback setup failed - Program stopped\n");
+        return -1;
+    }
+
+\end{lstlisting} 
+
+\autoref{fig:no_init} shows an example of the log printed when initialization fails. In this case, the accelerometer is disconnected.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/no_init.png}
+    \caption{Stopped initialisation}
+    \label{fig:no_init}
+\end{figure}
+
+\subsubsection{Device Disconnected}
+
+In case one device is disconnected during operation, an error message is printed, but the program continues running. It shows the last valid measurement for that sensor. If the device is reconnected, normal operation resumes.
+
+\begin{itemize}
+    \item In GREEN, the log that shows the sensor is disconnected.
+    \item In BLUE is highlighted the same value of the measurement, demonstrating that the system shows the last valid measurement. 
+    \item In RED, there isn't log of sensor disconnected, because the sensor is connected again. The value of the measurement is updated.
+\end{itemize}
+
+\begin{figure}[H] 
+    \centering
+    \includegraphics[width=0.9\textwidth]{images/no_measurements.png}
+    \caption{Disconnected and Connected sensor measurements}
+    \label{fig:no_measure}
+\end{figure}

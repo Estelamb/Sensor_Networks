@@ -1,0 +1,351 @@
+\section{Hardware Analysis}
+
+\subsection{Block diagram}
+
+The block diagram shown in \autoref{fig:block_diagram_hardware} provides an overview of the complete hardware architecture. It illustrates how the STM32WL55JC microcontroller interacts with the different sensors and output devices integrated into the system. Each peripheral is connected through the appropriate interface, such as analog inputs, \gls{I2C} buses, \gls{UART} communication lines, and \gls{GPIO} pins, allowing the microcontroller to gather environmental data, process it, and generate feedback. 
+
+This diagram serves as a high-level representation of the system's structure, highlighting the flow of information between components and the role of the microcontroller as the central control unit.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.99\textwidth]{images/block_diagram.png}
+    \caption{Block Diagram of the Hardware System}
+    \label{fig:block_diagram_hardware}
+\end{figure}
+
+The microcontroller employs several of its internal peripherals to interface with the different sensors and modules in the system. One of the available \gls{ADC} channels is used to read the analog outputs of the soil moisture sensor and the ambient light phototransistor. The \gls{I2C}2 bus is shared by the temperature and humidity sensor (Si7021), the colour sensor (TCS34725), and the accelerometer (MMA8451Q). A \gls{UART} interface is dedicated to the \gls{GPS} module, enabling continuous reception of positioning data.
+
+In addition, three \gls{GPIO} pins are configured as digital outputs to drive the RGB LED through current-limiting resistors. The system also uses the 3.3V and 5V power rails provided by the board, as well as the ground reference shared by all components. Together, these resources form a compact and energy-efficient hardware configuration that leverages the STM32WL55JC's \glspl{ADC}, \glspl{GPIO}, communication peripherals, and power distribution capabilities.
+
+\subsection{Interfaces of the system}
+
+\autoref{tab:system_connections} details all electrical interfaces used in the system. Each sensor or module is mapped to the corresponding STM32WL55JC pins, specifying power connections, communication buses, and signal types. The design integrates a mix of digital and analog interfaces, including \gls{I2C} for multi-sensor communication, \gls{UART} for \gls{GPS} data, and \gls{ADC} channels for analog measurements such as soil moisture and ambient light. In addition, several \gls{GPIO} pins are used for driving the RGB LED. 
+
+\begin{table}[H]
+    \centering
+    \caption{System Connections}
+    \label{tab:system_connections}
+
+    \footnotesize
+    
+    \rotatebox{90}{
+
+    \begin{tabular}{p{0.15\textwidth}p{0.2\textwidth}p{0.2\textwidth}p{0.1\textwidth}p{0.15\textwidth}p{0.15\textwidth}p{0.15\textwidth}}
+        \toprule
+        \textbf{Parameter} & \textbf{Sensor} & \textbf{Pin Description} & \textbf{Sensor PIN name} & \textbf{STM32WL55JC Connector} & \textbf{STM32WL55JC PIN name} & \textbf{STM32WL55JC Function}  \\
+        \midrule
+
+        % RGB LED
+        \multirow{4}{*}{\gls{LED} \gls{RGB}}
+            & \multirow{4}{*}{\makecell[l]{\gls{RGB} \gls{LED} \\ + Resistors (470 Ohm)}}
+                & Common (Anode) & C & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Red + 470 Ohm & R & CN5 PA\_6 & D12 & R \\
+                &  & Green + 470 Ohm & G & CN5 PA\_7 & D11 & G \\
+                &  & Blue + 470 Ohm & B & CN5 PA\_9 & D9 & B \\
+        \midrule
+        
+        % Ambient Light
+        \multirow{3}{*}{Ambient Light}
+            & \multirow{3}{*}{\makecell[l]{HW5P-1 Phototransistor \\ + Resistor (1k Ohm)}}
+                & VCC 3.3V & VCC & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Vout & Vout & CN8 PB\_1 & \gls{ADC} 1/5 & Analog input \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+        \midrule
+        
+        % Soil Moisture
+        \multirow{3}{*}{Soil Moisture}
+            & \multirow{3}{*}{SEN-13322}
+                & VCC 3.3V & VCC & CN6 3V3 & 3V3 & 3.3V \\
+                &  & Vout & SIG & CN8 PB\_13 & \gls{ADC} 1/0 & Analog input \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+        \midrule
+
+        % Temperature / Humidity
+        \multirow{5}{*}{\makecell[l]{Temperature \\ and Humidity}} 
+            & \multirow{5}{*}{Si7021}
+                & VCC 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+                &  & \gls{I2C} \gls{SCL} & \gls{SCL} & CN5 PA\_12 & \gls{I2C}2\_\gls{SCL} & \gls{I2C} \gls{SCL} \\
+                &  & \gls{I2C} \gls{SDA} & \gls{SDA} & CN5 PA\_11 & \gls{I2C}2\_\gls{SDA} & \gls{I2C} \gls{SDA} \\
+                &  & Output 3.3V & 3Vo & -- & -- & -- \\
+        \midrule
+        
+        % Leaf Colour
+        \multirow{7}{*}{Leaf Colour}
+            & \multirow{7}{*}{TCS34725}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+                &  & \gls{I2C} \gls{SCL} & \gls{SCL} & CN5 PA\_12 & \gls{I2C}2\_\gls{SCL} & \gls{I2C} \gls{SCL} \\
+                &  & \gls{I2C} \gls{SDA} & \gls{SDA} & CN5 PA\_11 & \gls{I2C}2\_\gls{SDA} & \gls{I2C} \gls{SDA} \\
+                &  & Output 3.3V & 3V3 & -- & -- & -- \\
+                &  & Interrupt out & INT & -- & -- & -- \\
+                &  & \gls{LED} on/off & \gls{LED} & -- & -- & -- \\
+        \midrule
+        
+        % Accelerometer
+        \multirow{8}{*}{Accelerometer}
+            & \multirow{8}{*}{MMA8451Q}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+                &  & \gls{I2C} \gls{SCL} & \gls{SCL} & CN5 PA\_12 & \gls{I2C}2\_\gls{SCL} & \gls{I2C} \gls{SCL} \\
+                &  & \gls{I2C} \gls{SDA} & \gls{SDA} & CN5 PA\_11 & \gls{I2C}2\_\gls{SDA} & \gls{I2C} \gls{SDA} \\
+                &  & Output 3.3V reg & 3Vo & -- & -- & -- \\
+                &  & Inertial Interrupt 1, Output pin & I1 & -- & -- & -- \\
+                &  & Inertial Interrupt 2, Output pin & I2 & -- & -- & -- \\
+                &  & \gls{I2C} least significant bit of the device \gls{I2C} address & A & -- & -- & -- \\
+        \midrule
+
+        % GPS
+        \multirow{9}{*}{\gls{GPS}}
+            & \multirow{9}{*}{\makecell[l]{Adafruit Ultimate \gls{GPS} \\ Breakout v3}}
+                & VIN 5V & VIN & CN6 5V & 5V & 5V \\
+                &  & Ground & \gls{GND} & CN6 \gls{GND} & \gls{GND} & Ground \\
+                &  & Serial \gls{TX} & \gls{TX} & CN9 PB\_7 & \gls{UART}1\_\gls{RX} & \gls{UART} \gls{RX} \\
+                &  & Serial \gls{RX} & \gls{RX} & CN9 PB\_6 & \gls{UART}1\_\gls{TX} & \gls{UART} \gls{TX} \\
+                &  & Output 3.3V reg & 3.3V & -- & -- & -- \\
+                &  & Enable & EN & -- & -- & -- \\
+                &  & Fix output & FIX & -- & -- & -- \\
+                &  & Vbackup (battery) & VBAT & -- & -- & -- \\
+                &  & Pulse Per Second output & PPS & -- & -- & -- \\
+
+        \bottomrule
+    \end{tabular}
+    }
+\end{table}
+
+\clearpage
+
+\subsection{Communication Interfaces used in the system}
+
+The system relies on several hardware communication interfaces that allow the STM32WL55JC microcontroller to exchange data efficiently with the different sensors and modules. Each interface is selected based on the nature of the signal (analog or digital), the required data rate, and the number of devices connected.
+
+\subsubsection{Analog-to-Digital Converter (\acrshort{ADC})}
+
+The STM32WL55JC includes a 12-bit \gls{ADC} capable of converting analog voltages into digital values.  
+This interface is used for sensors that provide an output voltage proportional to a physical quantity, such as:
+
+\begin{itemize}
+    \item HW5P-1 phototransistor (ambient light)
+    \item SEN-13322 soil moisture sensor
+\end{itemize}
+
+The \gls{ADC} samples the voltage at the input pin and converts it into a numerical value between 0 and 4095 (12 bits), enabling the microcontroller to process continuous physical signals using digital logic.
+
+\subsubsection{\acrshort{I2C} Bus}
+
+The \gls{I2C} (Inter-Integrated Circuit) bus is a two-wire digital communication interface consisting of:
+\begin{itemize}
+    \item \gls{SCL}: clock line
+    \item \gls{SDA}: data line
+\end{itemize}
+
+Multiple sensors can share the same bus because each device has a unique address.  
+In this system, \gls{I2C}2 is used, and three devices share it:
+
+\begin{itemize}
+    \item Si7021 temperature and humidity sensor
+    \item TCS34725 colour sensor
+    \item MMA8451Q accelerometer
+\end{itemize}
+
+\gls{I2C} allows simple wiring, energy-efficient transmission, and reliable short-distance communication, making it ideal for embedded sensor networks.
+
+\subsubsection{\acrshort{UART} Interface}
+
+The Universal Asynchronous Receiver/Transmitter (\gls{UART}) is a serial communication interface used for asynchronous data transfer.  
+It uses two lines:
+
+\begin{itemize}
+    \item \gls{TX}: microcontroller transmits data
+    \item \gls{RX}: microcontroller receives data
+\end{itemize}
+
+The Adafruit Ultimate \gls{GPS} Breakout v3 communicates via a dedicated \gls{UART} port, continuously streaming \gls{NMEA} sentences that include position, altitude, speed, and time. \gls{UART} is preferred here because it supports continuous high-latency streams and long-format messages without requiring a synchronized clock signal.
+
+\subsubsection{\acrshort{GPIO} Digital Pins}
+
+General-Purpose Input/Output (\gls{GPIO}) pins are used for simple digital control or sensing. In this project, several \glspl{GPIO} are configured as outputs to drive the \gls{RGB} \gls{LED}. Each colour channel (red, green, and blue) is controlled by switching the corresponding \gls{GPIO} pin on or off.
+
+\glspl{GPIO} allow:
+
+\begin{itemize}
+    \item Driving LEDs or actuators
+    \item Reading simple digital sensors
+    \item Triggering interrupts
+\end{itemize}
+
+Their flexibility and direct control make them suitable for simple digital signals.
+
+\subsubsection{Power Interfaces}
+
+The system also uses fixed-voltage power rails:
+
+\begin{itemize}
+    \item \textbf{3.3V}: used by analog sensors and logic inputs (e.g., phototransistor, soil sensor)
+    \item \textbf{5V}: used by some breakout boards that include internal regulators (e.g., Si7021, TCS34725, MMA8451Q, \gls{GPS})
+    \item \textbf{\gls{GND}}: common electrical reference shared by all modules
+\end{itemize}
+
+A shared ground is essential for stable communication because all signal voltages must be referenced to the same electrical level. These interfaces together form an efficient and compact architecture that ensures reliable data acquisition and control across all hardware modules.
+
+\subsection{Hardware devices}
+
+\subsubsection{STM32WL55JC microcontroller} 
+
+The STM32WL55JC\cite{STM32WL55JCProductSTMicroelectronics} is an ultra-low-power microcontroller that integrates both a processing unit and a long-range sub-GHz radio in a single chip. It combines an \gls{ARM} Cortex-M4 core for the main application and an \gls{ARM} Cortex-M0+ core for security and background tasks, providing efficient performance with very low energy consumption. The device includes 256KB of Flash, 64KB of \gls{SRAM}, and a wide set of protection features to ensure firmware integrity.
+
+Its built-in radio supports several \gls{LPWAN} modulations, including \gls{LoRa}, enabling long-distance communication. The microcontroller also offers a rich collection of peripherals—such as 12-bit \gls{ADC}/\gls{DAC}, multiple timers, \gls{DMA} controllers, and interfaces like \gls{UART}, \gls{I2C}, and \gls{SPI}, making it highly adaptable to sensor-based and low-power embedded applications.
+
+\subsubsection{RGB LED and 470 Ohm resistors}
+
+The system includes a common-anode \gls{RGB} \gls{LED} used to provide visual feedback during operation. This type of \gls{LED} shares a single positive terminal connected to the 3.3,V rail, while each color channel (red, green, and blue) is controlled individually through the microcontroller. The STM32WL55JC drives the three channels using pins PA\_6, PA\_7, and PA\_9, which can be toggled to generate different brightness levels and color combinations.
+
+Each \gls{LED} channel is connected in series with a 470 Ohm resistor to ensure proper current limiting and protect both the \gls{LED} and the microcontroller outputs. This simple circuit allows the system to display a wide range of colors, enabling intuitive status indication, such as alerts or measurement feedback.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.3\textwidth]{images/rgb_circuit.png}
+    \caption{RGB LED circuit diagram}
+    \label{fig:rgb_circuit}
+\end{figure}
+
+\subsubsection{HW5P-1 Phototransistor and 1k Ohm resistor}
+
+The system uses a HW5P-1 phototransistor \cite{industriesPhotoTransistorLight} to measure ambient light intensity. The phototransistor is connected in a simple voltage-divider configuration with a 1k Ohm resistor, converting the light-dependent current into a measurable voltage at the junction between the two components. This analog voltage is fed directly into the STM32WL55JC's \gls{ADC}1/5 channel, allowing the microcontroller to quantify the light level.
+
+By sampling the \gls{ADC} input, the system can monitor changes in illumination and use this information for environmental sensing or automatic control tasks. The 3.3V supply powers the phototransistor, while a shared ground ensures proper reference for the \gls{ADC} measurements.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/photo_circuit.png}
+    \caption{Phototransistor circuit diagram}
+    \label{fig:phototransistor_circuit}
+\end{figure}
+
+To express the ambient light as a percentage, the \gls{ADC} reading is first converted to a voltage using the reference voltage \(V_\text{ref}\) of 3.3V: 
+
+\[
+V_\text{phototransistor} = \frac{\text{ADC\_value}}{\text{ADC\_max}} \cdot V_\text{ref}
+\]
+
+Then, this voltage is normalized to a percentage of the maximum measurable light:
+
+\[
+\text{Light\%} = \frac{V_\text{phototransistor}}{V_\text{ref}} \cdot 100
+= \frac{\text{ADC\_value}}{\text{ADC\_max}} \cdot 100
+\]
+
+This approach ensures that the ambient light intensity is represented in a standardized form from 0\% (dark) to 100\% (maximum brightness measurable by the sensor).
+
+The measured light percentage is used by the system to evaluate illumination conditions in the surrounding environment.
+
+\subsubsection{SEN-13322 Soil Moisture Sensor}
+
+The system uses a SEN-13322 soil moisture sensor\cite{SparkFunSoilMoisture} to monitor the water content of the soil. This sensor outputs an analog voltage that varies proportionally with the soil's moisture level. The voltage is measured by the STM32WL55JC using \gls{ADC}1/0 channel, allowing the microcontroller to quantify the moisture.
+
+The sensor is powered by the 3.3V supply from the board, with a common ground shared with the microcontroller to ensure accurate \gls{ADC} measurements. 
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/soil_circuit.png}
+    \caption{Soil moisture sensor circuit diagram}
+    \label{fig:soil_moisture_circuit}
+\end{figure}
+
+A direct reading of the \gls{ADC} value can be converted into a soil moisture percentage using a similar normalization method as for the phototransistor: 
+
+\[
+\text{Moisture\%} = \frac{V_\text{soil\_sensor}}{V_\text{ref}} \cdot 100
+= \frac{\text{ADC\_value}}{\text{ADC\_max}} \cdot 100
+\]
+
+This provides a simple and effective way to represent soil moisture from 0\% (completely dry) to 100\% (fully saturated). 
+
+By continuously monitoring this value, the system can perform environmental sensing, trigger alerts, or control irrigation mechanisms in an automated manner.
+
+\subsubsection{Si7021 Temperature and Humidity Sensor}
+
+The system integrates a Si7021 digital temperature and humidity sensor\cite{industriesAdafruitSi7021Temperature} to monitor environmental conditions. This sensor communicates with the STM32WL55JC microcontroller via the \gls{I2C}2 bus, using pins PA\_12 (\gls{SCL}) and PA\_11 (\gls{SDA}). The sensor is powered by the 5V supply from the board, while a shared ground ensures reliable communication and stable operation.
+
+The Si7021 provides fully digital readings for both temperature and relative humidity, eliminating the need for additional signal conditioning or \gls{ADC} conversion. 
+
+\gls{RH} is the amount of water vapor present in the air expressed as a percentage of the maximum humidity the air can hold at a given temperature. Mathematically, it is expressed as:
+
+\[
+\text{RH (\%)} = \frac{P_\text{humidity}}{P_\text{max\_humidity}(T)} \times 100
+\]
+
+The microcontroller can query the sensor at regular intervals to obtain accurate temperature in degrees Celsius and relative humidity in percentage. These measurements can then be used for environmental monitoring, data logging, or as input for control algorithms, such as adjusting irrigation based on humidity levels.
+
+\subsubsection{TCS34725 Colour Sensor}
+
+The system uses a TCS34725 digital colour sensor\cite{industriesRGBColorSensor} to measure the color and brightness of objects or ambient light. This sensor communicates with the STM32WL55JC microcontroller via the \gls{I2C}2 bus, using pins PA\_12 (\gls{SCL}) and PA\_11 (\gls{SDA}). The sensor is powered by the 5V supply from the board, with a shared ground for proper signal reference.
+
+The TCS34725 integrates an array of photodiodes with color-specific filters (red, green, and blue) to detect the intensity of each primary color. Additionally, it includes a clear photodiode that measures the total light intensity without any color filtering. This *clear* channel allows the microcontroller to compensate for variations in ambient light and normalize the color measurements, improving accuracy under different lighting conditions.
+
+The sensor provides digital output values for each channel (red, green, blue, and clear), which can be read directly by the microcontroller. To calculate the relative intensity of each color, the readings can be normalized against the clear channel:
+
+\[
+\text{Color\_ratio} = \frac{\text{Color\_value}}{\text{Clear\_value}}
+\]
+
+This ratio provides a normalized measurement of the color composition independent of the overall light intensity.
+
+The microcontroller can use this information for environmental monitoring, assessing leaf color for plant health, or other applications requiring color detection.
+
+\subsubsection{MMA8451Q Accelerometer}
+
+The system includes an MMA8451Q 3-axis digital accelerometer\cite{industriesAdafruitTripleAxisAccelerometer} to measure linear acceleration along three orthogonal axes (X, Y, and Z). The sensor communicates with the STM32WL55JC microcontroller via the \gls{I2C}2 bus using pins PA\_12 (\gls{SCL}) and PA\_11 (\gls{SDA}), and is powered by the 5V supply from the board with a common ground reference.
+
+The MMA8451Q outputs digital values corresponding to the acceleration experienced along each axis, which includes static acceleration due to gravity. By convention, the Z-axis measures the acceleration in the vertical direction, while X and Y correspond to horizontal directions.
+
+The raw digital readings from the sensor can be converted into acceleration in units of gravitational acceleration (\(g\)), using the sensor's sensitivity parameter (\(S_\text{range}\)), which depends on the configured full-scale range (e.g., ±2g, ±4g, or ±8g): 
+
+\[
+a_\text{axis} \,[g] = \frac{\text{Raw\_value}}{2^{12-1}} \cdot S_\text{range}
+\]
+
+\(\text{Raw\_value}\) is the 12-bit signed output from the accelerometer, and \(2^{12-1} = 2048\) accounts for the 12-bit resolution with signed values. To convert the acceleration into \gls{SI} units (\(\text{m/s}^2\)), the following relation is used:
+
+\[
+a_\text{axis} \,[\text{m/s}^2] = a_\text{axis} \,[g] \cdot g_0
+\]
+
+where \(g_0 = 9.80665\ \text{m/s}^2\) is the standard acceleration due to gravity. This conversion allows the microcontroller to quantify acceleration in physical units, providing meaningful data for motion detection, tilt sensing, or vibration monitoring.
+
+By continuously reading the accelerometer, the system can track orientation changes, detect movement events, and combine the data with other sensors for environmental and behavioral monitoring applications.
+
+\subsubsection{Adafruit Ultimate GPS Breakout v3}
+
+The system integrates an Adafruit Ultimate GPS Breakout v3 module\cite{industriesAdafruitUltimateGPS} to obtain accurate geolocation and time information. The \gls{GPS} communicates with the STM32WL55JC microcontroller via a dedicated \gls{UART} interface, using pins PB\_6 (\gls{TX}) and PB\_7 (\gls{RX}). The module is powered by the 5V supply from the board, with a shared ground reference.
+
+The \gls{GPS} module outputs position and time data in the standard \gls{NMEA} sentence format. Key information includes:
+
+\begin{itemize}
+    \item \textbf{Latitude and Longitude:} Provided in degrees and minutes (DDMM.MMMM for latitude and DDDMM.MMMM for longitude) along with a directional indicator: `N` or `S` for latitude, and `E` or `W` for longitude.
+
+    Latitude is referenced to the \textbf{Equator} (0°), which divides the Earth into the Northern and Southern hemispheres. Thus, `N` indicates a position north of the Equator, while `S` indicates a position south of it.
+
+    Longitude is referenced to the \textbf{Prime Meridian} (0°), also known as the \textbf{Greenwich Meridian}, which separates the Eastern and Western hemispheres. Positions east of Greenwich are marked with `E`, and those to the west with `W`.
+
+    These values can be converted to decimal degrees using:
+    \[
+    \text{Decimal Degrees} = \text{Degrees} + \frac{\text{Minutes}}{60}
+    \]
+
+    For coordinates in the Southern or Western hemispheres, the decimal degrees are taken as negative.
+
+    Decimal degrees are used because they provide a \textbf{continuous numerical representation} of geographic coordinates, which simplifies mathematical operations such as distance calculations, interpolation, mapping transformations, and data storage. This format is easier for microcontrollers and software libraries to process compared to the degrees-minutes format used in raw \gls{NMEA} sentences.
+    
+    \item \textbf{Altitude:} Measured in meters above mean sea level.
+    
+    \item \textbf{\gls{UTC} Time and Date:} Provided as Coordinated Universal Time (hhmmss.ss for time and ddmmyy for date). \gls{UTC} is referenced to the \textbf{Prime Meridian in Greenwich}, meaning it is the global baseline from which all time zones are defined.
+
+    The system is located in Spain (peninsular), where local time is typically:
+    \[
+    \text{Local Time} = \text{\gls{UTC}} + 1\,\text{hour}
+    \]
+\end{itemize}
+
+By parsing the \gls{NMEA} sentences, the microcontroller can extract and store accurate position coordinates, altitude, and \gls{UTC}-based timestamps. Continuous reception ensures that the system always has up-to-date location and timing information for real-time applications, enabling georeferenced sensor measurements and time-stamped environmental monitoring.
+

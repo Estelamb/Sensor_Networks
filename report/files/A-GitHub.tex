@@ -1,0 +1,153 @@
+\section{- GitHub}
+
+\subsection{GitHub Repository - Source Code}
+
+The complete source code of the Plant Monitoring System project is hosted on GitHub and can be accessed via the following link: \url{https://github.com/Estelamb/Embedded_IoT}.
+
+\subsection{GitHub Pages - Documentation}
+
+The project documentation can be accessed through the following link: \url{https://estelamb.github.io/Embedded_IoT/}.
+
+\subsection{GitHub Action - Workflow}\label{ap:github}
+
+\begin{lstlisting}[language=yaml, caption={GitHub Action workflow}]
+name: Cppcheck, Zephyr Build, Valgrind and Doxygen
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  ZEPHYR_BASE: ${{ github.workspace }}/zephyrproject/zephyr
+  PROJECT_DIR: plant_monitoring_system
+
+jobs:
+  cppcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install cppcheck
+        run: sudo apt-get update && sudo apt-get install -y cppcheck
+
+      - name: Run cppcheck
+        run: |
+          if [ -d "plant_monitoring_system" ]; then
+            cd plant_monitoring_system
+          fi
+          cppcheck --enable=all --inconclusive --std=c++17 -I include src
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-dev \
+            python3-pip \
+            python3-venv \
+            cmake \
+            ninja-build \
+            gcc \
+            g++ \
+            valgrind \
+            device-tree-compiler
+
+      - name: Install West and Zephyr dependencies
+        run: |
+          pip3 install west
+          pip3 install -r https://raw.githubusercontent.com/zephyrproject-rtos/zephyr/main/scripts/requirements.txt
+
+      - name: Set up Zephyr environment
+        run: |
+          west init zephyrproject
+          cd zephyrproject
+          west update
+          west zephyr-export
+
+      - name: List available boards to verify native_sim
+        run: |
+          cd zephyrproject/zephyr
+          west boards | grep native
+
+      - name: Build project for native_sim (Valgrind compatible)
+        run: |
+          cd $PROJECT_DIR
+          source $ZEPHYR_BASE/zephyr-env.sh
+          west build -b native_sim --build-dir build_valgrind --pristine always
+
+      - name: Find the generated executable
+        run: |
+          cd $PROJECT_DIR/build_valgrind/zephyr
+          find . -name "zephyr*" -type f -executable
+          ls -la
+
+      - name: Upload executable for Valgrind
+        uses: actions/upload-artifact@v4
+        with:
+          name: zephyr-native-executable
+          path: ${{ env.PROJECT_DIR }}/build_valgrind/zephyr/zephyr.exe
+          retention-days: 7
+
+  valgrind:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install Valgrind
+        run: sudo apt-get update && sudo apt-get install -y valgrind
+
+      - name: Download native executable artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: zephyr-native-executable
+          path: valgrind_test/
+
+      - name: Make executable
+        run: chmod +x valgrind_test/zephyr.exe
+
+      - name: Run Valgrind memory analysis
+        run: |
+          echo "=== Running Valgrind memory check ==="
+          timeout 30s valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all valgrind_test/zephyr.exe || echo "Valgrind completed or was terminated"
+
+      - name: Run basic Valgrind check
+        run: |
+          echo "=== Running basic Valgrind ==="
+          timeout 30s valgrind valgrind_test/zephyr.exe || echo "Valgrind completed or was terminated"
+
+  doxygen:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Doxygen
+        run: sudo apt-get update && sudo apt-get install -y doxygen graphviz
+
+      - name: Generate documentation for plant_monitoring_system
+        run: |
+          cd plant_monitoring_system
+          doxygen Doxyfile
+
+      - name: Create docs directory if it doesn't exist
+        run: |
+          cd plant_monitoring_system
+          mkdir -p docs/html
+
+      - name: Verify HTML documentation output
+        run: |
+          ls -la ./plant_monitoring_system/docs/
+          ls -la ./plant_monitoring_system/docs/html
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./plant_monitoring_system/docs/html
+\end{lstlisting}

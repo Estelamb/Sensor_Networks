@@ -1,0 +1,135 @@
+\usepackage{graphicx} 
+\usepackage[utf8]{inputenc}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage[english]{babel}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{pdfpages}
+\usepackage[style=ieee]{biblatex}
+\usepackage{csquotes}
+\usepackage{booktabs}
+\usepackage[parfill]{parskip}
+\usepackage{longtable}
+\usepackage{float}
+\usepackage{amstext}
+\usepackage{mathtools}
+\usepackage[titletoc, title]{appendix}
+\usepackage{multirow}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{tikz}
+\usepackage{epigraph}
+\usepackage{todonotes}
+\usepackage{quotes}
+\usepackage[acronym,nogroupskip]{glossaries}
+%\usepackage{forest}
+%\usepackage{xcolor}
+\usepackage{makecell}
+
+
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floot}{\lfloor}{\rfloor}
+
+% Bibliografia
+\addbibresource{references.bib}
+
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+
+\makeatletter
+\def\thebibliography#1{\section{\refname\@mkboth
+{\uppercase{\refname}}{\uppercase{\refname}}}\list
+{\@biblabel{\arabic{enumiv}}}{\settowidth\labelwidth{\@biblabel{#1}}%
+\leftmargin\labelwidth
+\advance\leftmargin\labelsep
+\usecounter{enumiv}%
+\let\***@enumiv\@empty
+\def\theenumiv{\arabic{enumiv}}}%
+\def\newblock{\hskip .11em plus.33em minus.07em}%
+\sloppy\clubpenalty4000\widowpenalty4000
+\sfcode`\.=1000\relax}
+\makeatother
+\makeatletter
+\def\thebibliography#1{\section{\refname\@mkboth
+{\uppercase{\refname}}{\uppercase{\refname}}}\list
+{\@biblabel{\arabic{enumiv}}}{\settowidth\labelwidth{\@biblabel{#1}}%
+\leftmargin\labelwidth
+\advance\leftmargin\labelsep
+\usecounter{enumiv}%
+\let\***@enumiv\@empty
+\def\theenumiv{\arabic{enumiv}}}%
+\def\newblock{\hskip .11em plus.33em minus.07em}%
+\sloppy\clubpenalty4000\widowpenalty4000
+\sfcode`\.=1000\relax}
+\makeatother
+
+% Numeración de páginas
+\makeatletter
+\newcommand\frontmatter{%
+    \cleardoublepage
+  %\@mainmatterfalse
+  \pagenumbering{roman}}
+\newcommand\mainmatter{%
+    \cleardoublepage
+ % \@mainmattertrue
+  \pagenumbering{arabic}}
+\newcommand\backmatter{%
+  \if@openright
+    \cleardoublepage
+  \else
+    \clearpage
+  \fi
+ % \@mainmatterfalse
+   }
+\makeatother
+
+\renewcommand\lstlistingname{Listing}
+\renewcommand\lstlistlistingname{List of Listings}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=c,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+\newglossarystyle{customlist}{%
+  \setglossarystyle{list}% basado en el estilo list
+  \renewcommand*{\glossentry}[2]{% redefine la visualización de entradas
+    \item[\glsentryitem{##1}%
+          \glstarget{##1}{\glossentryname{##1}}%
+      \ifglshassymbol{##1}{ (\glossentrysymbol{##1})}{}]%
+      \glossentrydesc{##1}%
+  }
+  \renewcommand*{\glsgroupskip}{}% elimina espacio entre grupos
+}
+
+\renewcommand{\lstlistlistingname}{List of Listings} % Rename the list title (optional)
+
+\lstdefinelanguage{yaml}{
+  keywords={true,false,null},
+  keywordstyle=\color{blue}\bfseries,
+  basicstyle=\ttfamily\small,
+  commentstyle=\color{gray},
+  stringstyle=\color{orange},
+  moredelim=[l]{:},
+}
+
+
+\input{acronyms.tex}
