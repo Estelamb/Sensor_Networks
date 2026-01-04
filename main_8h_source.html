@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Embedded Platforms and Communications for IoT" />
+<!-- <meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta property="og:description" content="Estela Mora Barba" />
+<meta property="og:url" content="https://estelamb.github.io/emora_ESD/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<!-- <meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
+<meta name="twitter:description" content="Estela Mora Barba" />
+<!-- END twitter metadata -->
+<title>Plant Monitoring System - Phase 3: src/main.h Source File</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Plant Monitoring System - Phase 3
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('main_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">main.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="main_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifndef MAIN_H</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define MAIN_H</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;zephyr/kernel.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;zephyr/sys/atomic.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="adc_8h.html">sensors/adc/adc.h</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="i2c_8h.html">sensors/i2c/i2c.h</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="accel_8h.html">sensors/i2c/accel.h</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="temp__hum_8h.html">sensors/i2c/temp_hum.h</a>&quot;</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#include &quot;<a class="code" href="color_8h.html">sensors/i2c/color.h</a>&quot;</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#include &quot;<a class="code" href="gps_8h.html">sensors/gps/gps.h</a>&quot;</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#include &quot;<a class="code" href="rgb__led_8h.html">sensors/led/rgb_led.h</a>&quot;</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="foldopen" id="foldopen00031" data-start="{" data-end="};">
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="structsystem__context.html">   31</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structsystem__context.html">system_context</a> {</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">   32</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structadc__config.html">adc_config</a> *<a class="code hl_variable" href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">phototransistor</a>; </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162">   33</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structadc__config.html">adc_config</a> *<a class="code hl_variable" href="structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162">soil_moisture</a>;   </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="structsystem__context.html#ac6a96ab5220f982e7137780a525635bd">   35</a></span>    <span class="keyword">struct </span>i2c_dt_spec *<a class="code hl_variable" href="structsystem__context.html#ac6a96ab5220f982e7137780a525635bd">accelerometer</a>;  </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structsystem__context.html#a7b7c6ec9004a47f43cdcf3ffedd05b51">   36</a></span>    uint8_t <a class="code hl_variable" href="structsystem__context.html#a7b7c6ec9004a47f43cdcf3ffedd05b51">accel_range</a>;                </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structsystem__context.html#a37b19c05038a5c416db2c6d4cc344df7">   38</a></span>    <span class="keyword">struct </span>i2c_dt_spec *<a class="code hl_variable" href="structsystem__context.html#a37b19c05038a5c416db2c6d4cc344df7">temp_hum</a>;       </div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structsystem__context.html#a346bdba803bf7fd801808bb51a62f71d">   39</a></span>    <span class="keyword">struct </span>i2c_dt_spec *<a class="code hl_variable" href="structsystem__context.html#a346bdba803bf7fd801808bb51a62f71d">color</a>;          </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structsystem__context.html#af52f9e0f8c57a6ebe9b3fa70bb8f7edf">   40</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structgps__config.html">gps_config</a> *<a class="code hl_variable" href="structsystem__context.html#af52f9e0f8c57a6ebe9b3fa70bb8f7edf">gps</a>;             </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="structsystem__context.html#a8170516a44f70146537f053bed889862">   42</a></span>    <span class="keyword">struct </span>k_sem *<a class="code hl_variable" href="structsystem__context.html#a8170516a44f70146537f053bed889862">main_sensors_sem</a>;     </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structsystem__context.html#a838795d3f628b7ce00be37a9048b5d65">   43</a></span>    <span class="keyword">struct </span>k_sem *<a class="code hl_variable" href="structsystem__context.html#a838795d3f628b7ce00be37a9048b5d65">main_gps_sem</a>;         </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51">   44</a></span>    <span class="keyword">struct </span>k_sem *<a class="code hl_variable" href="structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51">sensors_sem</a>;          </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structsystem__context.html#a047eda26b36700900ee508d71818aec7">   45</a></span>    <span class="keyword">struct </span>k_sem *<a class="code hl_variable" href="structsystem__context.html#a047eda26b36700900ee508d71818aec7">gps_sem</a>;              </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>};</div>
+</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
+<div class="foldopen" id="foldopen00055" data-start="{" data-end="};">
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structsystem__measurement.html">   55</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structsystem__measurement.html">system_measurement</a> {</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">   56</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">brightness</a>;  </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a4f37214238e319b8f3da4b88ebd79407">   57</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a4f37214238e319b8f3da4b88ebd79407">moisture</a>;    </div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#af929078057d43ce9fd07cc3c63e558f6">   59</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#af929078057d43ce9fd07cc3c63e558f6">accel_x</a>;   </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#ab9efb3e641b5dfcea5f2433420b65f7b">   60</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#ab9efb3e641b5dfcea5f2433420b65f7b">accel_y</a>;   </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#aeecbf2a697ab8853907de7c7a50f1531">   61</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#aeecbf2a697ab8853907de7c7a50f1531">accel_z</a>;   </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#ad14647be52b836a3d4bd543eee248c28">   63</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#ad14647be52b836a3d4bd543eee248c28">temp</a>;        </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a679c5d3346732350507e1e0be622f903">   64</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a679c5d3346732350507e1e0be622f903">hum</a>;         </div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb">   66</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb">red</a>;         </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1">   67</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1">green</a>;       </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a40d675458a9b0f54e5952646e1ad4d76">   68</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a40d675458a9b0f54e5952646e1ad4d76">blue</a>;        </div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a57b42b5a6e4098f386aa49cc7a84f196">   69</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a57b42b5a6e4098f386aa49cc7a84f196">clear</a>;       </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#adb4fd1b5c9e8e9005291a7e1edbb2224">   71</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#adb4fd1b5c9e8e9005291a7e1edbb2224">gps_lat</a>;     </div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a2f7844fd5947597e3c9127bda9a65b35">   72</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a2f7844fd5947597e3c9127bda9a65b35">gps_lon</a>;     </div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a89d20f762267eb24053bf632f66c0f96">   73</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a89d20f762267eb24053bf632f66c0f96">gps_alt</a>;     </div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#a02c790b390a98fbdb685e64fcd4b830a">   74</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#a02c790b390a98fbdb685e64fcd4b830a">gps_sats</a>;    </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="structsystem__measurement.html#af93b0eea24ff8e4fe9df39ce3ecf7a71">   75</a></span>    atomic_t <a class="code hl_variable" href="structsystem__measurement.html#af93b0eea24ff8e4fe9df39ce3ecf7a71">gps_time</a>;    </div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="preprocessor">#endif </span><span class="comment">/* MAIN_H */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aaccel_8h_html"><div class="ttname"><a href="accel_8h.html">accel.h</a></div><div class="ttdoc">I2C interface for a 3-axis accelerometer.</div></div>
+<div class="ttc" id="aadc_8h_html"><div class="ttname"><a href="adc_8h.html">adc.h</a></div><div class="ttdoc">ADC interface layer for analog sensor sampling using Zephyr drivers.</div></div>
+<div class="ttc" id="acolor_8h_html"><div class="ttname"><a href="color_8h.html">color.h</a></div><div class="ttdoc">Interface for the TCS34725 RGB color sensor using Zephyr I2C API.</div></div>
+<div class="ttc" id="agps_8h_html"><div class="ttname"><a href="gps_8h.html">gps.h</a></div><div class="ttdoc">GPS interface for UART-based NMEA parsing (GGA sentence support).</div></div>
+<div class="ttc" id="ai2c_8h_html"><div class="ttname"><a href="i2c_8h.html">i2c.h</a></div><div class="ttdoc">Helper functions for I2C register read/write in Zephyr.</div></div>
+<div class="ttc" id="argb__led_8h_html"><div class="ttname"><a href="rgb__led_8h.html">rgb_led.h</a></div><div class="ttdoc">Interface for controlling an RGB LED using GPIO pins.</div></div>
+<div class="ttc" id="astructadc__config_html"><div class="ttname"><a href="structadc__config.html">adc_config</a></div><div class="ttdoc">ADC channel configuration structure.</div><div class="ttdef"><b>Definition</b> adc.h:29</div></div>
+<div class="ttc" id="astructgps__config_html"><div class="ttname"><a href="structgps__config.html">gps_config</a></div><div class="ttdoc">GPS configuration structure.</div><div class="ttdef"><b>Definition</b> gps.h:30</div></div>
+<div class="ttc" id="astructsystem__context_html"><div class="ttname"><a href="structsystem__context.html">system_context</a></div><div class="ttdoc">Shared system context between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:31</div></div>
+<div class="ttc" id="astructsystem__context_html_a047eda26b36700900ee508d71818aec7"><div class="ttname"><a href="structsystem__context.html#a047eda26b36700900ee508d71818aec7">system_context::gps_sem</a></div><div class="ttdeci">struct k_sem * gps_sem</div><div class="ttdoc">Semaphore to trigger GPS measurement.</div><div class="ttdef"><b>Definition</b> main.h:45</div></div>
+<div class="ttc" id="astructsystem__context_html_a2b5436d5ba8c925d1db826fb5a05d162"><div class="ttname"><a href="structsystem__context.html#a2b5436d5ba8c925d1db826fb5a05d162">system_context::soil_moisture</a></div><div class="ttdeci">struct adc_config * soil_moisture</div><div class="ttdoc">Soil moisture ADC configuration.</div><div class="ttdef"><b>Definition</b> main.h:33</div></div>
+<div class="ttc" id="astructsystem__context_html_a346bdba803bf7fd801808bb51a62f71d"><div class="ttname"><a href="structsystem__context.html#a346bdba803bf7fd801808bb51a62f71d">system_context::color</a></div><div class="ttdeci">struct i2c_dt_spec * color</div><div class="ttdoc">Color sensor I2C device specification.</div><div class="ttdef"><b>Definition</b> main.h:39</div></div>
+<div class="ttc" id="astructsystem__context_html_a37b19c05038a5c416db2c6d4cc344df7"><div class="ttname"><a href="structsystem__context.html#a37b19c05038a5c416db2c6d4cc344df7">system_context::temp_hum</a></div><div class="ttdeci">struct i2c_dt_spec * temp_hum</div><div class="ttdoc">Temperature and humidity sensor I2C specification.</div><div class="ttdef"><b>Definition</b> main.h:38</div></div>
+<div class="ttc" id="astructsystem__context_html_a74975195688a51fa8ccb033b4a75dbe0"><div class="ttname"><a href="structsystem__context.html#a74975195688a51fa8ccb033b4a75dbe0">system_context::phototransistor</a></div><div class="ttdeci">struct adc_config * phototransistor</div><div class="ttdoc">Phototransistor ADC configuration.</div><div class="ttdef"><b>Definition</b> main.h:32</div></div>
+<div class="ttc" id="astructsystem__context_html_a7b7c6ec9004a47f43cdcf3ffedd05b51"><div class="ttname"><a href="structsystem__context.html#a7b7c6ec9004a47f43cdcf3ffedd05b51">system_context::accel_range</a></div><div class="ttdeci">uint8_t accel_range</div><div class="ttdoc">Accelerometer full-scale range (e.g., 2G, 4G, 8G).</div><div class="ttdef"><b>Definition</b> main.h:36</div></div>
+<div class="ttc" id="astructsystem__context_html_a8170516a44f70146537f053bed889862"><div class="ttname"><a href="structsystem__context.html#a8170516a44f70146537f053bed889862">system_context::main_sensors_sem</a></div><div class="ttdeci">struct k_sem * main_sensors_sem</div><div class="ttdoc">Semaphore for main-to-sensors synchronization.</div><div class="ttdef"><b>Definition</b> main.h:42</div></div>
+<div class="ttc" id="astructsystem__context_html_a838795d3f628b7ce00be37a9048b5d65"><div class="ttname"><a href="structsystem__context.html#a838795d3f628b7ce00be37a9048b5d65">system_context::main_gps_sem</a></div><div class="ttdeci">struct k_sem * main_gps_sem</div><div class="ttdoc">Semaphore for main-to-GPS synchronization.</div><div class="ttdef"><b>Definition</b> main.h:43</div></div>
+<div class="ttc" id="astructsystem__context_html_ac6a96ab5220f982e7137780a525635bd"><div class="ttname"><a href="structsystem__context.html#ac6a96ab5220f982e7137780a525635bd">system_context::accelerometer</a></div><div class="ttdeci">struct i2c_dt_spec * accelerometer</div><div class="ttdoc">Accelerometer I2C device specification.</div><div class="ttdef"><b>Definition</b> main.h:35</div></div>
+<div class="ttc" id="astructsystem__context_html_adf5259a7bfe53f32f215f67b5236ad51"><div class="ttname"><a href="structsystem__context.html#adf5259a7bfe53f32f215f67b5236ad51">system_context::sensors_sem</a></div><div class="ttdeci">struct k_sem * sensors_sem</div><div class="ttdoc">Semaphore to trigger sensor measurement.</div><div class="ttdef"><b>Definition</b> main.h:44</div></div>
+<div class="ttc" id="astructsystem__context_html_af52f9e0f8c57a6ebe9b3fa70bb8f7edf"><div class="ttname"><a href="structsystem__context.html#af52f9e0f8c57a6ebe9b3fa70bb8f7edf">system_context::gps</a></div><div class="ttdeci">struct gps_config * gps</div><div class="ttdoc">GPS module configuration.</div><div class="ttdef"><b>Definition</b> main.h:40</div></div>
+<div class="ttc" id="astructsystem__measurement_html"><div class="ttname"><a href="structsystem__measurement.html">system_measurement</a></div><div class="ttdoc">Shared sensor data between main, sensors, and GPS threads.</div><div class="ttdef"><b>Definition</b> main.h:55</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a02c790b390a98fbdb685e64fcd4b830a"><div class="ttname"><a href="structsystem__measurement.html#a02c790b390a98fbdb685e64fcd4b830a">system_measurement::gps_sats</a></div><div class="ttdeci">atomic_t gps_sats</div><div class="ttdoc">Latest number of satellites in view.</div><div class="ttdef"><b>Definition</b> main.h:74</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a2f7844fd5947597e3c9127bda9a65b35"><div class="ttname"><a href="structsystem__measurement.html#a2f7844fd5947597e3c9127bda9a65b35">system_measurement::gps_lon</a></div><div class="ttdeci">atomic_t gps_lon</div><div class="ttdoc">Latest GPS longitude (degrees).</div><div class="ttdef"><b>Definition</b> main.h:72</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a40d675458a9b0f54e5952646e1ad4d76"><div class="ttname"><a href="structsystem__measurement.html#a40d675458a9b0f54e5952646e1ad4d76">system_measurement::blue</a></div><div class="ttdeci">atomic_t blue</div><div class="ttdoc">Latest blue color value (raw).</div><div class="ttdef"><b>Definition</b> main.h:68</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a4f37214238e319b8f3da4b88ebd79407"><div class="ttname"><a href="structsystem__measurement.html#a4f37214238e319b8f3da4b88ebd79407">system_measurement::moisture</a></div><div class="ttdeci">atomic_t moisture</div><div class="ttdoc">Latest soil moisture (0–100%).</div><div class="ttdef"><b>Definition</b> main.h:57</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a57b42b5a6e4098f386aa49cc7a84f196"><div class="ttname"><a href="structsystem__measurement.html#a57b42b5a6e4098f386aa49cc7a84f196">system_measurement::clear</a></div><div class="ttdeci">atomic_t clear</div><div class="ttdoc">Latest clear color channel value (raw).</div><div class="ttdef"><b>Definition</b> main.h:69</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a66a798f1395f38c94ade6b78972d85fb"><div class="ttname"><a href="structsystem__measurement.html#a66a798f1395f38c94ade6b78972d85fb">system_measurement::red</a></div><div class="ttdeci">atomic_t red</div><div class="ttdoc">Latest red color value (raw).</div><div class="ttdef"><b>Definition</b> main.h:66</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a679c5d3346732350507e1e0be622f903"><div class="ttname"><a href="structsystem__measurement.html#a679c5d3346732350507e1e0be622f903">system_measurement::hum</a></div><div class="ttdeci">atomic_t hum</div><div class="ttdoc">Latest relative humidity (RH).</div><div class="ttdef"><b>Definition</b> main.h:64</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a69e30193e5c378f404142b86ecf3b2e1"><div class="ttname"><a href="structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1">system_measurement::green</a></div><div class="ttdeci">atomic_t green</div><div class="ttdoc">Latest green color value (raw).</div><div class="ttdef"><b>Definition</b> main.h:67</div></div>
+<div class="ttc" id="astructsystem__measurement_html_a89d20f762267eb24053bf632f66c0f96"><div class="ttname"><a href="structsystem__measurement.html#a89d20f762267eb24053bf632f66c0f96">system_measurement::gps_alt</a></div><div class="ttdeci">atomic_t gps_alt</div><div class="ttdoc">Latest GPS altitude (meters).</div><div class="ttdef"><b>Definition</b> main.h:73</div></div>
+<div class="ttc" id="astructsystem__measurement_html_ab9efb3e641b5dfcea5f2433420b65f7b"><div class="ttname"><a href="structsystem__measurement.html#ab9efb3e641b5dfcea5f2433420b65f7b">system_measurement::accel_y</a></div><div class="ttdeci">atomic_t accel_y</div><div class="ttdoc">Latest Y-axis acceleration (in g).</div><div class="ttdef"><b>Definition</b> main.h:60</div></div>
+<div class="ttc" id="astructsystem__measurement_html_ac003d622b2be6c6b6d5c7e459fb52306"><div class="ttname"><a href="structsystem__measurement.html#ac003d622b2be6c6b6d5c7e459fb52306">system_measurement::brightness</a></div><div class="ttdeci">atomic_t brightness</div><div class="ttdoc">Latest ambient brightness (0–100%).</div><div class="ttdef"><b>Definition</b> main.h:56</div></div>
+<div class="ttc" id="astructsystem__measurement_html_ad14647be52b836a3d4bd543eee248c28"><div class="ttname"><a href="structsystem__measurement.html#ad14647be52b836a3d4bd543eee248c28">system_measurement::temp</a></div><div class="ttdeci">atomic_t temp</div><div class="ttdoc">Latest temperature (°C).</div><div class="ttdef"><b>Definition</b> main.h:63</div></div>
+<div class="ttc" id="astructsystem__measurement_html_adb4fd1b5c9e8e9005291a7e1edbb2224"><div class="ttname"><a href="structsystem__measurement.html#adb4fd1b5c9e8e9005291a7e1edbb2224">system_measurement::gps_lat</a></div><div class="ttdeci">atomic_t gps_lat</div><div class="ttdoc">Latest GPS latitude (degrees).</div><div class="ttdef"><b>Definition</b> main.h:71</div></div>
+<div class="ttc" id="astructsystem__measurement_html_aeecbf2a697ab8853907de7c7a50f1531"><div class="ttname"><a href="structsystem__measurement.html#aeecbf2a697ab8853907de7c7a50f1531">system_measurement::accel_z</a></div><div class="ttdeci">atomic_t accel_z</div><div class="ttdoc">Latest Z-axis acceleration (in g).</div><div class="ttdef"><b>Definition</b> main.h:61</div></div>
+<div class="ttc" id="astructsystem__measurement_html_af929078057d43ce9fd07cc3c63e558f6"><div class="ttname"><a href="structsystem__measurement.html#af929078057d43ce9fd07cc3c63e558f6">system_measurement::accel_x</a></div><div class="ttdeci">atomic_t accel_x</div><div class="ttdoc">Latest X-axis acceleration (in g).</div><div class="ttdef"><b>Definition</b> main.h:59</div></div>
+<div class="ttc" id="astructsystem__measurement_html_af93b0eea24ff8e4fe9df39ce3ecf7a71"><div class="ttname"><a href="structsystem__measurement.html#af93b0eea24ff8e4fe9df39ce3ecf7a71">system_measurement::gps_time</a></div><div class="ttdeci">atomic_t gps_time</div><div class="ttdoc">Latest GPS timestamp (float or encoded).</div><div class="ttdef"><b>Definition</b> main.h:75</div></div>
+<div class="ttc" id="atemp__hum_8h_html"><div class="ttname"><a href="temp__hum_8h.html">temp_hum.h</a></div><div class="ttdoc">Interface for the Si7021 temperature and humidity sensor using Zephyr I2C API.</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="main_8h.html">main.h</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['channel_5fid_0',['channel_id',['../structadc__config.html#a9d034ebeff23ceab5490ec204015dc04',1,'adc_config']]],
+  ['clear_1',['clear',['../structsystem__measurement.html#a57b42b5a6e4098f386aa49cc7a84f196',1,'system_measurement::clear'],['../structColorSensorData.html#a5937f6795825b42bdb76ad9098597871',1,'ColorSensorData::clear']]],
+  ['color_2',['color',['../structsystem__context.html#a346bdba803bf7fd801808bb51a62f71d',1,'system_context']]],
+  ['color_2ec_3',['color.c',['../color_8c.html',1,'']]],
+  ['color_2eh_4',['color.h',['../color_8h.html',1,'']]],
+  ['color_5fatime_5',['COLOR_ATIME',['../color_8h.html#af93e74c1f770948956409196a272ac43',1,'color.h']]],
+  ['color_5fblue_5fl_6',['COLOR_BLUE_L',['../color_8h.html#a7f6349be7f76baba36501a3a4a8e58cb',1,'color.h']]],
+  ['color_5fclear_5fl_7',['COLOR_CLEAR_L',['../color_8h.html#a99fcf7c779a555604e93e310ce66bd7d',1,'color.h']]],
+  ['color_5fcommand_8',['COLOR_COMMAND',['../color_8h.html#a292d401035a5f5cea995f788f232f917',1,'color.h']]],
+  ['color_5fcontrol_9',['COLOR_CONTROL',['../color_8h.html#ad3efba8899884004d3821395cd1acc83',1,'color.h']]],
+  ['color_5fenable_10',['COLOR_ENABLE',['../color_8h.html#a7b4c3b399639743f2175459ac46d540f',1,'color.h']]],
+  ['color_5fgain_11',['COLOR_GAIN',['../main_8c.html#a821abb7afbde3f0a9f2eb8deacd7e628',1,'main.c']]],
+  ['color_5fgreen_5fl_12',['COLOR_GREEN_L',['../color_8h.html#a7a5d401f15b8f890b55e0568736cc70e',1,'color.h']]],
+  ['color_5fi2c_5faddr_13',['COLOR_I2C_ADDR',['../color_8h.html#a256daf5c71233f510985b759c5d88e99',1,'color.h']]],
+  ['color_5finit_14',['color_init',['../color_8c.html#aef15cc4922ba4aabd53f5735a2fec0c1',1,'color_init(const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime):&#160;color.c'],['../color_8h.html#aef15cc4922ba4aabd53f5735a2fec0c1',1,'color_init(const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime):&#160;color.c']]],
+  ['color_5fintegration_5ftime_15',['COLOR_INTEGRATION_TIME',['../main_8c.html#af4c222344b6b5e8ca164272c06d39d23',1,'main.c']]],
+  ['color_5fread_5frgb_16',['color_read_rgb',['../color_8c.html#ad0b08cf29337fbe7351b05a34fd3f9f4',1,'color_read_rgb(const struct i2c_dt_spec *dev, ColorSensorData *data):&#160;color.c'],['../color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4',1,'color_read_rgb(const struct i2c_dt_spec *dev, ColorSensorData *data):&#160;color.c']]],
+  ['color_5fred_5fl_17',['COLOR_RED_L',['../color_8h.html#a958d3ce8c7d5277ef37c41698a23ec4c',1,'color.h']]],
+  ['color_5fsleep_18',['color_sleep',['../color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a',1,'color_sleep(const struct i2c_dt_spec *dev):&#160;color.c'],['../color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a',1,'color_sleep(const struct i2c_dt_spec *dev):&#160;color.c']]],
+  ['color_5fwake_5fup_19',['color_wake_up',['../color_8c.html#a806959eb09f81167a9b3b7222631cd7c',1,'color_wake_up(const struct i2c_dt_spec *dev):&#160;color.c'],['../color_8h.html#a806959eb09f81167a9b3b7222631cd7c',1,'color_wake_up(const struct i2c_dt_spec *dev):&#160;color.c']]],
+  ['colorsensordata_20',['ColorSensorData',['../structColorSensorData.html',1,'']]],
+  ['conclusion_21',['Conclusion',['../index.html#autotoc_md15',1,'']]],
+  ['connectivity_20details_22',['Connectivity Details',['../index.html#autotoc_md9',1,'']]]
+];

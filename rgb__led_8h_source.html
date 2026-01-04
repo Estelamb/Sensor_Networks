@@ -1,0 +1,204 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Embedded Platforms and Communications for IoT" />
+<!-- <meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta property="og:description" content="Estela Mora Barba" />
+<meta property="og:url" content="https://estelamb.github.io/emora_ESD/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<!-- <meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
+<meta name="twitter:description" content="Estela Mora Barba" />
+<!-- END twitter metadata -->
+<title>Plant Monitoring System - Phase 3: src/sensors/led/rgb_led.h Source File</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Plant Monitoring System - Phase 3
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('rgb__led_8h_source.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">rgb_led.h</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="rgb__led_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#ifndef RGB_LED_H</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#define RGB_LED_H</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &lt;zephyr/drivers/gpio.h&gt;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &lt;zephyr/kernel.h&gt;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="rgb__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e">   18</a></span><span class="preprocessor">#define BUS_SIZE 3</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="structbus__rgb__led.html">   26</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3">   27</a></span>    <span class="keyword">struct </span>gpio_dt_spec <a class="code hl_variable" href="structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3">pins</a>[<a class="code hl_define" href="rgb__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e">BUS_SIZE</a>];  </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="structbus__rgb__led.html#aeeb06e0c364c0e0deb070f2014ce3ba1">   28</a></span>    <span class="keywordtype">size_t</span> <a class="code hl_variable" href="structbus__rgb__led.html#aeeb06e0c364c0e0deb070f2014ce3ba1">pin_count</a>;                    </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>};</div>
+</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848">rgb_led_init</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749">rgb_led_write</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led, <span class="keywordtype">int</span> value);</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1">rgb_led_on</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49">rgb_led_off</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060">rgb_red</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228">rgb_green</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9">rgb_blue</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f">rgb_yellow</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a40577554caed83450ce6d6d685651abb">rgb_cyan</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2">rgb_purple</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e">rgb_white</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="keywordtype">int</span> <a class="code hl_function" href="rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d">rgb_black</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="keywordtype">void</span> <a class="code hl_function" href="rgb__led_8h.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7">rgb_led_pwm_step</a>(<span class="keyword">struct</span> <a class="code hl_struct" href="structbus__rgb__led.html">bus_rgb_led</a> *rgb_led, <span class="keywordtype">int</span> r_value, <span class="keywordtype">int</span> g_value, <span class="keywordtype">int</span> b_value);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#endif </span><span class="comment">// RGB_LED_H</span></div>
+<div class="ttc" id="argb__led_8h_html_a0867d776bfa4f41e533e8be89a54b02e"><div class="ttname"><a href="rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e">rgb_white</a></div><div class="ttdeci">int rgb_white(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to white (all channels on).</div><div class="ttdef"><b>Definition</b> rgb_led.c:148</div></div>
+<div class="ttc" id="argb__led_8h_html_a0a119afab26d716187ed41dc5359f12d"><div class="ttname"><a href="rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d">rgb_black</a></div><div class="ttdeci">int rgb_black(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Turn off all channels (black/off).</div><div class="ttdef"><b>Definition</b> rgb_led.c:158</div></div>
+<div class="ttc" id="argb__led_8h_html_a2a7489c0dc86c85076b62d0e32b08060"><div class="ttname"><a href="rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060">rgb_red</a></div><div class="ttdeci">int rgb_red(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to red only.</div><div class="ttdef"><b>Definition</b> rgb_led.c:100</div></div>
+<div class="ttc" id="argb__led_8h_html_a40577554caed83450ce6d6d685651abb"><div class="ttname"><a href="rgb__led_8h.html#a40577554caed83450ce6d6d685651abb">rgb_cyan</a></div><div class="ttdeci">int rgb_cyan(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to cyan (green + blue).</div><div class="ttdef"><b>Definition</b> rgb_led.c:132</div></div>
+<div class="ttc" id="argb__led_8h_html_a4d37c0e4277f62fd9cff6431baf6a848"><div class="ttname"><a href="rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848">rgb_led_init</a></div><div class="ttdeci">int rgb_led_init(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Initialize all GPIO pins used by the RGB LED.</div><div class="ttdef"><b>Definition</b> rgb_led.c:24</div></div>
+<div class="ttc" id="argb__led_8h_html_a56412fb9c60e88dc42e7af78b0dbbe5e"><div class="ttname"><a href="rgb__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e">BUS_SIZE</a></div><div class="ttdeci">#define BUS_SIZE</div><div class="ttdoc">Number of GPIO pins used for an RGB LED (R, G, B).</div><div class="ttdef"><b>Definition</b> rgb_led.h:18</div></div>
+<div class="ttc" id="argb__led_8h_html_a63dd56a1e26ad82666a7fe0ebfdbf8a7"><div class="ttname"><a href="rgb__led_8h.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7">rgb_led_pwm_step</a></div><div class="ttdeci">void rgb_led_pwm_step(struct bus_rgb_led *rgb_led, int r_value, int g_value, int b_value)</div><div class="ttdoc">Apply one PWM step to the RGB LED.</div><div class="ttdef"><b>Definition</b> rgb_led.c:171</div></div>
+<div class="ttc" id="argb__led_8h_html_a69942e746ba81db03e2affd8e9ae62c9"><div class="ttname"><a href="rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9">rgb_blue</a></div><div class="ttdeci">int rgb_blue(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to blue only.</div><div class="ttdef"><b>Definition</b> rgb_led.c:116</div></div>
+<div class="ttc" id="argb__led_8h_html_a8105a65c9b53c677e01817aaa41d1228"><div class="ttname"><a href="rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228">rgb_green</a></div><div class="ttdeci">int rgb_green(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to green only.</div><div class="ttdef"><b>Definition</b> rgb_led.c:108</div></div>
+<div class="ttc" id="argb__led_8h_html_a8241f3fcf6f859124c2e1304b00220e2"><div class="ttname"><a href="rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2">rgb_purple</a></div><div class="ttdeci">int rgb_purple(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to purple (red + blue).</div><div class="ttdef"><b>Definition</b> rgb_led.c:140</div></div>
+<div class="ttc" id="argb__led_8h_html_a8253ee4c4326d609825b1f6df5329749"><div class="ttname"><a href="rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749">rgb_led_write</a></div><div class="ttdeci">int rgb_led_write(struct bus_rgb_led *rgb_led, int value)</div><div class="ttdoc">Write a bitmask value to the RGB LED pins.</div><div class="ttdef"><b>Definition</b> rgb_led.c:62</div></div>
+<div class="ttc" id="argb__led_8h_html_a85db3995642fedac5456fef4bd9ecf49"><div class="ttname"><a href="rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49">rgb_led_off</a></div><div class="ttdeci">int rgb_led_off(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Turn off all RGB LED channels (black/off state).</div><div class="ttdef"><b>Definition</b> rgb_led.c:92</div></div>
+<div class="ttc" id="argb__led_8h_html_acadd86c2ce8020db57b8b0a1afcde95f"><div class="ttname"><a href="rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f">rgb_yellow</a></div><div class="ttdeci">int rgb_yellow(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Set LED color to yellow (red + green).</div><div class="ttdef"><b>Definition</b> rgb_led.c:124</div></div>
+<div class="ttc" id="argb__led_8h_html_ad71ce397299423dc9d86d40a866e64e1"><div class="ttname"><a href="rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1">rgb_led_on</a></div><div class="ttdeci">int rgb_led_on(struct bus_rgb_led *rgb_led)</div><div class="ttdoc">Turn on all RGB LED channels (white color).</div><div class="ttdef"><b>Definition</b> rgb_led.c:82</div></div>
+<div class="ttc" id="astructbus__rgb__led_html"><div class="ttname"><a href="structbus__rgb__led.html">bus_rgb_led</a></div><div class="ttdoc">Structure representing an RGB LED connected through GPIO pins.</div><div class="ttdef"><b>Definition</b> rgb_led.h:26</div></div>
+<div class="ttc" id="astructbus__rgb__led_html_a593a5e47d358dc162b147e804768f0f3"><div class="ttname"><a href="structbus__rgb__led.html#a593a5e47d358dc162b147e804768f0f3">bus_rgb_led::pins</a></div><div class="ttdeci">struct gpio_dt_spec pins[BUS_SIZE]</div><div class="ttdoc">GPIO pin specifications for R, G, B.</div><div class="ttdef"><b>Definition</b> rgb_led.h:27</div></div>
+<div class="ttc" id="astructbus__rgb__led_html_aeeb06e0c364c0e0deb070f2014ce3ba1"><div class="ttname"><a href="structbus__rgb__led.html#aeeb06e0c364c0e0deb070f2014ce3ba1">bus_rgb_led::pin_count</a></div><div class="ttdeci">size_t pin_count</div><div class="ttdoc">Number of pins in use (should be 3).</div><div class="ttdef"><b>Definition</b> rgb_led.h:28</div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_4fa7eb7783f6e098f5b0220d6b846cac.html">led</a></li><li class="navelem"><a class="el" href="rgb__led_8h.html">rgb_led.h</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

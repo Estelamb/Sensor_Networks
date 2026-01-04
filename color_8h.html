@@ -1,0 +1,433 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Embedded Platforms and Communications for IoT" />
+<!-- <meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta property="og:description" content="Estela Mora Barba" />
+<meta property="og:url" content="https://estelamb.github.io/emora_ESD/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<!-- <meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
+<meta name="twitter:description" content="Estela Mora Barba" />
+<!-- END twitter metadata -->
+<title>Plant Monitoring System - Phase 3: src/sensors/i2c/color.h File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Plant Monitoring System - Phase 3
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('color_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Data Structures</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">color.h File Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Interface for the TCS34725 RGB color sensor using Zephyr I2C API.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;zephyr/device.h&gt;</code><br />
+<code>#include &lt;zephyr/drivers/i2c.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+</div>
+<p><a href="color_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Data Structures</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structColorSensorData.html">ColorSensorData</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Structure for storing raw color sensor data.  <a href="structColorSensorData.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a256daf5c71233f510985b759c5d88e99" id="r_a256daf5c71233f510985b759c5d88e99"><td class="memItemLeft" align="right" valign="top"><a id="a256daf5c71233f510985b759c5d88e99" name="a256daf5c71233f510985b759c5d88e99"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_I2C_ADDR</b>&#160;&#160;&#160;0x29</td></tr>
+<tr class="memdesc:a256daf5c71233f510985b759c5d88e99"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C device address for TCS34725. <br /></td></tr>
+<tr class="separator:a256daf5c71233f510985b759c5d88e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a292d401035a5f5cea995f788f232f917" id="r_a292d401035a5f5cea995f788f232f917"><td class="memItemLeft" align="right" valign="top"><a id="a292d401035a5f5cea995f788f232f917" name="a292d401035a5f5cea995f788f232f917"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_COMMAND</b>&#160;&#160;&#160;0x80</td></tr>
+<tr class="memdesc:a292d401035a5f5cea995f788f232f917"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command bit to access registers. <br /></td></tr>
+<tr class="separator:a292d401035a5f5cea995f788f232f917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a604a69744422d2db7101f9c9dc8e27a3" id="r_a604a69744422d2db7101f9c9dc8e27a3"><td class="memItemLeft" align="right" valign="top"><a id="a604a69744422d2db7101f9c9dc8e27a3" name="a604a69744422d2db7101f9c9dc8e27a3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>AUTO_INCREMENT</b>&#160;&#160;&#160;0x20</td></tr>
+<tr class="memdesc:a604a69744422d2db7101f9c9dc8e27a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Auto-increment register addresses. <br /></td></tr>
+<tr class="separator:a604a69744422d2db7101f9c9dc8e27a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b4c3b399639743f2175459ac46d540f" id="r_a7b4c3b399639743f2175459ac46d540f"><td class="memItemLeft" align="right" valign="top"><a id="a7b4c3b399639743f2175459ac46d540f" name="a7b4c3b399639743f2175459ac46d540f"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_ENABLE</b>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:a7b4c3b399639743f2175459ac46d540f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable register. <br /></td></tr>
+<tr class="separator:a7b4c3b399639743f2175459ac46d540f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af93e74c1f770948956409196a272ac43" id="r_af93e74c1f770948956409196a272ac43"><td class="memItemLeft" align="right" valign="top"><a id="af93e74c1f770948956409196a272ac43" name="af93e74c1f770948956409196a272ac43"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_ATIME</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:af93e74c1f770948956409196a272ac43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integration time register. <br /></td></tr>
+<tr class="separator:af93e74c1f770948956409196a272ac43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3efba8899884004d3821395cd1acc83" id="r_ad3efba8899884004d3821395cd1acc83"><td class="memItemLeft" align="right" valign="top"><a id="ad3efba8899884004d3821395cd1acc83" name="ad3efba8899884004d3821395cd1acc83"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_CONTROL</b>&#160;&#160;&#160;0x0F</td></tr>
+<tr class="memdesc:ad3efba8899884004d3821395cd1acc83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gain control register. <br /></td></tr>
+<tr class="separator:ad3efba8899884004d3821395cd1acc83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99fcf7c779a555604e93e310ce66bd7d" id="r_a99fcf7c779a555604e93e310ce66bd7d"><td class="memItemLeft" align="right" valign="top"><a id="a99fcf7c779a555604e93e310ce66bd7d" name="a99fcf7c779a555604e93e310ce66bd7d"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_CLEAR_L</b>&#160;&#160;&#160;0x14</td></tr>
+<tr class="memdesc:a99fcf7c779a555604e93e310ce66bd7d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear channel low byte. <br /></td></tr>
+<tr class="separator:a99fcf7c779a555604e93e310ce66bd7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a958d3ce8c7d5277ef37c41698a23ec4c" id="r_a958d3ce8c7d5277ef37c41698a23ec4c"><td class="memItemLeft" align="right" valign="top"><a id="a958d3ce8c7d5277ef37c41698a23ec4c" name="a958d3ce8c7d5277ef37c41698a23ec4c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_RED_L</b>&#160;&#160;&#160;0x16</td></tr>
+<tr class="memdesc:a958d3ce8c7d5277ef37c41698a23ec4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Red channel low byte. <br /></td></tr>
+<tr class="separator:a958d3ce8c7d5277ef37c41698a23ec4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a5d401f15b8f890b55e0568736cc70e" id="r_a7a5d401f15b8f890b55e0568736cc70e"><td class="memItemLeft" align="right" valign="top"><a id="a7a5d401f15b8f890b55e0568736cc70e" name="a7a5d401f15b8f890b55e0568736cc70e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_GREEN_L</b>&#160;&#160;&#160;0x18</td></tr>
+<tr class="memdesc:a7a5d401f15b8f890b55e0568736cc70e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Green channel low byte. <br /></td></tr>
+<tr class="separator:a7a5d401f15b8f890b55e0568736cc70e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f6349be7f76baba36501a3a4a8e58cb" id="r_a7f6349be7f76baba36501a3a4a8e58cb"><td class="memItemLeft" align="right" valign="top"><a id="a7f6349be7f76baba36501a3a4a8e58cb" name="a7f6349be7f76baba36501a3a4a8e58cb"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>COLOR_BLUE_L</b>&#160;&#160;&#160;0x1A</td></tr>
+<tr class="memdesc:a7f6349be7f76baba36501a3a4a8e58cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blue channel low byte. <br /></td></tr>
+<tr class="separator:a7f6349be7f76baba36501a3a4a8e58cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39a356369d272160f753bc85a24d1826" id="r_a39a356369d272160f753bc85a24d1826"><td class="memItemLeft" align="right" valign="top"><a id="a39a356369d272160f753bc85a24d1826" name="a39a356369d272160f753bc85a24d1826"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ENABLE_PON</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a39a356369d272160f753bc85a24d1826"><td class="mdescLeft">&#160;</td><td class="mdescRight">Power ON. <br /></td></tr>
+<tr class="separator:a39a356369d272160f753bc85a24d1826"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae584c5badfa5d772e2bae3908b7181dd" id="r_ae584c5badfa5d772e2bae3908b7181dd"><td class="memItemLeft" align="right" valign="top"><a id="ae584c5badfa5d772e2bae3908b7181dd" name="ae584c5badfa5d772e2bae3908b7181dd"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ENABLE_AEN</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:ae584c5badfa5d772e2bae3908b7181dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">ADC Enable. <br /></td></tr>
+<tr class="separator:ae584c5badfa5d772e2bae3908b7181dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab629773a35e7292544ca1a4113727e80" id="r_ab629773a35e7292544ca1a4113727e80"><td class="memItemLeft" align="right" valign="top"><a id="ab629773a35e7292544ca1a4113727e80" name="ab629773a35e7292544ca1a4113727e80"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GAIN_1X</b>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:ab629773a35e7292544ca1a4113727e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">1x gain <br /></td></tr>
+<tr class="separator:ab629773a35e7292544ca1a4113727e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af347421f25d65f25a8468dd183fbc621" id="r_af347421f25d65f25a8468dd183fbc621"><td class="memItemLeft" align="right" valign="top"><a id="af347421f25d65f25a8468dd183fbc621" name="af347421f25d65f25a8468dd183fbc621"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GAIN_4X</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:af347421f25d65f25a8468dd183fbc621"><td class="mdescLeft">&#160;</td><td class="mdescRight">4x gain <br /></td></tr>
+<tr class="separator:af347421f25d65f25a8468dd183fbc621"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13b2bbbc03aedd53588b3c81ec41c518" id="r_a13b2bbbc03aedd53588b3c81ec41c518"><td class="memItemLeft" align="right" valign="top"><a id="a13b2bbbc03aedd53588b3c81ec41c518" name="a13b2bbbc03aedd53588b3c81ec41c518"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GAIN_16X</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a13b2bbbc03aedd53588b3c81ec41c518"><td class="mdescLeft">&#160;</td><td class="mdescRight">16x gain <br /></td></tr>
+<tr class="separator:a13b2bbbc03aedd53588b3c81ec41c518"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2021aed05179188240f7e87029e1ad10" id="r_a2021aed05179188240f7e87029e1ad10"><td class="memItemLeft" align="right" valign="top"><a id="a2021aed05179188240f7e87029e1ad10" name="a2021aed05179188240f7e87029e1ad10"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>GAIN_60X</b>&#160;&#160;&#160;0x03</td></tr>
+<tr class="memdesc:a2021aed05179188240f7e87029e1ad10"><td class="mdescLeft">&#160;</td><td class="mdescRight">60x gain <br /></td></tr>
+<tr class="separator:a2021aed05179188240f7e87029e1ad10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a729222d4fe89ed0d69ff10dd948b65b1" id="r_a729222d4fe89ed0d69ff10dd948b65b1"><td class="memItemLeft" align="right" valign="top"><a id="a729222d4fe89ed0d69ff10dd948b65b1" name="a729222d4fe89ed0d69ff10dd948b65b1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGRATION_2_4MS</b>&#160;&#160;&#160;0xFF</td></tr>
+<tr class="memdesc:a729222d4fe89ed0d69ff10dd948b65b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">2.4 ms <br /></td></tr>
+<tr class="separator:a729222d4fe89ed0d69ff10dd948b65b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a944a5335e22059a97309faf55667ff48" id="r_a944a5335e22059a97309faf55667ff48"><td class="memItemLeft" align="right" valign="top"><a id="a944a5335e22059a97309faf55667ff48" name="a944a5335e22059a97309faf55667ff48"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGRATION_24MS</b>&#160;&#160;&#160;0xF6</td></tr>
+<tr class="memdesc:a944a5335e22059a97309faf55667ff48"><td class="mdescLeft">&#160;</td><td class="mdescRight">24 ms <br /></td></tr>
+<tr class="separator:a944a5335e22059a97309faf55667ff48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a870335cbbc77d7e327bf9226f46fc8a6" id="r_a870335cbbc77d7e327bf9226f46fc8a6"><td class="memItemLeft" align="right" valign="top"><a id="a870335cbbc77d7e327bf9226f46fc8a6" name="a870335cbbc77d7e327bf9226f46fc8a6"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGRATION_101MS</b>&#160;&#160;&#160;0xD5</td></tr>
+<tr class="memdesc:a870335cbbc77d7e327bf9226f46fc8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">101 ms <br /></td></tr>
+<tr class="separator:a870335cbbc77d7e327bf9226f46fc8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a426acf4c0a27d2dcbda5c7016ec49ed3" id="r_a426acf4c0a27d2dcbda5c7016ec49ed3"><td class="memItemLeft" align="right" valign="top"><a id="a426acf4c0a27d2dcbda5c7016ec49ed3" name="a426acf4c0a27d2dcbda5c7016ec49ed3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGRATION_154MS</b>&#160;&#160;&#160;0xC0</td></tr>
+<tr class="memdesc:a426acf4c0a27d2dcbda5c7016ec49ed3"><td class="mdescLeft">&#160;</td><td class="mdescRight">154 ms <br /></td></tr>
+<tr class="separator:a426acf4c0a27d2dcbda5c7016ec49ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a258ceb4a107826146e9e059f7deac629" id="r_a258ceb4a107826146e9e059f7deac629"><td class="memItemLeft" align="right" valign="top"><a id="a258ceb4a107826146e9e059f7deac629" name="a258ceb4a107826146e9e059f7deac629"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>INTEGRATION_700MS</b>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:a258ceb4a107826146e9e059f7deac629"><td class="mdescLeft">&#160;</td><td class="mdescRight">700 ms <br /></td></tr>
+<tr class="separator:a258ceb4a107826146e9e059f7deac629"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:aef15cc4922ba4aabd53f5735a2fec0c1" id="r_aef15cc4922ba4aabd53f5735a2fec0c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8h.html#aef15cc4922ba4aabd53f5735a2fec0c1">color_init</a> (const struct i2c_dt_spec *dev, uint8_t gain, uint8_t atime)</td></tr>
+<tr class="memdesc:aef15cc4922ba4aabd53f5735a2fec0c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the color sensor (I2C check, default settings).  <br /></td></tr>
+<tr class="separator:aef15cc4922ba4aabd53f5735a2fec0c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a806959eb09f81167a9b3b7222631cd7c" id="r_a806959eb09f81167a9b3b7222631cd7c"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8h.html#a806959eb09f81167a9b3b7222631cd7c">color_wake_up</a> (const struct i2c_dt_spec *dev)</td></tr>
+<tr class="memdesc:a806959eb09f81167a9b3b7222631cd7c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wake up the color sensor (enable ADC and power).  <br /></td></tr>
+<tr class="separator:a806959eb09f81167a9b3b7222631cd7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5e24bcb0cd6ea744d8193a45e01ff4a" id="r_ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color_sleep</a> (const struct i2c_dt_spec *dev)</td></tr>
+<tr class="memdesc:ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Put the color sensor into sleep mode (disable ADC).  <br /></td></tr>
+<tr class="separator:ae5e24bcb0cd6ea744d8193a45e01ff4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0b08cf29337fbe7351b05a34fd3f9f4" id="r_ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color_read_rgb</a> (const struct i2c_dt_spec *dev, <a class="el" href="structColorSensorData.html">ColorSensorData</a> *data)</td></tr>
+<tr class="memdesc:ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read raw RGB and clear channel data from the sensor.  <br /></td></tr>
+<tr class="separator:ad0b08cf29337fbe7351b05a34fd3f9f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Interface for the TCS34725 RGB color sensor using Zephyr I2C API. </p>
+<p>This module provides initialization, configuration, and reading functions for the TCS34725 color sensor. Supports gain, integration time, and reading raw RGB and clear channel values. </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="aef15cc4922ba4aabd53f5735a2fec0c1" name="aef15cc4922ba4aabd53f5735a2fec0c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef15cc4922ba4aabd53f5735a2fec0c1">&#9670;&#160;</a></span>color_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int color_init </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>gain</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>atime</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the color sensor (I2C check, default settings). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Initialize the color sensor (I2C check, default settings).</p>
+<p>Checks I2C bus readiness, powers on the sensor, and applies default integration time and gain settings.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+<a id="ad0b08cf29337fbe7351b05a34fd3f9f4" name="ad0b08cf29337fbe7351b05a34fd3f9f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0b08cf29337fbe7351b05a34fd3f9f4">&#9670;&#160;</a></span>color_read_rgb()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int color_read_rgb </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structColorSensorData.html">ColorSensorData</a> *&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read raw RGB and clear channel data from the sensor. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to store the raw color values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Read raw RGB and clear channel data from the sensor.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+    <tr><td class="paramname">data</td><td>Pointer to <a class="el" href="structColorSensorData.html" title="Structure for storing raw color sensor data.">ColorSensorData</a> struct to store values. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+<a id="ae5e24bcb0cd6ea744d8193a45e01ff4a" name="ae5e24bcb0cd6ea744d8193a45e01ff4a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5e24bcb0cd6ea744d8193a45e01ff4a">&#9670;&#160;</a></span>color_sleep()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int color_sleep </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Put the color sensor into sleep mode (disable ADC). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Put the color sensor into sleep mode (disable ADC).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+<a id="a806959eb09f81167a9b3b7222631cd7c" name="a806959eb09f81167a9b3b7222631cd7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a806959eb09f81167a9b3b7222631cd7c">&#9670;&#160;</a></span>color_wake_up()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int color_wake_up </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Wake up the color sensor (enable ADC and power). </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Wake up the color sensor (enable ADC and power).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_1b2b3025760fa230ec416a443f96fa32.html">i2c</a></li><li class="navelem"><a class="el" href="color_8h.html">color.h</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

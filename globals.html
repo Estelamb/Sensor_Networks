@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Embedded Platforms and Communications for IoT" />
+<!-- <meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta property="og:description" content="Estela Mora Barba" />
+<meta property="og:url" content="https://estelamb.github.io/emora_ESD/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<!-- <meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
+<meta name="twitter:description" content="Estela Mora Barba" />
+<!-- END twitter metadata -->
+<title>Plant Monitoring System - Phase 3: Globals</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Plant Monitoring System - Phase 3
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('globals.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="contents">
+<div class="textblock">Here is a list of all documented functions, variables, defines, enums, and typedefs with links to the documentation:</div>
+
+<h3><a id="index__5F" name="index__5F"></a>- _ -</h3><ul>
+<li>__attribute__()&#160;:&#160;<a class="el" href="main_8c.html#ab898071398b359603a35c202e9c65f3b">main.c</a></li>
+</ul>
+
+
+<h3><a id="index_a" name="index_a"></a>- a -</h3><ul>
+<li>ACCEL_2G&#160;:&#160;<a class="el" href="accel_8h.html#adce3bf2dea7bd001b53e2ca18575f1c0">accel.h</a></li>
+<li>ACCEL_4G&#160;:&#160;<a class="el" href="accel_8h.html#a2c6c4a65860359014d500411dddb09c3">accel.h</a></li>
+<li>ACCEL_8G&#160;:&#160;<a class="el" href="accel_8h.html#a594a91a787a0bfe016d50f16bfca43e1">accel.h</a></li>
+<li>accel_convert_to_g()&#160;:&#160;<a class="el" href="accel_8c.html#ab91bbd32faa8f56272715698848e753c">accel.c</a>, <a class="el" href="accel_8h.html#ab91bbd32faa8f56272715698848e753c">accel.h</a></li>
+<li>accel_convert_to_ms2()&#160;:&#160;<a class="el" href="accel_8c.html#acdf624b8fec684eaf85094b589938861">accel.c</a>, <a class="el" href="accel_8h.html#acdf624b8fec684eaf85094b589938861">accel.h</a></li>
+<li>ACCEL_I2C_ADDR&#160;:&#160;<a class="el" href="accel_8h.html#a043bf32fd368d922c7964c639bddba70">accel.h</a></li>
+<li>accel_init()&#160;:&#160;<a class="el" href="accel_8c.html#a178c0833baa1aa5d6de2e91ab60cd431">accel.c</a>, <a class="el" href="accel_8h.html#a178c0833baa1aa5d6de2e91ab60cd431">accel.h</a></li>
+<li>ACCEL_RANGE&#160;:&#160;<a class="el" href="main_8c.html#a16ec7011dea5773b504e875852f35fc1">main.c</a></li>
+<li>accel_read_xyz()&#160;:&#160;<a class="el" href="accel_8c.html#a406de74c8b14b9e18ba4e0e52040fc7a">accel.c</a>, <a class="el" href="accel_8h.html#a406de74c8b14b9e18ba4e0e52040fc7a">accel.h</a></li>
+<li>ACCEL_REG_CTRL1&#160;:&#160;<a class="el" href="accel_8h.html#a73a477e2b693e24c829bea19a947f538">accel.h</a></li>
+<li>ACCEL_REG_CTRL2&#160;:&#160;<a class="el" href="accel_8h.html#aa10218b46120c2bae5291be4ffeea0bf">accel.h</a></li>
+<li>ACCEL_REG_OUT_X_LSB&#160;:&#160;<a class="el" href="accel_8h.html#a551b6a3ac3d30bab499e05ad3e12530c">accel.h</a></li>
+<li>ACCEL_REG_OUT_X_MSB&#160;:&#160;<a class="el" href="accel_8h.html#a98b81d5bc7cd37b7fde8047f72927dee">accel.h</a></li>
+<li>ACCEL_REG_OUT_Y_LSB&#160;:&#160;<a class="el" href="accel_8h.html#a1e9a5a67fb134d04f260e9409fc77874">accel.h</a></li>
+<li>ACCEL_REG_OUT_Y_MSB&#160;:&#160;<a class="el" href="accel_8h.html#aab83041efd9d2a0a70cb2fb3b7ef4d15">accel.h</a></li>
+<li>ACCEL_REG_OUT_Z_LSB&#160;:&#160;<a class="el" href="accel_8h.html#a1f8ddb94078096a21a9f296f1efa101e">accel.h</a></li>
+<li>ACCEL_REG_OUT_Z_MSB&#160;:&#160;<a class="el" href="accel_8h.html#ac44b6bdf08b9a273d30aeaf2baed17da">accel.h</a></li>
+<li>ACCEL_REG_WHO_AM_I&#160;:&#160;<a class="el" href="accel_8h.html#a6ca2fc82432e1558efb6cfcdcfad82fc">accel.h</a></li>
+<li>ACCEL_REG_XYZ_DATA_CFG&#160;:&#160;<a class="el" href="accel_8h.html#ac49cf800919fbd046be81ce424b96999">accel.h</a></li>
+<li>accel_set_active()&#160;:&#160;<a class="el" href="accel_8c.html#aa4562716f9aefeeefebc0fa2afe7f1af">accel.c</a></li>
+<li>accel_set_range()&#160;:&#160;<a class="el" href="accel_8c.html#a77bac50c110b2ddd0c66ca888d6bd415">accel.c</a></li>
+<li>accel_set_standby()&#160;:&#160;<a class="el" href="accel_8c.html#adfbfb9632a7ea6bd76e754dbb5a1b403">accel.c</a></li>
+<li>ACCEL_WHO_AM_I_VALUE&#160;:&#160;<a class="el" href="accel_8h.html#a343e34973d164fa3dda236c23cd16454">accel.h</a></li>
+<li>adc_init()&#160;:&#160;<a class="el" href="adc_8c.html#a8a9442659c7139e40dc1f7b19e95c3f2">adc.c</a>, <a class="el" href="adc_8h.html#a8a9442659c7139e40dc1f7b19e95c3f2">adc.h</a></li>
+<li>adc_read_normalized()&#160;:&#160;<a class="el" href="adc_8c.html#a3f4a6d5e564d182bc2d7acbc3436ae27">adc.c</a>, <a class="el" href="adc_8h.html#a3f4a6d5e564d182bc2d7acbc3436ae27">adc.h</a></li>
+<li>adc_read_raw()&#160;:&#160;<a class="el" href="adc_8c.html#a3d504a637e6f4612dfb6321abc556c71">adc.c</a>, <a class="el" href="adc_8h.html#a3d504a637e6f4612dfb6321abc556c71">adc.h</a></li>
+<li>adc_read_voltage()&#160;:&#160;<a class="el" href="adc_8c.html#aa389f44399fff831361e0b7d334ea333">adc.c</a>, <a class="el" href="adc_8h.html#aa389f44399fff831361e0b7d334ea333">adc.h</a></li>
+<li>AUTO_INCREMENT&#160;:&#160;<a class="el" href="color_8h.html#a604a69744422d2db7101f9c9dc8e27a3">color.h</a></li>
+</ul>
+
+
+<h3><a id="index_b" name="index_b"></a>- b -</h3><ul>
+<li>BUF_SIZE&#160;:&#160;<a class="el" href="gps_8c.html#a6821bafc3c88dfb2e433a095df9940c6">gps.c</a></li>
+<li>BUFFER_SIZE&#160;:&#160;<a class="el" href="adc_8h.html#a6b20d41d6252e9871430c242cb1a56e7">adc.h</a></li>
+<li>BUS_SIZE&#160;:&#160;<a class="el" href="rgb__led_8h.html#a56412fb9c60e88dc42e7af78b0dbbe5e">rgb_led.h</a></li>
+</ul>
+
+
+<h3><a id="index_c" name="index_c"></a>- c -</h3><ul>
+<li>COLOR_ATIME&#160;:&#160;<a class="el" href="color_8h.html#af93e74c1f770948956409196a272ac43">color.h</a></li>
+<li>COLOR_BLUE_L&#160;:&#160;<a class="el" href="color_8h.html#a7f6349be7f76baba36501a3a4a8e58cb">color.h</a></li>
+<li>COLOR_CLEAR_L&#160;:&#160;<a class="el" href="color_8h.html#a99fcf7c779a555604e93e310ce66bd7d">color.h</a></li>
+<li>COLOR_COMMAND&#160;:&#160;<a class="el" href="color_8h.html#a292d401035a5f5cea995f788f232f917">color.h</a></li>
+<li>COLOR_CONTROL&#160;:&#160;<a class="el" href="color_8h.html#ad3efba8899884004d3821395cd1acc83">color.h</a></li>
+<li>COLOR_ENABLE&#160;:&#160;<a class="el" href="color_8h.html#a7b4c3b399639743f2175459ac46d540f">color.h</a></li>
+<li>COLOR_GAIN&#160;:&#160;<a class="el" href="main_8c.html#a821abb7afbde3f0a9f2eb8deacd7e628">main.c</a></li>
+<li>COLOR_GREEN_L&#160;:&#160;<a class="el" href="color_8h.html#a7a5d401f15b8f890b55e0568736cc70e">color.h</a></li>
+<li>COLOR_I2C_ADDR&#160;:&#160;<a class="el" href="color_8h.html#a256daf5c71233f510985b759c5d88e99">color.h</a></li>
+<li>color_init()&#160;:&#160;<a class="el" href="color_8c.html#aef15cc4922ba4aabd53f5735a2fec0c1">color.c</a>, <a class="el" href="color_8h.html#aef15cc4922ba4aabd53f5735a2fec0c1">color.h</a></li>
+<li>COLOR_INTEGRATION_TIME&#160;:&#160;<a class="el" href="main_8c.html#af4c222344b6b5e8ca164272c06d39d23">main.c</a></li>
+<li>color_read_rgb()&#160;:&#160;<a class="el" href="color_8c.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color.c</a>, <a class="el" href="color_8h.html#ad0b08cf29337fbe7351b05a34fd3f9f4">color.h</a></li>
+<li>COLOR_RED_L&#160;:&#160;<a class="el" href="color_8h.html#a958d3ce8c7d5277ef37c41698a23ec4c">color.h</a></li>
+<li>color_sleep()&#160;:&#160;<a class="el" href="color_8c.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color.c</a>, <a class="el" href="color_8h.html#ae5e24bcb0cd6ea744d8193a45e01ff4a">color.h</a></li>
+<li>color_wake_up()&#160;:&#160;<a class="el" href="color_8c.html#a806959eb09f81167a9b3b7222631cd7c">color.c</a>, <a class="el" href="color_8h.html#a806959eb09f81167a9b3b7222631cd7c">color.h</a></li>
+</ul>
+
+
+<h3><a id="index_d" name="index_d"></a>- d -</h3><ul>
+<li>DELAY&#160;:&#160;<a class="el" href="main_8c.html#a62249e384b997229a3e2ae74ade334e2">main.c</a></li>
+</ul>
+
+
+<h3><a id="index_e" name="index_e"></a>- e -</h3><ul>
+<li>ENABLE_AEN&#160;:&#160;<a class="el" href="color_8h.html#ae584c5badfa5d772e2bae3908b7181dd">color.h</a></li>
+<li>ENABLE_PON&#160;:&#160;<a class="el" href="color_8h.html#a39a356369d272160f753bc85a24d1826">color.h</a></li>
+</ul>
+
+
+<h3><a id="index_g" name="index_g"></a>- g -</h3><ul>
+<li>GAIN_16X&#160;:&#160;<a class="el" href="color_8h.html#a13b2bbbc03aedd53588b3c81ec41c518">color.h</a></li>
+<li>GAIN_1X&#160;:&#160;<a class="el" href="color_8h.html#ab629773a35e7292544ca1a4113727e80">color.h</a></li>
+<li>GAIN_4X&#160;:&#160;<a class="el" href="color_8h.html#af347421f25d65f25a8468dd183fbc621">color.h</a></li>
+<li>GAIN_60X&#160;:&#160;<a class="el" href="color_8h.html#a2021aed05179188240f7e87029e1ad10">color.h</a></li>
+<li>gps_init()&#160;:&#160;<a class="el" href="gps_8c.html#aa19e319fe42fe0bffecff03cd1d5785b">gps.c</a>, <a class="el" href="gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b">gps.h</a></li>
+<li>GPS_THREAD_PRIORITY&#160;:&#160;<a class="el" href="gps__thread_8c.html#ae33f6a6241e921b6019a347514f04587">gps_thread.c</a></li>
+<li>GPS_THREAD_STACK_SIZE&#160;:&#160;<a class="el" href="gps__thread_8c.html#a0b3d545c6c2a972d5938cd7554d7d85f">gps_thread.c</a></li>
+<li>gps_wait_for_gga()&#160;:&#160;<a class="el" href="gps_8c.html#a6f341f66e68728b28f0045ad6e52ae88">gps.c</a>, <a class="el" href="gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88">gps.h</a></li>
+</ul>
+
+
+<h3><a id="index_i" name="index_i"></a>- i -</h3><ul>
+<li>i2c_dev_ready()&#160;:&#160;<a class="el" href="i2c_8c.html#a785a81b02d463fe7c90fc78eb941ab68">i2c.c</a>, <a class="el" href="i2c_8h.html#a785a81b02d463fe7c90fc78eb941ab68">i2c.h</a></li>
+<li>i2c_read_regs()&#160;:&#160;<a class="el" href="i2c_8c.html#a3aa840f91d86fe8ebc4adf019de0700c">i2c.c</a>, <a class="el" href="i2c_8h.html#a3aa840f91d86fe8ebc4adf019de0700c">i2c.h</a></li>
+<li>i2c_write_reg()&#160;:&#160;<a class="el" href="i2c_8c.html#a42c32d754fd84b11fa01516c91487c71">i2c.c</a>, <a class="el" href="i2c_8h.html#a42c32d754fd84b11fa01516c91487c71">i2c.h</a></li>
+<li>INTEGRATION_101MS&#160;:&#160;<a class="el" href="color_8h.html#a870335cbbc77d7e327bf9226f46fc8a6">color.h</a></li>
+<li>INTEGRATION_154MS&#160;:&#160;<a class="el" href="color_8h.html#a426acf4c0a27d2dcbda5c7016ec49ed3">color.h</a></li>
+<li>INTEGRATION_24MS&#160;:&#160;<a class="el" href="color_8h.html#a944a5335e22059a97309faf55667ff48">color.h</a></li>
+<li>INTEGRATION_2_4MS&#160;:&#160;<a class="el" href="color_8h.html#a729222d4fe89ed0d69ff10dd948b65b1">color.h</a></li>
+<li>INTEGRATION_700MS&#160;:&#160;<a class="el" href="color_8h.html#a258ceb4a107826146e9e059f7deac629">color.h</a></li>
+</ul>
+
+
+<h3><a id="index_j" name="index_j"></a>- j -</h3><ul>
+<li>JOIN_RETRY_DELAY&#160;:&#160;<a class="el" href="main_8c.html#a1ad91df017758ac1e8f0a82aa02aab82">main.c</a></li>
+</ul>
+
+
+<h3><a id="index_k" name="index_k"></a>- k -</h3><ul>
+<li>K_THREAD_STACK_DEFINE()&#160;:&#160;<a class="el" href="gps__thread_8c.html#a4c4ea7042722039debb1876d828bd25c">gps_thread.c</a>, <a class="el" href="sensors__thread_8c.html#a59459011647e1cd712817ef2162b8a4d">sensors_thread.c</a></li>
+</ul>
+
+
+<h3><a id="index_m" name="index_m"></a>- m -</h3><ul>
+<li>MAX_FIELDS&#160;:&#160;<a class="el" href="gps_8c.html#a679dffecfb16ab6f5832ddf756b5fabd">gps.c</a></li>
+</ul>
+
+
+<h3><a id="index_n" name="index_n"></a>- n -</h3><ul>
+<li>NUM_MAX_RETRIES&#160;:&#160;<a class="el" href="main_8c.html#a63ea78db106b859ede6f90647d4c15ce">main.c</a></li>
+</ul>
+
+
+<h3><a id="index_r" name="index_r"></a>- r -</h3><ul>
+<li>rgb_black()&#160;:&#160;<a class="el" href="rgb__led_8h.html#a0a119afab26d716187ed41dc5359f12d">rgb_led.h</a>, <a class="el" href="rgb__led_8c.html#a0a119afab26d716187ed41dc5359f12d">rgb_led.c</a></li>
+<li>rgb_blue()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a69942e746ba81db03e2affd8e9ae62c9">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a69942e746ba81db03e2affd8e9ae62c9">rgb_led.h</a></li>
+<li>rgb_cyan()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a40577554caed83450ce6d6d685651abb">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a40577554caed83450ce6d6d685651abb">rgb_led.h</a></li>
+<li>rgb_green()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a8105a65c9b53c677e01817aaa41d1228">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a8105a65c9b53c677e01817aaa41d1228">rgb_led.h</a></li>
+<li>rgb_led_init()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a4d37c0e4277f62fd9cff6431baf6a848">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a4d37c0e4277f62fd9cff6431baf6a848">rgb_led.h</a></li>
+<li>rgb_led_off()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a85db3995642fedac5456fef4bd9ecf49">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a85db3995642fedac5456fef4bd9ecf49">rgb_led.h</a></li>
+<li>rgb_led_on()&#160;:&#160;<a class="el" href="rgb__led_8h.html#ad71ce397299423dc9d86d40a866e64e1">rgb_led.h</a>, <a class="el" href="rgb__led_8c.html#ad71ce397299423dc9d86d40a866e64e1">rgb_led.c</a></li>
+<li>rgb_led_pwm_step()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a63dd56a1e26ad82666a7fe0ebfdbf8a7">rgb_led.h</a></li>
+<li>rgb_led_write()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a8253ee4c4326d609825b1f6df5329749">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a8253ee4c4326d609825b1f6df5329749">rgb_led.h</a></li>
+<li>rgb_purple()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a8241f3fcf6f859124c2e1304b00220e2">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a8241f3fcf6f859124c2e1304b00220e2">rgb_led.h</a></li>
+<li>rgb_red()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a2a7489c0dc86c85076b62d0e32b08060">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a2a7489c0dc86c85076b62d0e32b08060">rgb_led.h</a></li>
+<li>rgb_white()&#160;:&#160;<a class="el" href="rgb__led_8c.html#a0867d776bfa4f41e533e8be89a54b02e">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#a0867d776bfa4f41e533e8be89a54b02e">rgb_led.h</a></li>
+<li>rgb_yellow()&#160;:&#160;<a class="el" href="rgb__led_8c.html#acadd86c2ce8020db57b8b0a1afcde95f">rgb_led.c</a>, <a class="el" href="rgb__led_8h.html#acadd86c2ce8020db57b8b0a1afcde95f">rgb_led.h</a></li>
+</ul>
+
+
+<h3><a id="index_s" name="index_s"></a>- s -</h3><ul>
+<li>SENSORS_THREAD_PRIORITY&#160;:&#160;<a class="el" href="sensors__thread_8c.html#a6aa956354726cca0fd327b670c9591ce">sensors_thread.c</a></li>
+<li>SENSORS_THREAD_STACK_SIZE&#160;:&#160;<a class="el" href="sensors__thread_8c.html#a9a8cf60db93236d59e22a33e57634c93">sensors_thread.c</a></li>
+<li>start_gps_thread()&#160;:&#160;<a class="el" href="gps__thread_8c.html#ac636fc80c6c873e0e0071029e9c922da">gps_thread.c</a>, <a class="el" href="gps__thread_8h.html#ac636fc80c6c873e0e0071029e9c922da">gps_thread.h</a></li>
+<li>start_sensors_thread()&#160;:&#160;<a class="el" href="sensors__thread_8c.html#a49e974fd7ad7abcc0c28fdaaaba893ea">sensors_thread.c</a>, <a class="el" href="sensors__thread_8h.html#a49e974fd7ad7abcc0c28fdaaaba893ea">sensors_thread.h</a></li>
+</ul>
+
+
+<h3><a id="index_t" name="index_t"></a>- t -</h3><ul>
+<li>temp_hum_init()&#160;:&#160;<a class="el" href="temp__hum_8h.html#a6ea4a394cbf1d10ba6e70212b998e5f9">temp_hum.h</a>, <a class="el" href="temp__hum_8c.html#a6ea4a394cbf1d10ba6e70212b998e5f9">temp_hum.c</a></li>
+<li>temp_hum_read_humidity()&#160;:&#160;<a class="el" href="temp__hum_8c.html#a484cfb38b5815a990a627a38f043da49">temp_hum.c</a>, <a class="el" href="temp__hum_8h.html#a484cfb38b5815a990a627a38f043da49">temp_hum.h</a></li>
+<li>temp_hum_read_temperature()&#160;:&#160;<a class="el" href="temp__hum_8c.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum.c</a>, <a class="el" href="temp__hum_8h.html#aceff2003bfe66de6f90b1998cf617a7e">temp_hum.h</a></li>
+<li>TEMP_HUM_RESOLUTION&#160;:&#160;<a class="el" href="main_8c.html#a874ec379abcd1074bb4bd8d73692319c">main.c</a></li>
+<li>TH_I2C_ADDR&#160;:&#160;<a class="el" href="temp__hum_8h.html#a0e798c842fa740b6080888ed6d780cf3">temp_hum.h</a></li>
+<li>TH_MEAS_RH_HOLD&#160;:&#160;<a class="el" href="temp__hum_8h.html#ae0a03d1c8fe0c8270b764f4ded3f9733">temp_hum.h</a></li>
+<li>TH_MEAS_TEMP_HOLD&#160;:&#160;<a class="el" href="temp__hum_8h.html#a2a6a349e215a2dae9aeb23a7975339b2">temp_hum.h</a></li>
+<li>TH_READ_TEMP_FROM_RH&#160;:&#160;<a class="el" href="temp__hum_8h.html#a092f898f4939d534d84aa91debd44ec6">temp_hum.h</a></li>
+<li>TH_READ_USER_REG&#160;:&#160;<a class="el" href="temp__hum_8h.html#a8120ff1f602ebb6d9f10df6ab1e5918e">temp_hum.h</a></li>
+<li>TH_RES_RH10_TEMP13&#160;:&#160;<a class="el" href="temp__hum_8h.html#a6830c2194bd421f1632799d3532db0b9">temp_hum.h</a></li>
+<li>TH_RES_RH11_TEMP11&#160;:&#160;<a class="el" href="temp__hum_8h.html#aeec0522ecd462a094e2c2a321aa4bffa">temp_hum.h</a></li>
+<li>TH_RES_RH12_TEMP14&#160;:&#160;<a class="el" href="temp__hum_8h.html#a0510a81e4bd47ea33b9070a8edea66bf">temp_hum.h</a></li>
+<li>TH_RES_RH8_TEMP12&#160;:&#160;<a class="el" href="temp__hum_8h.html#a5e155fcd3601a726f315797a5342d28e">temp_hum.h</a></li>
+<li>TH_RESET&#160;:&#160;<a class="el" href="temp__hum_8h.html#a3288a077ce385ae13cb63a19d906aaf4">temp_hum.h</a></li>
+<li>TH_WRITE_USER_REG&#160;:&#160;<a class="el" href="temp__hum_8h.html#ad812200d9d2c80f29acabb4269b32be8">temp_hum.h</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

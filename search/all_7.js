@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['gain_0',['gain',['../structadc__config.html#ace15829443009e5d02b215d7d1a020d2',1,'adc_config']]],
+  ['gain_5f16x_1',['GAIN_16X',['../color_8h.html#a13b2bbbc03aedd53588b3c81ec41c518',1,'color.h']]],
+  ['gain_5f1x_2',['GAIN_1X',['../color_8h.html#ab629773a35e7292544ca1a4113727e80',1,'color.h']]],
+  ['gain_5f4x_3',['GAIN_4X',['../color_8h.html#af347421f25d65f25a8468dd183fbc621',1,'color.h']]],
+  ['gain_5f60x_4',['GAIN_60X',['../color_8h.html#a2021aed05179188240f7e87029e1ad10',1,'color.h']]],
+  ['gps_5',['gps',['../structsystem__context.html#af52f9e0f8c57a6ebe9b3fa70bb8f7edf',1,'system_context']]],
+  ['gps_20data_20parsing_6',['GPS Data Parsing',['../index.html#autotoc_md13',1,'']]],
+  ['gps_20interfaces_7',['Sensor &amp; GPS Interfaces',['../index.html#autotoc_md11',1,'']]],
+  ['gps_2ec_8',['gps.c',['../gps_8c.html',1,'']]],
+  ['gps_2eh_9',['gps.h',['../gps_8h.html',1,'']]],
+  ['gps_5falt_10',['gps_alt',['../structsystem__measurement.html#a89d20f762267eb24053bf632f66c0f96',1,'system_measurement']]],
+  ['gps_5fconfig_11',['gps_config',['../structgps__config.html',1,'']]],
+  ['gps_5fdata_5ft_12',['gps_data_t',['../structgps__data__t.html',1,'']]],
+  ['gps_5finit_13',['gps_init',['../gps_8c.html#aa19e319fe42fe0bffecff03cd1d5785b',1,'gps_init(const struct gps_config *cfg):&#160;gps.c'],['../gps_8h.html#aa19e319fe42fe0bffecff03cd1d5785b',1,'gps_init(const struct gps_config *cfg):&#160;gps.c']]],
+  ['gps_5flat_14',['gps_lat',['../structsystem__measurement.html#adb4fd1b5c9e8e9005291a7e1edbb2224',1,'system_measurement']]],
+  ['gps_5flon_15',['gps_lon',['../structsystem__measurement.html#a2f7844fd5947597e3c9127bda9a65b35',1,'system_measurement']]],
+  ['gps_5fsats_16',['gps_sats',['../structsystem__measurement.html#a02c790b390a98fbdb685e64fcd4b830a',1,'system_measurement']]],
+  ['gps_5fsem_17',['gps_sem',['../structsystem__context.html#a047eda26b36700900ee508d71818aec7',1,'system_context']]],
+  ['gps_5fthread_2ec_18',['gps_thread.c',['../gps__thread_8c.html',1,'']]],
+  ['gps_5fthread_2eh_19',['gps_thread.h',['../gps__thread_8h.html',1,'']]],
+  ['gps_5fthread_5fpriority_20',['GPS_THREAD_PRIORITY',['../gps__thread_8c.html#ae33f6a6241e921b6019a347514f04587',1,'gps_thread.c']]],
+  ['gps_5fthread_5fstack_5fsize_21',['GPS_THREAD_STACK_SIZE',['../gps__thread_8c.html#a0b3d545c6c2a972d5938cd7554d7d85f',1,'gps_thread.c']]],
+  ['gps_5ftime_22',['gps_time',['../structsystem__measurement.html#af93b0eea24ff8e4fe9df39ce3ecf7a71',1,'system_measurement']]],
+  ['gps_5fwait_5ffor_5fgga_23',['gps_wait_for_gga',['../gps_8c.html#a6f341f66e68728b28f0045ad6e52ae88',1,'gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout):&#160;gps.c'],['../gps_8h.html#a6f341f66e68728b28f0045ad6e52ae88',1,'gps_wait_for_gga(gps_data_t *out, k_timeout_t timeout):&#160;gps.c']]],
+  ['green_24',['green',['../structsystem__measurement.html#a69e30193e5c378f404142b86ecf3b2e1',1,'system_measurement::green'],['../structColorSensorData.html#aba5595aaba7099f62ea9c0313bb7ee20',1,'ColorSensorData::green']]]
+];

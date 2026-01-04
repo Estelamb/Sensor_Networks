@@ -1,0 +1,448 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Embedded Platforms and Communications for IoT" />
+<!-- <meta property="og:image" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta property="og:description" content="Estela Mora Barba" />
+<meta property="og:url" content="https://estelamb.github.io/emora_ESD/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<!-- <meta name="twitter:image:src" content="https://repository-images.githubusercontent.com/348492097/4f16df80-88fb-11eb-9d31-4015ff22c452" /> -->
+<meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
+<meta name="twitter:description" content="Estela Mora Barba" />
+<!-- END twitter metadata -->
+<title>Plant Monitoring System - Phase 3: src/sensors/i2c/accel.h File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/jothepro/doxygen-awesome-css" class="github-corner" title="View source on GitHub" target="_blank" rel="noopener noreferrer">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Plant Monitoring System - Phase 3
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('accel_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">accel.h File Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>I2C interface for a 3-axis accelerometer.  
+<a href="#details">More...</a></p>
+<div class="textblock"><code>#include &lt;zephyr/device.h&gt;</code><br />
+<code>#include &lt;zephyr/drivers/i2c.h&gt;</code><br />
+<code>#include &lt;stdint.h&gt;</code><br />
+</div>
+<p><a href="accel_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a043bf32fd368d922c7964c639bddba70" id="r_a043bf32fd368d922c7964c639bddba70"><td class="memItemLeft" align="right" valign="top"><a id="a043bf32fd368d922c7964c639bddba70" name="a043bf32fd368d922c7964c639bddba70"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_I2C_ADDR</b>&#160;&#160;&#160;0x1D</td></tr>
+<tr class="memdesc:a043bf32fd368d922c7964c639bddba70"><td class="mdescLeft">&#160;</td><td class="mdescRight">I2C address of the accelerometer. <br /></td></tr>
+<tr class="separator:a043bf32fd368d922c7964c639bddba70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ca2fc82432e1558efb6cfcdcfad82fc" id="r_a6ca2fc82432e1558efb6cfcdcfad82fc"><td class="memItemLeft" align="right" valign="top"><a id="a6ca2fc82432e1558efb6cfcdcfad82fc" name="a6ca2fc82432e1558efb6cfcdcfad82fc"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_WHO_AM_I</b>&#160;&#160;&#160;0x0D</td></tr>
+<tr class="memdesc:a6ca2fc82432e1558efb6cfcdcfad82fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">WHO_AM_I register. <br /></td></tr>
+<tr class="separator:a6ca2fc82432e1558efb6cfcdcfad82fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a343e34973d164fa3dda236c23cd16454" id="r_a343e34973d164fa3dda236c23cd16454"><td class="memItemLeft" align="right" valign="top"><a id="a343e34973d164fa3dda236c23cd16454" name="a343e34973d164fa3dda236c23cd16454"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_WHO_AM_I_VALUE</b>&#160;&#160;&#160;0x1A</td></tr>
+<tr class="memdesc:a343e34973d164fa3dda236c23cd16454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Expected WHO_AM_I value. <br /></td></tr>
+<tr class="separator:a343e34973d164fa3dda236c23cd16454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a477e2b693e24c829bea19a947f538" id="r_a73a477e2b693e24c829bea19a947f538"><td class="memItemLeft" align="right" valign="top"><a id="a73a477e2b693e24c829bea19a947f538" name="a73a477e2b693e24c829bea19a947f538"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_CTRL1</b>&#160;&#160;&#160;0x2A</td></tr>
+<tr class="memdesc:a73a477e2b693e24c829bea19a947f538"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control register 1. <br /></td></tr>
+<tr class="separator:a73a477e2b693e24c829bea19a947f538"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa10218b46120c2bae5291be4ffeea0bf" id="r_aa10218b46120c2bae5291be4ffeea0bf"><td class="memItemLeft" align="right" valign="top"><a id="aa10218b46120c2bae5291be4ffeea0bf" name="aa10218b46120c2bae5291be4ffeea0bf"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_CTRL2</b>&#160;&#160;&#160;0x2B</td></tr>
+<tr class="memdesc:aa10218b46120c2bae5291be4ffeea0bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Control register 2. <br /></td></tr>
+<tr class="separator:aa10218b46120c2bae5291be4ffeea0bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac49cf800919fbd046be81ce424b96999" id="r_ac49cf800919fbd046be81ce424b96999"><td class="memItemLeft" align="right" valign="top"><a id="ac49cf800919fbd046be81ce424b96999" name="ac49cf800919fbd046be81ce424b96999"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_XYZ_DATA_CFG</b>&#160;&#160;&#160;0x0E</td></tr>
+<tr class="memdesc:ac49cf800919fbd046be81ce424b96999"><td class="mdescLeft">&#160;</td><td class="mdescRight">XYZ range configuration register. <br /></td></tr>
+<tr class="separator:ac49cf800919fbd046be81ce424b96999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adce3bf2dea7bd001b53e2ca18575f1c0" id="r_adce3bf2dea7bd001b53e2ca18575f1c0"><td class="memItemLeft" align="right" valign="top"><a id="adce3bf2dea7bd001b53e2ca18575f1c0" name="adce3bf2dea7bd001b53e2ca18575f1c0"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_2G</b>&#160;&#160;&#160;0x00</td></tr>
+<tr class="memdesc:adce3bf2dea7bd001b53e2ca18575f1c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">±2g range <br /></td></tr>
+<tr class="separator:adce3bf2dea7bd001b53e2ca18575f1c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6c4a65860359014d500411dddb09c3" id="r_a2c6c4a65860359014d500411dddb09c3"><td class="memItemLeft" align="right" valign="top"><a id="a2c6c4a65860359014d500411dddb09c3" name="a2c6c4a65860359014d500411dddb09c3"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_4G</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a2c6c4a65860359014d500411dddb09c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">±4g range <br /></td></tr>
+<tr class="separator:a2c6c4a65860359014d500411dddb09c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a594a91a787a0bfe016d50f16bfca43e1" id="r_a594a91a787a0bfe016d50f16bfca43e1"><td class="memItemLeft" align="right" valign="top"><a id="a594a91a787a0bfe016d50f16bfca43e1" name="a594a91a787a0bfe016d50f16bfca43e1"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_8G</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a594a91a787a0bfe016d50f16bfca43e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">±8g range <br /></td></tr>
+<tr class="separator:a594a91a787a0bfe016d50f16bfca43e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98b81d5bc7cd37b7fde8047f72927dee" id="r_a98b81d5bc7cd37b7fde8047f72927dee"><td class="memItemLeft" align="right" valign="top"><a id="a98b81d5bc7cd37b7fde8047f72927dee" name="a98b81d5bc7cd37b7fde8047f72927dee"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_X_MSB</b>&#160;&#160;&#160;0x01</td></tr>
+<tr class="memdesc:a98b81d5bc7cd37b7fde8047f72927dee"><td class="mdescLeft">&#160;</td><td class="mdescRight">X-axis MSB. <br /></td></tr>
+<tr class="separator:a98b81d5bc7cd37b7fde8047f72927dee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a551b6a3ac3d30bab499e05ad3e12530c" id="r_a551b6a3ac3d30bab499e05ad3e12530c"><td class="memItemLeft" align="right" valign="top"><a id="a551b6a3ac3d30bab499e05ad3e12530c" name="a551b6a3ac3d30bab499e05ad3e12530c"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_X_LSB</b>&#160;&#160;&#160;0x02</td></tr>
+<tr class="memdesc:a551b6a3ac3d30bab499e05ad3e12530c"><td class="mdescLeft">&#160;</td><td class="mdescRight">X-axis LSB. <br /></td></tr>
+<tr class="separator:a551b6a3ac3d30bab499e05ad3e12530c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab83041efd9d2a0a70cb2fb3b7ef4d15" id="r_aab83041efd9d2a0a70cb2fb3b7ef4d15"><td class="memItemLeft" align="right" valign="top"><a id="aab83041efd9d2a0a70cb2fb3b7ef4d15" name="aab83041efd9d2a0a70cb2fb3b7ef4d15"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_Y_MSB</b>&#160;&#160;&#160;0x03</td></tr>
+<tr class="memdesc:aab83041efd9d2a0a70cb2fb3b7ef4d15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y-axis MSB. <br /></td></tr>
+<tr class="separator:aab83041efd9d2a0a70cb2fb3b7ef4d15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e9a5a67fb134d04f260e9409fc77874" id="r_a1e9a5a67fb134d04f260e9409fc77874"><td class="memItemLeft" align="right" valign="top"><a id="a1e9a5a67fb134d04f260e9409fc77874" name="a1e9a5a67fb134d04f260e9409fc77874"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_Y_LSB</b>&#160;&#160;&#160;0x04</td></tr>
+<tr class="memdesc:a1e9a5a67fb134d04f260e9409fc77874"><td class="mdescLeft">&#160;</td><td class="mdescRight">Y-axis LSB. <br /></td></tr>
+<tr class="separator:a1e9a5a67fb134d04f260e9409fc77874"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac44b6bdf08b9a273d30aeaf2baed17da" id="r_ac44b6bdf08b9a273d30aeaf2baed17da"><td class="memItemLeft" align="right" valign="top"><a id="ac44b6bdf08b9a273d30aeaf2baed17da" name="ac44b6bdf08b9a273d30aeaf2baed17da"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_Z_MSB</b>&#160;&#160;&#160;0x05</td></tr>
+<tr class="memdesc:ac44b6bdf08b9a273d30aeaf2baed17da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z-axis MSB. <br /></td></tr>
+<tr class="separator:ac44b6bdf08b9a273d30aeaf2baed17da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f8ddb94078096a21a9f296f1efa101e" id="r_a1f8ddb94078096a21a9f296f1efa101e"><td class="memItemLeft" align="right" valign="top"><a id="a1f8ddb94078096a21a9f296f1efa101e" name="a1f8ddb94078096a21a9f296f1efa101e"></a>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>ACCEL_REG_OUT_Z_LSB</b>&#160;&#160;&#160;0x06</td></tr>
+<tr class="memdesc:a1f8ddb94078096a21a9f296f1efa101e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Z-axis LSB. <br /></td></tr>
+<tr class="separator:a1f8ddb94078096a21a9f296f1efa101e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a178c0833baa1aa5d6de2e91ab60cd431" id="r_a178c0833baa1aa5d6de2e91ab60cd431"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#a178c0833baa1aa5d6de2e91ab60cd431">accel_init</a> (const struct i2c_dt_spec *dev, uint8_t range)</td></tr>
+<tr class="memdesc:a178c0833baa1aa5d6de2e91ab60cd431"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize the accelerometer device.  <br /></td></tr>
+<tr class="separator:a178c0833baa1aa5d6de2e91ab60cd431"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a406de74c8b14b9e18ba4e0e52040fc7a" id="r_a406de74c8b14b9e18ba4e0e52040fc7a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#a406de74c8b14b9e18ba4e0e52040fc7a">accel_read_xyz</a> (const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_t *z)</td></tr>
+<tr class="memdesc:a406de74c8b14b9e18ba4e0e52040fc7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Read raw accelerometer values for X, Y, and Z axes.  <br /></td></tr>
+<tr class="separator:a406de74c8b14b9e18ba4e0e52040fc7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab91bbd32faa8f56272715698848e753c" id="r_ab91bbd32faa8f56272715698848e753c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#ab91bbd32faa8f56272715698848e753c">accel_convert_to_g</a> (int16_t raw, uint8_t range, float *g_value)</td></tr>
+<tr class="memdesc:ab91bbd32faa8f56272715698848e753c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert raw accelerometer value to g units.  <br /></td></tr>
+<tr class="separator:ab91bbd32faa8f56272715698848e753c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acdf624b8fec684eaf85094b589938861" id="r_acdf624b8fec684eaf85094b589938861"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="accel_8h.html#acdf624b8fec684eaf85094b589938861">accel_convert_to_ms2</a> (int16_t raw, uint8_t range, float *ms2_value)</td></tr>
+<tr class="memdesc:acdf624b8fec684eaf85094b589938861"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert raw accelerometer value to meters per second squared (m/s²).  <br /></td></tr>
+<tr class="separator:acdf624b8fec684eaf85094b589938861"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>I2C interface for a 3-axis accelerometer. </p>
+<p>This module provides initialization, raw data reading, and conversion functions for a 3-axis accelerometer over I2C. Supports setting measurement range and converting raw data to g or m/s². </p>
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="ab91bbd32faa8f56272715698848e753c" name="ab91bbd32faa8f56272715698848e753c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab91bbd32faa8f56272715698848e753c">&#9670;&#160;</a></span>accel_convert_to_g()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void accel_convert_to_g </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>raw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>g_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert raw accelerometer value to g units. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">raw</td><td>Raw 16-bit accelerometer reading. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
+    <tr><td class="paramname">g_value</td><td>Pointer to store converted value in g.</td></tr>
+    <tr><td class="paramname">raw</td><td>Raw 14-bit accelerometer reading. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
+    <tr><td class="paramname">g_value</td><td>Pointer to store converted value in g. </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acdf624b8fec684eaf85094b589938861" name="acdf624b8fec684eaf85094b589938861"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acdf624b8fec684eaf85094b589938861">&#9670;&#160;</a></span>accel_convert_to_ms2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void accel_convert_to_ms2 </td>
+          <td>(</td>
+          <td class="paramtype">int16_t&#160;</td>
+          <td class="paramname"><em>raw</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>range</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float *&#160;</td>
+          <td class="paramname"><em>ms2_value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Convert raw accelerometer value to meters per second squared (m/s²). </p>
+<p>Uses Earth's gravity (9.80665 m/s²) for conversion.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">raw</td><td>Raw 16-bit accelerometer reading. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
+    <tr><td class="paramname">ms2_value</td><td>Pointer to store converted value in m/s².</td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Uses standard gravity (9.80665 m/s²) for conversion.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">raw</td><td>Raw 14-bit accelerometer reading. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range used during initialization. </td></tr>
+    <tr><td class="paramname">ms2_value</td><td>Pointer to store converted value in m/s². </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a178c0833baa1aa5d6de2e91ab60cd431" name="a178c0833baa1aa5d6de2e91ab60cd431"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a178c0833baa1aa5d6de2e91ab60cd431">&#9670;&#160;</a></span>accel_init()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int accel_init </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>range</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Initialize the accelerometer device. </p>
+<p>Sets up the device over I2C and configures the measurement range. Checks the WHO_AM_I register to verify device identity.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range: ACCEL_2G, ACCEL_4G, or ACCEL_8G. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Initialize the accelerometer device.</p>
+<p>Checks device presence (WHO_AM_I), sets standby mode, configures measurement range, and activates measurement mode.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+    <tr><td class="paramname">range</td><td>Measurement range: ACCEL_2G, ACCEL_4G, ACCEL_8G. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+<a id="a406de74c8b14b9e18ba4e0e52040fc7a" name="a406de74c8b14b9e18ba4e0e52040fc7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a406de74c8b14b9e18ba4e0e52040fc7a">&#9670;&#160;</a></span>accel_read_xyz()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int accel_read_xyz </td>
+          <td>(</td>
+          <td class="paramtype">const struct i2c_dt_spec *&#160;</td>
+          <td class="paramname"><em>dev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int16_t *&#160;</td>
+          <td class="paramname"><em>z</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Read raw accelerometer values for X, Y, and Z axes. </p>
+<p>Reads the 16-bit signed values from the sensor output registers.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to the I2C device descriptor. </td></tr>
+    <tr><td class="paramname">x</td><td>Pointer to store X-axis raw value. </td></tr>
+    <tr><td class="paramname">y</td><td>Pointer to store Y-axis raw value. </td></tr>
+    <tr><td class="paramname">z</td><td>Pointer to store Z-axis raw value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure.</dd></dl>
+<p>Read raw accelerometer values for X, Y, and Z axes.</p>
+<p>Each axis is 14-bit, left-aligned in MSB/LSB registers. This function shifts right by 2 bits to obtain 14-bit signed values.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">dev</td><td>Pointer to I2C device descriptor. </td></tr>
+    <tr><td class="paramname">x</td><td>Pointer to store X-axis raw value. </td></tr>
+    <tr><td class="paramname">y</td><td>Pointer to store Y-axis raw value. </td></tr>
+    <tr><td class="paramname">z</td><td>Pointer to store Z-axis raw value. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>0 on success, negative errno code on failure. </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_7349e89ef19c117195f8e371603e1b1f.html">sensors</a></li><li class="navelem"><a class="el" href="dir_1b2b3025760fa230ec416a443f96fa32.html">i2c</a></li><li class="navelem"><a class="el" href="accel_8h.html">accel.h</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

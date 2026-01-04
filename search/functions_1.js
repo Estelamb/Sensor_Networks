@@ -1,0 +1,14 @@
+var searchData=
+[
+  ['accel_5fconvert_5fto_5fg_0',['accel_convert_to_g',['../accel_8h.html#ab91bbd32faa8f56272715698848e753c',1,'accel_convert_to_g(int16_t raw, uint8_t range, float *g_value):&#160;accel.c'],['../accel_8c.html#ab91bbd32faa8f56272715698848e753c',1,'accel_convert_to_g(int16_t raw, uint8_t range, float *g_value):&#160;accel.c']]],
+  ['accel_5fconvert_5fto_5fms2_1',['accel_convert_to_ms2',['../accel_8c.html#acdf624b8fec684eaf85094b589938861',1,'accel_convert_to_ms2(int16_t raw, uint8_t range, float *ms2_value):&#160;accel.c'],['../accel_8h.html#acdf624b8fec684eaf85094b589938861',1,'accel_convert_to_ms2(int16_t raw, uint8_t range, float *ms2_value):&#160;accel.c']]],
+  ['accel_5finit_2',['accel_init',['../accel_8c.html#a178c0833baa1aa5d6de2e91ab60cd431',1,'accel_init(const struct i2c_dt_spec *dev, uint8_t range):&#160;accel.c'],['../accel_8h.html#a178c0833baa1aa5d6de2e91ab60cd431',1,'accel_init(const struct i2c_dt_spec *dev, uint8_t range):&#160;accel.c']]],
+  ['accel_5fread_5fxyz_3',['accel_read_xyz',['../accel_8c.html#a406de74c8b14b9e18ba4e0e52040fc7a',1,'accel_read_xyz(const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_t *z):&#160;accel.c'],['../accel_8h.html#a406de74c8b14b9e18ba4e0e52040fc7a',1,'accel_read_xyz(const struct i2c_dt_spec *dev, int16_t *x, int16_t *y, int16_t *z):&#160;accel.c']]],
+  ['accel_5fset_5factive_4',['accel_set_active',['../accel_8c.html#aa4562716f9aefeeefebc0fa2afe7f1af',1,'accel.c']]],
+  ['accel_5fset_5frange_5',['accel_set_range',['../accel_8c.html#a77bac50c110b2ddd0c66ca888d6bd415',1,'accel.c']]],
+  ['accel_5fset_5fstandby_6',['accel_set_standby',['../accel_8c.html#adfbfb9632a7ea6bd76e754dbb5a1b403',1,'accel.c']]],
+  ['adc_5finit_7',['adc_init',['../adc_8c.html#a8a9442659c7139e40dc1f7b19e95c3f2',1,'adc_init(const struct adc_config *cfg):&#160;adc.c'],['../adc_8h.html#a8a9442659c7139e40dc1f7b19e95c3f2',1,'adc_init(const struct adc_config *cfg):&#160;adc.c']]],
+  ['adc_5fread_5fnormalized_8',['adc_read_normalized',['../adc_8c.html#a3f4a6d5e564d182bc2d7acbc3436ae27',1,'adc_read_normalized(const struct adc_config *cfg):&#160;adc.c'],['../adc_8h.html#a3f4a6d5e564d182bc2d7acbc3436ae27',1,'adc_read_normalized(const struct adc_config *cfg):&#160;adc.c']]],
+  ['adc_5fread_5fraw_9',['adc_read_raw',['../adc_8c.html#a3d504a637e6f4612dfb6321abc556c71',1,'adc_read_raw(const struct adc_config *cfg, int16_t *raw_val):&#160;adc.c'],['../adc_8h.html#a3d504a637e6f4612dfb6321abc556c71',1,'adc_read_raw(const struct adc_config *cfg, int16_t *raw_val):&#160;adc.c']]],
+  ['adc_5fread_5fvoltage_10',['adc_read_voltage',['../adc_8c.html#aa389f44399fff831361e0b7d334ea333',1,'adc_read_voltage(const struct adc_config *cfg, int32_t *out_mv):&#160;adc.c'],['../adc_8h.html#aa389f44399fff831361e0b7d334ea333',1,'adc_read_voltage(const struct adc_config *cfg, int32_t *out_mv):&#160;adc.c']]]
+];

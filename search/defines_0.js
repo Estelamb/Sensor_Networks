@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['accel_5f2g_0',['ACCEL_2G',['../accel_8h.html#adce3bf2dea7bd001b53e2ca18575f1c0',1,'accel.h']]],
+  ['accel_5f4g_1',['ACCEL_4G',['../accel_8h.html#a2c6c4a65860359014d500411dddb09c3',1,'accel.h']]],
+  ['accel_5f8g_2',['ACCEL_8G',['../accel_8h.html#a594a91a787a0bfe016d50f16bfca43e1',1,'accel.h']]],
+  ['accel_5fi2c_5faddr_3',['ACCEL_I2C_ADDR',['../accel_8h.html#a043bf32fd368d922c7964c639bddba70',1,'accel.h']]],
+  ['accel_5frange_4',['ACCEL_RANGE',['../main_8c.html#a16ec7011dea5773b504e875852f35fc1',1,'main.c']]],
+  ['accel_5freg_5fctrl1_5',['ACCEL_REG_CTRL1',['../accel_8h.html#a73a477e2b693e24c829bea19a947f538',1,'accel.h']]],
+  ['accel_5freg_5fctrl2_6',['ACCEL_REG_CTRL2',['../accel_8h.html#aa10218b46120c2bae5291be4ffeea0bf',1,'accel.h']]],
+  ['accel_5freg_5fout_5fx_5flsb_7',['ACCEL_REG_OUT_X_LSB',['../accel_8h.html#a551b6a3ac3d30bab499e05ad3e12530c',1,'accel.h']]],
+  ['accel_5freg_5fout_5fx_5fmsb_8',['ACCEL_REG_OUT_X_MSB',['../accel_8h.html#a98b81d5bc7cd37b7fde8047f72927dee',1,'accel.h']]],
+  ['accel_5freg_5fout_5fy_5flsb_9',['ACCEL_REG_OUT_Y_LSB',['../accel_8h.html#a1e9a5a67fb134d04f260e9409fc77874',1,'accel.h']]],
+  ['accel_5freg_5fout_5fy_5fmsb_10',['ACCEL_REG_OUT_Y_MSB',['../accel_8h.html#aab83041efd9d2a0a70cb2fb3b7ef4d15',1,'accel.h']]],
+  ['accel_5freg_5fout_5fz_5flsb_11',['ACCEL_REG_OUT_Z_LSB',['../accel_8h.html#a1f8ddb94078096a21a9f296f1efa101e',1,'accel.h']]],
+  ['accel_5freg_5fout_5fz_5fmsb_12',['ACCEL_REG_OUT_Z_MSB',['../accel_8h.html#ac44b6bdf08b9a273d30aeaf2baed17da',1,'accel.h']]],
+  ['accel_5freg_5fwho_5fam_5fi_13',['ACCEL_REG_WHO_AM_I',['../accel_8h.html#a6ca2fc82432e1558efb6cfcdcfad82fc',1,'accel.h']]],
+  ['accel_5freg_5fxyz_5fdata_5fcfg_14',['ACCEL_REG_XYZ_DATA_CFG',['../accel_8h.html#ac49cf800919fbd046be81ce424b96999',1,'accel.h']]],
+  ['accel_5fwho_5fam_5fi_5fvalue_15',['ACCEL_WHO_AM_I_VALUE',['../accel_8h.html#a343e34973d164fa3dda236c23cd16454',1,'accel.h']]],
+  ['auto_5fincrement_16',['AUTO_INCREMENT',['../color_8h.html#a604a69744422d2db7101f9c9dc8e27a3',1,'color.h']]]
+];
