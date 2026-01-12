@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Plant Monitoring System - Phase 3: src/gps_thread.h File Reference</title>
+<title>Plant Monitoring System: src/gps_thread.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Plant Monitoring System - Phase 3
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -143,8 +143,7 @@ Functions</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Interface for the GPS measurement thread. </p>
-<p>This header declares the interface for a Zephyr thread responsible for acquiring and processing GPS data such as latitude, longitude, altitude, satellite count, and UTC time.</p>
-<p>The thread operates periodically in TEST_MODE and NORMAL_MODE. In other modes (e.g., ADVANCED_MODE), GPS sampling is suspended until manually triggered. </p>
+<p>This header declares the interface for a Zephyr thread responsible for acquiring and processing GPS data such as latitude, longitude, altitude, satellite count, and UTC time. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="ac636fc80c6c873e0e0071029e9c922da" name="ac636fc80c6c873e0e0071029e9c922da"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac636fc80c6c873e0e0071029e9c922da">&#9670;&#160;</a></span>start_gps_thread()</h2>
@@ -174,11 +173,6 @@ Functions</h2></td></tr>
 
 <p>Start the GPS measurement thread. </p>
 <p>Initializes synchronization primitives (timer and semaphores) and creates a dedicated Zephyr thread that periodically reads and parses GPS data from the configured GPS module.</p>
-<p>The sampling cadence depends on the active system mode:</p><ul>
-<li>TEST_MODE: fast measurement interval for debugging and validation.</li>
-<li>NORMAL_MODE: regular interval for periodic operation.</li>
-<li>ADVANCED_MODE: measurement suspended until reactivated.</li>
-</ul>
 <p>The thread stores scaled integer values in system_measurement:</p><ul>
 <li>Latitude / Longitude: degrees × 1e6</li>
 <li>Altitude: meters × 100</li>

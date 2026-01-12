@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Embedded Platforms and Communications for IoT" />
 <meta name="twitter:description" content="Estela Mora Barba" />
 <!-- END twitter metadata -->
-<title>Plant Monitoring System - Phase 3: src/sensors_thread.h File Reference</title>
+<title>Plant Monitoring System: src/sensors_thread.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -59,7 +59,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Plant Monitoring System - Phase 3
+   <div id="projectname">Plant Monitoring System
    </div>
   </td>
  </tr>
@@ -148,9 +148,8 @@ Functions</h2></td></tr>
 <li>Soil moisture (ADC)</li>
 <li>Accelerometer (I²C)</li>
 <li>Temperature &amp; humidity (I²C)</li>
-<li>Color sensor (I²C)</li>
+<li>Color sensor (I²C) </li>
 </ul>
-<p>The thread is active in TEST_MODE and NORMAL_MODE and performs periodic sampling. In other modes (e.g., ADVANCED_MODE) the thread suspends sampling and waits to be re-triggered. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a49e974fd7ad7abcc0c28fdaaaba893ea" name="a49e974fd7ad7abcc0c28fdaaaba893ea"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a49e974fd7ad7abcc0c28fdaaaba893ea">&#9670;&#160;</a></span>start_sensors_thread()</h2>
@@ -180,11 +179,6 @@ Functions</h2></td></tr>
 
 <p>Start the sensors measurement thread. </p>
 <p>Initializes synchronization primitives (timer, semaphores) and launches a dedicated Zephyr thread that periodically samples sensors and stores the results into the provided <a class="el" href="structsystem__measurement.html">system_measurement</a> structure.</p>
-<p>The sampling cadence depends on the system mode:</p><ul>
-<li>TEST_MODE: faster cadence for rapid feedback.</li>
-<li>NORMAL_MODE: regular cadence for ongoing monitoring.</li>
-<li>Other modes: sampling is paused until reactivated.</li>
-</ul>
 <p>The function does not block; the thread runs asynchronously.</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">

@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Plant Monitoring System - Phase 3", "index.html", [
+  [ "Plant Monitoring System", "index.html", [
     [ "Plant Monitoring System with LoRaWAN", "index.html", "index" ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
