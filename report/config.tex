@@ -131,5 +131,18 @@
   moredelim=[l]{:},
 }
 
+\lstdefinelanguage{lua}{
+  keywords={and,break,do,else,elseif,end,false,for,function,if,in,
+            local,nil,not,or,repeat,return,then,true,until,while},
+  keywordstyle=\color{blue}\bfseries,
+  sensitive=true,
+  comment=[l]{--},
+  morecomment=[s]{--[[}{]]},
+  commentstyle=\color{gray}\ttfamily,
+  stringstyle=\color{red},
+  morestring=[b]",
+  morestring=[b]',
+}
+
 
 \input{acronyms.tex}

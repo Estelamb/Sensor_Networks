@@ -1,8 +1,7 @@
 \documentclass[10pt,a4paper]{article}
 \input{config.tex}
 
-\title{Embedded Platforms and Communications for IoT}
-\author{Alejandro Botas Bárcena}
+\title{LoRaWAN communications for a plant monitoring IoT system using the B-L072Z-LRWAN1 ARM mbed-based platform \\ Sensor Networks}
 \author{Estela Mora Barba}
 \date{MIoT 2025-2026}
 
@@ -23,22 +22,23 @@
 \addcontentsline{toc}{section}{List of Listings}
 \lstlistoflistings
 
+\listoftodos
+
 \include{files/Glossary}
 
 
 \mainmatter
 \pagestyle{fancy}
-\lhead[]{\href{https://github.com/Estelamb/Embedded_IoT}{\textbf{Plant Monitoring System}}}
-\rhead[]{\textbf{EMB-MIoT}}
+\lhead[]{\href{https://github.com/Estelamb/Sensor_Networks}{\textbf{Plant Monitoring System}}}
+\rhead[]{\textbf{SN-MIoT}}
 \cfoot{\thepage}
 
 \include{files/1-Introduction}
 \include{files/2-Specifications}
-\include{files/3-Hardware}
-\include{files/4-Software} 
+\include{files/3-Software}
+\include{files/4-Server} 
 \include{files/5-Results}
-\include{files/6-Advanced}
-\include{files/7-Conclusions}
+\include{files/6-Conclusions}
 
 \nocite{*}
 \printbibliography[title={Bibliography}, heading=bibnumbered]
