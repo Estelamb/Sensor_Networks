@@ -31,7 +31,7 @@
 #define LORAWAN_JOIN_EUI    { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x00, 0xFC, 0x4D }
 #define LORAWAN_APP_KEY     { 0xf3, 0x1c, 0x2e, 0x8b, 0xc6, 0x71, 0x28, 0x1d, 0x51, 0x16, 0xf0, 0x8f, 0xf0, 0xb7, 0x92, 0x8f }
 
-#define DELAY               K_MSEC(30000) /**< Data transmission interval (30s). */
+#define DELAY               K_MSEC(60000) /**< Data transmission interval (60s). */
 #define JOIN_RETRY_DELAY    K_SECONDS(30) /**< Delay between network join attempts. */
 #define NUM_MAX_RETRIES     30            /**< Maximum number of join retries. */
 
@@ -168,21 +168,21 @@ struct __attribute__((packed)) main_measurement {
     uint8_t  time[3];   // 3 bytes (HH, MM, SS)
     uint8_t  sats;      // 1 byte  (Satellites in view)
 
-    // Environmental (4 bytes)
+    // Temperature and Humidity (4 bytes)
     int16_t  temp;      // 2 bytes (Celsius * 100)
-    uint16_t hum;       // 2 bytes (Relative humidity * 100)
+    uint16_t hum;       // 2 bytes (Relative humidity * 10)
 
     // Light and Soil (4 bytes)
     uint16_t light;     // 2 bytes (Percentage * 10)
     uint16_t moisture;  // 2 bytes (Percentage * 10)
 
     // Color (3 bytes)
-    uint8_t  r_norm;    // 1 byte (Red intensity %)
-    uint8_t  g_norm;    // 1 byte (Green intensity %)
-    uint8_t  b_norm;    // 1 byte (Blue intensity %)
+    uint8_t  r_norm;    // 1 byte
+    uint8_t  g_norm;    // 1 byte
+    uint8_t  b_norm;    // 1 byte
 
-    // Motion (3 bytes)
-    int8_t   x_axis;    // 1 byte (m/s2 scaled)
+    // Accelerometer (3 bytes)
+    int8_t   x_axis;    // 1 byte
     int8_t   y_axis;    // 1 byte 
     int8_t   z_axis;    // 1 byte
 };
@@ -205,7 +205,6 @@ static void dl_callback(uint8_t port, uint8_t flags, int16_t rssi, int8_t snr,
     LOG_INF("Downlink: Port %d, RSSI %ddB, SNR %ddBm", port, rssi, snr);
     if (hex_data) {
         LOG_HEXDUMP_INF(hex_data, len, "Payload: ");
-        /* Handle remote commands via downlink */
         if (strncmp((const char *)hex_data, "OFF", len) == 0) rgb_led_off(&rgb_leds);
         else if (strncmp((const char *)hex_data, "Green", len) == 0) rgb_green(&rgb_leds);
         else if (strncmp((const char *)hex_data, "Red", len) == 0) rgb_red(&rgb_leds);
@@ -306,7 +305,7 @@ static void get_measurements(void)
     main_data.time[1] = (uint8_t)((full_time / 100) % 100);
     main_data.time[2] = (uint8_t)(full_time % 100);
     
-    // Environmental
+    // Temperature and Humidity
     main_data.temp = (int16_t)atomic_get(&measure.temp);
     main_data.hum = (uint16_t)atomic_get(&measure.hum);
 
@@ -317,12 +316,12 @@ static void get_measurements(void)
     // Color Normalization (0-100%)
     uint32_t clear = atomic_get(&measure.clear);
     if (clear > 0) {
-        main_data.r_norm = (uint8_t)((atomic_get(&measure.red) * 100) / clear);
+        main_data.r_norm = (uint8_t)((atomic_get(&measure.red)   * 100) / clear);
         main_data.g_norm = (uint8_t)((atomic_get(&measure.green) * 100) / clear);
-        main_data.b_norm = (uint8_t)((atomic_get(&measure.blue) * 100) / clear);
+        main_data.b_norm = (uint8_t)((atomic_get(&measure.blue)  * 100) / clear);
     }
 
-    // Motion data (scaled to 1 decimal place)
+    // Accelerometer data
     main_data.x_axis = (int8_t)(atomic_get(&measure.accel_x) / 10);
     main_data.y_axis = (int8_t)(atomic_get(&measure.accel_y) / 10);
     main_data.z_axis = (int8_t)(atomic_get(&measure.accel_z) / 10);
@@ -333,15 +332,50 @@ static void get_measurements(void)
  */
 static void display_measurements(void)
 {
-    printk("\n--- SENSOR STATUS REPORT ---\n");
-    printk("Soil Moisture: %.1f%%\n", (double)main_data.moisture / 10.0);
-    printk("Light Intensity: %.1f%%\n", (double)main_data.light / 10.0);
-    printk("GPS: Sats: %d | Time: %02d:%02d:%02d\n", main_data.sats, main_data.time[0], main_data.time[1], main_data.time[2]);
-    printk("Location: Lat: %.6f, Lon: %.6f, Alt: %.2f m\n", (double)main_data.lat / 1e6, (double)main_data.lon / 1e6, (double)main_data.alt / 100.0);
-    printk("Color (RGB%%): %d%%, %d%%, %d%%\n", main_data.r_norm, main_data.g_norm, main_data.b_norm);
-    printk("Motion (m/s2): X:%.1f, Y:%.1f, Z:%.1f\n", (double)main_data.x_axis / 10.0, (double)main_data.y_axis / 10.0, (double)main_data.z_axis / 10.0);
-    printk("Environment: Temp: %.2f C | Humidity: %.2f %%\n", (double)main_data.temp / 100.0, (double)main_data.hum / 100.0);
-    printk("----------------------------\n");
+    printk("-------------- SENSOR REPORT --------------\n");
+
+    // 1. Soil Moisture
+    printk("MOISTURE:  Raw: %ld | LoRa: %u | Value: %.1f%%\n",
+           atomic_get(&measure.moisture), main_data.moisture, (double)main_data.moisture / 10.0);
+
+    // 2. Light
+    printk("LIGHT:     Raw: %ld | LoRa: %u | Value: %.1f%%\n",
+           atomic_get(&measure.brightness), main_data.light, (double)main_data.light / 10.0);
+
+    // 3. Temperature & Humidity
+    printk("TEMP:      Raw: %ld | LoRa: %d | Value: %.2f C\n",
+           atomic_get(&measure.temp), main_data.temp, (double)main_data.temp / 100.0);
+    printk("HUMIDITY:  Raw: %ld | LoRa: %u | Value: %.2f%%\n",
+           atomic_get(&measure.hum), main_data.hum, (double)main_data.hum / 100.0);
+
+    // 4. GPS Location
+    printk("LATITUDE:  Raw: %ld | LoRa: %d | Value: %.6f\n",
+           atomic_get(&measure.gps_lat), main_data.lat, (double)main_data.lat / 1e6);
+    printk("LONGITUDE: Raw: %ld | LoRa: %d | Value: %.6f\n",
+           atomic_get(&measure.gps_lon), main_data.lon, (double)main_data.lon / 1e6);
+    printk("ALTITUDE:  Raw: %ld | LoRa: %d | Value: %.2f m\n",
+           atomic_get(&measure.gps_alt), main_data.alt, (double)main_data.alt / 100.0);
+
+    // 5. GPS Sats & Time
+    printk("GPS SATS:  Raw: %ld | LoRa: %u | Value: %u satellites\n",
+           atomic_get(&measure.gps_sats), main_data.sats, main_data.sats);
+    
+    printk("GPS TIME:  Raw: %ld | LoRa: [%02d,%02d,%02d] | Value: %02d:%02d:%02d\n",
+           atomic_get(&measure.gps_time), 
+           main_data.time[0], main_data.time[1], main_data.time[2],
+           main_data.time[0], main_data.time[1], main_data.time[2]);
+
+    // 6. Color (Normalizado en LoRa y Value)
+    printk("COLOR:     Raw R:%ld G:%ld B:%ld | LoRa R:%u%% G:%u%% B:%u%%\n",
+           atomic_get(&measure.red), atomic_get(&measure.green), atomic_get(&measure.blue),
+           main_data.r_norm, main_data.g_norm, main_data.b_norm);
+
+    // 7. Accelerometer
+    printk("ACCEL:     Raw X:%ld Y:%ld Z:%ld | Value X:%.1f Y:%.1f Z:%.1f m/s2\n",
+           atomic_get(&measure.accel_x), atomic_get(&measure.accel_y), atomic_get(&measure.accel_z),
+           (double)main_data.x_axis / 10.0, (double)main_data.y_axis / 10.0, (double)main_data.z_axis / 10.0);
+
+    printk("------------------------------------------\n\n");
 }
 
 /* --- Main Application ----------------------------------------------------- */
@@ -349,7 +383,6 @@ static void display_measurements(void)
 int main(void)
 {
     printk("==== Plant Monitoring System (ResIoT/LoRaWAN) ====\n");
-    printk("System booting...\n\n");
 
     /* 1. Hardware Initialization */
     if (gps_init(&gps) || adc_init(&pt) || adc_init(&sm) || 

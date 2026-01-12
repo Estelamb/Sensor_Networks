@@ -4,8 +4,8 @@
  *
  * This module defines the Zephyr thread responsible for periodically
  * acquiring data from multiple environmental sensors:
- * - **ADC sensors:** ambient brightness
- * - **I2C sensors:** temperature/humidity
+ * - **ADC sensors:** ambient brightness, soil moisture
+ * - **I2C sensors:** temperature/humidity, accelerometer, RGB color
  */
 
 #include "sensors_thread.h"

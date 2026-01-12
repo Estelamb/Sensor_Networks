@@ -5,10 +5,6 @@
  * This header declares the interface for a Zephyr thread responsible for
  * acquiring and processing GPS data such as latitude, longitude, altitude,
  * satellite count, and UTC time.
- *
- * The thread operates periodically in @ref TEST_MODE and @ref NORMAL_MODE.
- * In other modes (e.g., @ref ADVANCED_MODE), GPS sampling is suspended until
- * manually triggered.
  */
 
 #ifndef GPS_THREAD_H
@@ -22,11 +18,6 @@
  * Initializes synchronization primitives (timer and semaphores) and creates
  * a dedicated Zephyr thread that periodically reads and parses GPS data from
  * the configured GPS module.
- *
- * The sampling cadence depends on the active system mode:
- *  - @ref TEST_MODE: fast measurement interval for debugging and validation.
- *  - @ref NORMAL_MODE: regular interval for periodic operation.
- *  - @ref ADVANCED_MODE: measurement suspended until reactivated.
  *
  * The thread stores scaled integer values in @ref system_measurement:
  *  - Latitude / Longitude: degrees × 1e6

@@ -56,9 +56,9 @@ struct system_measurement {
     atomic_t brightness;  /**< Latest ambient brightness (0–100%). */
     atomic_t moisture;    /**< Latest soil moisture (0–100%). */
 
-    atomic_t accel_x;   /**< Latest X-axis acceleration (in g). */
-    atomic_t accel_y;   /**< Latest Y-axis acceleration (in g). */
-    atomic_t accel_z;   /**< Latest Z-axis acceleration (in g). */
+    atomic_t accel_x;   /**< Latest X-axis acceleration. */
+    atomic_t accel_y;   /**< Latest Y-axis acceleration. */
+    atomic_t accel_z;   /**< Latest Z-axis acceleration. */
 
     atomic_t temp;        /**< Latest temperature (°C). */
     atomic_t hum;         /**< Latest relative humidity (%RH). */

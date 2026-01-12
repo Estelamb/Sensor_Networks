@@ -9,10 +9,6 @@
  *  - Accelerometer (I²C)
  *  - Temperature & humidity (I²C)
  *  - Color sensor (I²C)
- *
- * The thread is active in @ref TEST_MODE and @ref NORMAL_MODE and performs
- * periodic sampling. In other modes (e.g., @ref ADVANCED_MODE) the thread
- * suspends sampling and waits to be re-triggered.
  */
 
 #ifndef SENSORS_THREAD_H
@@ -26,11 +22,6 @@
  * Initializes synchronization primitives (timer, semaphores) and launches a
  * dedicated Zephyr thread that periodically samples sensors and stores the
  * results into the provided @ref system_measurement structure.
- *
- * The sampling cadence depends on the system mode:
- *  - @ref TEST_MODE: faster cadence for rapid feedback.
- *  - @ref NORMAL_MODE: regular cadence for ongoing monitoring.
- *  - Other modes: sampling is paused until reactivated.
  *
  * The function does not block; the thread runs asynchronously.
  *

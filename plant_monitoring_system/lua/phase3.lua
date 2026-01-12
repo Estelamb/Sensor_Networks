@@ -2,7 +2,6 @@
 function bytesToInt(bytes, start, size, signed)
     local val = 0
     for i = 0, size - 1 do
-        -- Lua arrays are 1-based index
         val = val + (bytes[start + i] * (256 ^ i))
     end
     if signed and val >= (256 ^ size) / 2 then
@@ -15,33 +14,33 @@ function parsePayload(appeui, deveui, payload)
     -- Convert hex payload to byte array
     local bytes = resiot_hexdecode(payload)
 
-    -- 1. GPS Data (Offsets 1 to 17)
+    -- 1. GPS Data (1 to 17)
     local lat  = bytesToInt(bytes, 1, 4, true) / 1000000.0
     local lon  = bytesToInt(bytes, 5, 4, true) / 1000000.0
-    local alt  = bytesToInt(bytes, 9, 4, true) / 100.0 -- cm to meters
+    local alt  = bytesToInt(bytes, 9, 4, true) / 100.0 
     
-    -- GPS TIME (13-15) reconstruct HHMMSS for your dashboard
+    -- GPS Time (13-15) HHMMSS
     local hh = bytes[13]
     local mm = bytes[14]
     local ss = bytes[15]
     local time = string.format("%02d:%02d:%02d", hh, mm, ss)
 
-    local sats = bytes[16]                            -- uint8
+    local sats = bytes[16]                            
 
-    -- 2. Environmental Data (Offsets 17 to 20)
+    -- 2. Temperature and Humidity Data (17 to 20)
     local temp = bytesToInt(bytes, 17, 2, true) / 100.0
     local hum  = bytesToInt(bytes, 19, 2, false) / 100.0
 
-    -- 3. Brightness & Moisture (Offsets 21 to 24)
+    -- 3. Brightness and Moisture (21 to 24)
     local light    = bytesToInt(bytes, 21, 2, false) / 10.0
     local moisture = bytesToInt(bytes, 23, 2, false) / 10.0
 
-    -- 4. Color Normalization (Offsets 25 to 27)
+    -- 4. Color RGB (Offsets 25 to 27)
     local r = bytes[25]
     local g = bytes[26]
     local b = bytes[27]
 
-    -- 5. Accelerometer (Offsets 28 to 30)
+    -- 5. Accelerometer (28 to 30)
     -- These are int8 (signed). If value > 127, it's negative.
     local function toInt8(b) return b > 127 and b - 256 or b end
     local x = toInt8(bytes[28]) / 10.0
@@ -49,8 +48,10 @@ function parsePayload(appeui, deveui, payload)
     local z = toInt8(bytes[30]) / 10.0
 
     -- Debug Logs
-    resiot_debug(string.format("GPS: %.6f,%.6f Time: %d Sats: %d", lat, lon, time, sats))
+    resiot_debug(string.format("GPS: Lat: %.6f, Long: %.6f, Alt: %.2f, Time: %s, Sats: %d", lat, lon, alt, time, sats))
     resiot_debug(string.format("Sensors: Temp: %.2f, Hum: %.2f, Light: %.1f, Moisture: %.1f", temp, hum, light, moisture))
+    resiot_debug(string.format("Color: R:%d, G:%d, B:%d", r, g, b))
+    resiot_debug(string.format("Accel: X:%.1f, Y:%.1f, Z:%.1f", x, y, z))
 
     -- Update Nodes in ResIoT
     resiot_setnodevalue(appeui, deveui, "Latitude", lat)
