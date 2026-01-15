@@ -75,8 +75,8 @@ end
 Origin = resiot_startfrom()
 
 if Origin == "Manual" then
-    -- Test payload (14 bytes hex)
-    payload = "0A00FE3E2102996E2E08E808E813" 
+    -- Test payload (30 bytes hex)
+    payload = "010203040506070809101112131415161718192021222324252627282930" 
     appeui = "70b3d57ed000fc4d"
     deveui = "7a39323559379194"
 else
