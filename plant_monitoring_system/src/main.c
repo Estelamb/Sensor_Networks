@@ -371,8 +371,9 @@ static void display_measurements(void)
            main_data.r_norm, main_data.g_norm, main_data.b_norm);
 
     // 7. Accelerometer
-    printk("ACCEL:     Raw X:%ld Y:%ld Z:%ld | Value X:%.1f Y:%.1f Z:%.1f m/s2\n",
+    printk("ACCEL:     Raw X:%ld Y:%ld Z:%ld | LoRa: X: %d Y: %d Z: %d | Value X:%.1f Y:%.1f Z:%.1f m/s2\n",
            atomic_get(&measure.accel_x), atomic_get(&measure.accel_y), atomic_get(&measure.accel_z),
+           main_data.x_axis, main_data.y_axis, main_data.z_axis,
            (double)main_data.x_axis / 10.0, (double)main_data.y_axis / 10.0, (double)main_data.z_axis / 10.0);
 
     printk("------------------------------------------\n\n");
