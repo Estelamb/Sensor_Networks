@@ -47,7 +47,8 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"accel_8c.html"
+"accel_8c.html",
+"temp__hum_8h.html#ae0a03d1c8fe0c8270b764f4ded3f9733"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

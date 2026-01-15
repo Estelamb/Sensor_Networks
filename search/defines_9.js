@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['num_5fmax_5fretries_0',['NUM_MAX_RETRIES',['../main_8c.html#a63ea78db106b859ede6f90647d4c15ce',1,'main.c']]]
+  ['max_5ffields_0',['MAX_FIELDS',['../gps_8c.html#a679dffecfb16ab6f5832ddf756b5fabd',1,'gps.c']]]
 ];
