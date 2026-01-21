@@ -1,56 +1,41 @@
-\section{Overview and Introduction} \todo{revisar}
+\section{Overview and Introduction}
 
 \subsection{Document Overview}
 
-This document defines the technical specifications, development requirements, hardware architecture, software components, and operational modes of the \gls{IoT}-based Plant Monitoring System implemented during the course \textit{Sensor Networks}. The objective of this specification is to establish a clear and comprehensive reference for the design, implementation, and verification of a system that integrates long-range connectivity via \gls{LoRaWAN}.
+This document defines the technical specifications, development requirements, software components, and ResIoT configurations of the \gls{IoT}-based Plant Monitoring System implemented during the course \textit{Sensor Networks}. The objective of this specification is to establish a clear and comprehensive reference for the design, implementation, and verification of a system that integrates long-range connectivity via \gls{LoRaWAN}.
 
 \subsection{Project Introduction}
 
-The main goal of Project 1 is to enable \gls{LoRaWAN} connectivity on an STM32-based \gls{IoT} node running the Zephyr \gls{RTOS}. The system is designed to monitor the environmental conditions and physiological state of a plant throughout its life. This capability is crucial for applications such as high-value species monitoring, greenhouse instrumentation, and logistics traceability where environmental history affects the final market price.
-
-The system utilizes the on-board radio transceiver of the STM32WL55JC platform to transmit data to a network server. It continuously acquires variables including temperature, humidity, ambient light, soil moisture, and leaf colour. Additionally, a 3-axis accelerometer detects physical impacts or falls, while an external \gls{GPS} module provides precise location data. All parameters are reported periodically through \gls{LoRaWAN} uplinks to the ResIOT \gls{IoT} Platform.
+The main goal of Project 1 is to enable \gls{LoRaWAN} connectivity on an STM32-based \gls{IoT} node running the Zephyr \gls{RTOS}. The system is designed to monitor the environmental conditions and physiological state of a plant.
 
 \subsection{Summary of the Work Done}
 
-This section provides a consolidated overview of the work completed, which builds upon the sensor management hardware and software developed in the previous subject. The current work focuses on the integration of the \gls{LoRaWAN} stack and cloud-based data visualization.
+This section provides a consolidated overview of the work completed, which builds upon the sensor management hardware and software developed in the previous subject. The current work focuses on the integration of the \gls{LoRaWAN} stack and ResIoT data visualization.
 
-\subsubsection{\gls{LoRaWAN} Stack Integration and Analysis}
+\subsubsection{Phase 1: \acrshort{LoRaWAN} Stack Integration and Analysis}
 
 The initial phase involved the deployment and analysis of the \texttt{zephyr-os-example-\gls{LoRaWAN}} project. Key tasks included:
 \begin{itemize}
     \item Configuration of device identification parameters, including Device \gls{EUI}, Join \gls{EUI}, and Application Key for \gls{OTAA} activation.
     \item Integration of the \gls{LoRaWAN} stack within the Zephyr \gls{RTOS} environment.
-    \item Verification of network join procedures and uplink transmission through a gateway located at the University Campus.
+    \item Verification of network join procedures, uplink and downlink transmission through a gateway located at the University Campus.
 \end{itemize}
 
-\subsubsection{Application Development and Remote Monitoring}
+\subsubsection{Phase 2: Application Development and Remote Monitoring}
 
 Building on the connectivity baseline, the plant monitoring application was integrated into the \gls{LoRaWAN} communication loop:
 \begin{itemize}
-    \item Implementation of data acquisition routines for environmental sensors and \gls{GPS} \gls{NMEA} frame parsing.
-    \item Design of a custom LUA payload decoder for the ResIOT network server to process incoming hexadecimal data.
-    \item Creation of a remote dashboard featuring map widgets for real-time tracking and historical data charts for sensor values.
-    \item Development of a downlink command handler to remotely change the \gls{RGB} \gls{LED} colour (OFF, Green, Red) from the ResIOT platform.
+    \item Implementation of data acquisition for sensors and send it to the ResIoT platform.
+    \item Design of a custom LUA payload decoder for the ResIoT network server to process incoming data.
+    \item Creation of a remote dashboard featuring map widgets for real-time tracking and historical data.
+    \item Development of a downlink command handler to remotely change the \gls{RGB} \gls{LED} (OFF, Green or Red) from the ResIoT platform.
 \end{itemize}
 
-\subsubsection{Payload Optimization and Efficiency (Phase 3)}
+\subsubsection{Phase 3: Payload Optimization and Efficiency}
 
 To maximize data throughput and adhere to the 30-byte message limit, significant optimizations were implemented:
 \begin{itemize}
     \item Transition from string-based messaging to a binary-packed structure using an \texttt{\_\_attribute\_\_((packed))} C struct to reduce payload size.
     \item Conversion of geographical coordinates and sensor values to appropriate data types to minimize byte usage.
-    \item Refinement of the LUA decoder to handle the optimized binary format and update the ResIOT variables accordingly.
+    \item Refinement of the LUA decoder to handle the optimized binary format and update the ResIoT variables accordingly.
 \end{itemize}
-
-\subsubsection{System Validation}
-
-The complete system was validated through functional assessments:
-\begin{itemize}
-    \item Confirmation of successful \gls{OTAA} joins and stable data transmission intervals.
-    \item Verification of end-to-end data integrity from the physical sensors to the mobile application.
-    \item Testing of the downlink control path for real-time actuator interaction.
-\end{itemize}
-
-\subsubsection{Final Deliverables}
-
-The completed work includes the optimized source code for the STM32WL55JC node, the LUA decoding logic for the network server, and this technical report detailing the implementation of a long-range \gls{IoT} monitoring solution.

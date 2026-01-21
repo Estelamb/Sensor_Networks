@@ -2,30 +2,21 @@
 
 \subsection{Conclusions}
 
-This project has successfully achieved the design and implementation of a complete IoT-based Plant Monitoring System using the STM32WL55JC microcontroller and the Zephyr \gls{RTOS}. The developed system integrates multiple analog and digital sensors to acquire environmental, physical, and positional data, demonstrating robust multitasking, peripheral management, and real-time operation.
+This project has successfully achieved the design and implementation of a complete \gls{IoT}-based Plant Monitoring System using the STM32WL55JC microcontroller and the Zephyr \gls{RTOS}. The developed system integrates multiple analog and digital sensors to acquire environmental, physical, and positional data, demonstrating robust multitasking through a multi-threaded architecture. By leveraging dedicated threads for sensors and \gls{GPS} data, the system effectively manages concurrent data acquisition and \gls{LoRaWAN} communication.
 
-All mandatory system requirements were fulfilled, including periodic sensor acquisition, multi-mode operation (Test, Normal, and Advanced modes), statistical processing, GPS integration, and visual feedback through an RGB LED. The software architecture was carefully structured into modular drivers, dedicated threads, and synchronized shared resources, ensuring scalability, maintainability, and clarity of operation.
+All mandatory system requirements were fulfilled, including periodic sensor acquisition every 60 seconds and visual feedback through a \gls{RGB} \gls{LED}. A critical milestone completed was the optimization of the communication \gls{LoRaWAN} stack, transitioning to a 30-byte packed binary structure to maximize transmission efficiency. The software architecture utilized atomic variables to protect shared resources, ensuring system stability and preventing data corruption during thread context switches.
 
-The use of Zephyr \gls{RTOS} enabled efficient thread management, synchronization, and timing control, while also facilitating debugging, logging, and performance analysis. Extensive unit, system, and external testing confirmed the stability, correctness, and robustness of the implementation under different operational conditions.
+The integration with the ResIoT platform enabled a comprehensive data pipeline, from physical sensing to cloud visualization through an interactive dashboard. The implementation of \gls{OTAA} activation and a custom LUA payload decoder ensured secure connectivity and the accurate transformation of raw hexadecimal data into human-readable metrics. Furthermore, the successful deployment of a downlink command handler allows for real-time remote interaction with the node's hardware.
 
-Overall, the project demonstrates a full embedded \gls{IoT} systems development lifecycle, from requirements analysis and hardware integration to software design, validation, and documentation. The resulting platform provides a solid foundation for more advanced \gls{IoT} monitoring applications in agriculture, environmental sensing, and smart systems.
-
-\subsection{Future Work}
+\subsection{Future Works}
 
 Although the system meets all specified requirements, several improvements and extensions could be considered in future iterations to enhance performance, accuracy, and scalability:
 
 \begin{itemize}
-    \item \textbf{Hardware-based \gls{PWM} generation}: The current implementation emulates \gls{PWM} behavior in software for RGB LED intensity control. A natural improvement would be to use dedicated hardware timers to generate \gls{PWM} signals. This would reduce CPU load, improve timing accuracy, and provide smoother and more precise brightness control.
-
-    \item \textbf{Improved thread synchronization mechanisms}: The system currently relies on semaphores for thread synchronization. Future versions could explore the use of event-based synchronization primitives (such as Zephyr events or message queues) to achieve more control, improved determinism, and clearer synchronization semantics between threads.
-
-    \item \textbf{Power optimization}: Additional low-power techniques could be implemented, such as deeper sleep states, dynamic sensor activation, and adaptive sampling rates based on environmental conditions.
-
-    \item \textbf{Wireless communication integration}: Leveraging the STM32WL55JC's integrated sub-GHz radio to transmit sensor data wirelessly (e.g., using \gls{LoRa} or other \gls{LPWAN} protocols) would significantly enhance the system's applicability in real-world deployments.
-
-    \item \textbf{Data logging and cloud integration}: Persistent storage of measurements and integration with cloud platforms or dashboards would enable long-term analysis, remote monitoring, and predictive analytics.
-
-    \item \textbf{Advanced data processing}: The addition of anomaly detection, trend analysis, or machine learning techniques could further improve plant health assessment and decision-making capabilities.
+    \item \textbf{Expanded Sensing Capabilities:} Adding additional simple sensors, such as a CO2 probe or a pH sensor, to provide a more comprehensive view of the plant's physiological health.
+    \item \textbf{Physical Protection:} Designing a weather-resistant enclosure for the STM32WL55JC and its breadboard components to allow for testing in actual outdoor garden environments.
+    \item \textbf{Power Consumption Profile:} Implementing sleep modes between the 60-second transmission intervals to further extend battery life for long-term field deployment.
+    \item \textbf{Adaptive Sampling:} Developing logic to adjust the transmission interval dynamically based on soil moisture levels or environmental criticalities (e.g., increasing frequency during drought conditions).
+    \item \textbf{Edge Computing:} Integrating local data processing to detect leaf color anomalies or sudden orientation shifts (acceleration) locally on the \gls{MCU}, sending "Alarm" flags to reduce unnecessary network traffic.
+    \item \textbf{Advanced Visualization:} Expanding the system with predictive analytics to forecast irrigation needs based on historical temperature and soil moisture trends.
 \end{itemize}
-
-These potential enhancements would build upon the solid architecture developed in this project, transforming the system into a more powerful, efficient, and scalable \gls{IoT} monitoring solution.

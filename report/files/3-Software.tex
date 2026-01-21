@@ -2,63 +2,50 @@
 
 \subsection{Description of the implementation}
 
-This section details the firmware logic of the \texttt{main} module and the integration of the LoRaWAN protocol stack. The implementation transitions the monitoring system from a local standalone application to a cloud-connected \gls{IoT} node.
+\subsubsection{\acrshort{LoRaWAN} Network Fundamentals}
 
-\subsubsection{LoRaWAN Network Fundamentals}
-
-LoRaWAN is a Low Power Wide Area Network (LPWAN) protocol designed for battery-operated devices. In this project, the \textbf{STM32WL55JC} node uses its integrated radio transceiver to communicate with a \textbf{Multitech Conduit Gateway} located at the university campus (Building 8, roof). 
-
-The data flow follows the LoRaWAN star topology, enabling bi-directional communication through Uplink and Downlink messages:
+\gls{LoRaWAN} is a \gls{LPWAN} protocol designed for battery-operated devices. In this project, the \textbf{STM32WL55JC} node uses its integrated radio transceiver to communicate with a \textbf{Gateway} located at the university campus (Building 8, roof). The data flow follows the \gls{LoRaWAN} star topology, enabling bi-directional communication through Uplink and Downlink messages:
 \begin{itemize}
-    \item \textbf{End-Node}: The STM32 node acquires environmental and health parameters (temperature, humidity, light, moisture, color, and acceleration) and transmits binary-encoded uplinks every 60 seconds. The implementation leverages LoRaWAN Class A downlink windows to receive control strings. 
-    \item \textbf{Gateway}: Receives the RF packets and forwards them via a \textit{Packet Forwarder} to the server address \texttt{eu72udp.resiot.io} using port 7677.
-    \item \textbf{Network Server (ResIOT)}: Manages device authentication, security keys, and data routing to the application dashboard. The system allows sending remote commands from the ResIOT platform back to the node.
+    \item \textbf{End-Node}: The STM32 node acquires environmental parameters (temperature, humidity, light, moisture, leaf color, and acceleration) and transmits binary-encoded messages every 60 seconds. The implementation leverages \gls{LoRaWAN} Class A downlink windows to receive control strings. 
+    \item \textbf{Gateway}: Receives the packets and forwards them to the server address \texttt{eu72udp.resiot.io}.
+    \item \textbf{Network Server (ResIoT)}: Manages device authentication, security keys, and data routing to the application dashboard. The system allows sending remote commands from the ResIoT platform back to the node.
 \end{itemize}
 
 \subsubsection{Project Structure}
 
-The software architecture is designed as a modular, multi-threaded application running on the Zephyr RTOS. To ensure efficient resource management and prevent blocking the LoRaWAN communication stack, the system is partitioned into several functional modules and specialized threads.
+The software architecture is designed as a modular, multi-threaded application running on the Zephyr \gls{RTOS}\cite{ZephyrAPIDocumentation}. To ensure efficient resource management and prevent blocking the \gls{LoRaWAN} communication stack, the system is partitioned into several functional modules and specialized threads.
 
-The logic for sensor interaction and hardware abstraction is decoupled from the \texttt{main.c} file and organized into specific libraries:
+The interaction between sensors and hardware abstraction logic is organized into specific libraries for each sensor and actuator. The application utilizes three main threads to handle concurrent Atomic Variables for shared measurements:
+
 \begin{itemize}
-    \item \textbf{Sensors Library (\texttt{sensors\_thread.h/c})}: Contains the drivers and logic for I2C and ADC-based sensors, including the Si7021 (Temp/Hum), TCS34725 (Color), and MMA8451Q (Accelerometer).
-    \item \textbf{GPS Library (\texttt{gps\_thread.h/c})}: Manages the UART interface and NMEA frame parsing for the external GPS module.
-    \item \textbf{Actuator Drivers}: Includes specialized functions for the RGB LED management using GPIO abstractions. \todo{cambiar}
+    \item \textbf{Main Thread}: Acts as the central orchestrator. It manages the \gls{LoRaWAN} join process (\gls{OTAA}), coordinates the sampling triggers, and handles the transmission of the binary-packed payload to the ResIoT server every 30 seconds.
+    \item \textbf{Sensors Thread}: A dedicated thread that, upon receiving a signal from the Main thread, sequentially samples all sensors (except \gls{GPS}).
+    \item \textbf{\gls{GPS} Thread}: Same as Sensors Thread but exclusively for the \gls{GPS} module.
 \end{itemize}
 
-The application utilizes three main threads to handle concurrent tasks without race conditions, using Zephyr semaphores for synchronization:
+\subsubsection{Network Activation (\acrshort{OTAA})}
 
-\begin{enumerate}
-    \item \textbf{Main Thread}: Acts as the central orchestrator. It manages the LoRaWAN join process (OTAA), coordinates the sampling triggers, and handles the transmission of the binary-packed payload to the ResIOT server every 30 seconds.
-    \item \textbf{Sensors Thread}: A dedicated high-priority thread that, upon receiving a signal from the Main thread, sequentially samples all environmental and physical sensors. It performs data normalization before storing values in atomic variables.
-    \item \textbf{GPS Thread}: Operates independently to monitor the UART bus. It parses incoming location data and updates the shared global coordinates, ensuring that the most recent valid position is always available for the next LoRaWAN uplink.
-\end{enumerate}
+The system implements \textbf{Over-the-Air Activation (\gls{OTAA})} for joining the network. This process requires three specific identifiers configured in the \texttt{main.c} file to perform the cryptographic handshake with the ResIoT server.
 
-To maintain data integrity across threads, the system utilizes \textbf{Atomic Variables} for shared measurements. This approach allows the Main thread to read the current state of the plant while the worker threads are updating them, providing thread safety without the overhead of mutexes, which is critical for the stability of an embedded IoT node.
+\begin{itemize} 
+    \item \textbf{LORAWAN\_DEV\_EUI (Device \gls{EUI}):} A 64-bit globally unique identifier for the end-device. Every device must have a different \gls{EUI} to be distinguished by the server. 
 
-\subsubsection{Network Activation (OTAA)}
+    \item \textbf{LORAWAN\_JOIN\_EUI (Application \gls{EUI}):} A 64-bit global application identifier. It identifies the specific application.
 
-The system implements \textbf{Over-the-Air Activation (OTAA)}, the most secure method for joining the network. This process requires three specific identifiers configured in the \texttt{main.c} file to perform the cryptographic handshake with the ResIOT server.
+    \item \textbf{LORAWAN\_APP\_KEY (Application Key):} A 128-bit \gls{AES}-128 secret key unique to the device. This key is used to sign the "Join Request" and verify the "Join Accept" message. It is a root security key that never travels through the air. Instead, it is used to derive the session keys (\textbf{AppSKey} and \textbf{NwkSKey}) that encrypt the actual plant data during transmission.
+\end{itemize}
 
-\begin{lstlisting}[language=C, caption={LoRaWAN OTAA Configuration in main.c}]
-    /* Unique identifiers for the ResIOT network */
+\begin{lstlisting}[language=C, caption={\acrshort{LoRaWAN} \acrshort{OTAA} Configuration in main.c}]
+    /* Unique identifiers for the ResIoT network */
     #define LORAWAN_DEV_EUI     { 0x7a, 0x39, 0x32, 0x35, 0x59, 0x37, 0x91, 0x94 }
     #define LORAWAN_JOIN_EUI    { 0x70, 0xB3, 0xD5, 0x7E, 0xD0, 0x00, 0xFC, 0x4D }
-    #define LORAWAN_APP_KEY     { 0xf3, 0x1c, 0x2e, 0x8b, 0xc6, 0x71, 0x28, 0x1d, \
+    #define LORAWAN_APP_KEY     { 0xf3, 0x1c, 0x2e, 0x8b, 0xc6, 0x71, 0x28, 0x1d, 
                                   0x51, 0x16, 0xf0, 0x8f, 0xf0, 0xb7, 0x92, 0x8f }
 \end{lstlisting}
 
-\begin{itemize} 
-    \item \textbf{LORAWAN\_DEV\_EUI (Device EUI):} A 64-bit globally unique identifier for the end-device. It acts as the "MAC address" or the unique serial number of the node in the LoRaWAN network. Every device must have a different EUI to be distinguished by the server. 
+\subsubsection{Payload Encoding}\label{trama}
 
-    \item \textbf{LORAWAN\_JOIN\_EUI / APP\_EUI:} A 64-bit global application identifier. It identifies the specific application or entity that will handle the join procedure for the device. All students in this course share the same Join EUI as they belong to the same project infrastructure.
-
-    \item \textbf{LORAWAN\_APP\_KEY (Application Key):} A 128-bit AES-128 secret key unique to the device. This key is used to sign the "Join Request" and verify the "Join Accept" message. It is a root security key that never travels through the air. Instead, it is used to derive the session keys (\textit{AppSKey} and \textit{NwkSKey}) that encrypt the actual plant data during transmission.
-\end{itemize}
-
-\subsubsection{Payload Encoding}
-
-The application uses **Atomic Variables** (4 bytes each) for shared storage between the \texttt{sensors\_thread}, \texttt{gps\_thread}, and the \texttt{main} loop. This ensures that the data sent via LoRaWAN is never corrupted by a thread context switch during a read operation, maintaining system stability and data integrity.
+The application uses \textbf{Atomic Variables} (4 bytes each) for shared storage between the \textbf{sensors\_thread}, \textbf{gps\_thread}, and the \textbf{main} loop. This ensures that the data sent via \gls{LoRaWAN} is never corrupted by a thread context switch during a read operation, maintaining system stability and data integrity.
 
 \begin{lstlisting}[language=C, caption={Atomic Variables Structure}]
 struct system_measurement {
@@ -85,7 +72,7 @@ struct system_measurement {
 };
 \end{lstlisting}
 
-To comply with the project's strict \textbf{30-byte limit} and optimize power consumption, Phase 3 focused on converting the data from strings to a binary structure. By using the \texttt{packed} attribute, the system fits all plant parameters and GPS coordinates into a single \textbf{30-byte} frame.
+To comply with the project's strict \textbf{30-byte limit}, Phase 3 focused on converting the data to a \textbf{packed structure}. 
 
 \begin{lstlisting}[language=C, caption={Optimized 30-byte Binary Structure}]
 struct __attribute__((packed)) main_measurement {
@@ -115,90 +102,104 @@ struct __attribute__((packed)) main_measurement {
     int8_t   z_axis;    // 1 byte
 };
 \end{lstlisting}
+The selection of data types is based on the precision required and the expected range $[min, max]$ for each sensor to optimize the \gls{LoRaWAN} payload.
 
-The selection of data types is based on the precision required and the expected range $[min, max]$ for each sensor. Using fixed-point arithmetic instead of floating-point numbers allows us to minimize the payload size while maintaining the necessary resolution. \todo{poner bonito}
-
+\textbf{Latitude (lat):} 
 \begin{itemize}
-    \item \textbf{Latitude and Longitude (lat, lon):} 
-    \begin{itemize}
-        \item \textbf{Range:} $[-180.0, 180.0]$ with 6 decimal places.
-        \item \textbf{Scaled Range:} $[-180,000,000, 180,000,000]$.
-        \item \textbf{Ideal Type:} \texttt{int32\_t} (4 bytes). A 16-bit integer (max 32,767) is insufficient. \texttt{int32\_t} covers up to $\pm 2.1 \times 10^9$, providing the perfect balance for decametric precision globally.
-    \end{itemize}
-
-    \item \textbf{Altitude (alt):}
-    \begin{itemize}
-        \item \textbf{Range:} $[0, 10,000]$ meters with cm precision.
-        \item \textbf{Scaled Range:} $[0, 1,000,000]$.
-        \item \textbf{Ideal Type:} \texttt{int32\_t} (4 bytes). Although it exceeds 16-bit limits, it ensures compatibility with GPS high-altitude readings without overflow.
-    \end{itemize}
-
-    \item \textbf{Temperature (temp):}
-    \begin{itemize}
-        \item \textbf{Range:} $[-40.00, 85.00] ^\circ C$. 
-        \item \textbf{Scaled Range:} $[-4000, 8500]$ (Factor $10^2$).
-        \item \textbf{Ideal Type:} \texttt{int16\_t} (2 bytes). Since \texttt{int8\_t} only reaches 127, \texttt{int16\_t} is required to handle the four-digit scaled value while remaining 50\% smaller than a standard float.
-    \end{itemize}
-
-    \item \textbf{Humidity, Light, and Moisture (hum, light, moisture):}
-    \begin{itemize}
-        \item \textbf{Range:} $[0, 100.0]\%$.
-        \item \textbf{Scaled Range:} $[0, 1000]$ (Factor $10^1$).
-        \item \textbf{Ideal Type:} \texttt{uint16\_t} (2 bytes). A single byte (\texttt{uint8\_t}) can only represent up to 255; therefore, a 16-bit type is the smallest container that can hold the 0.1\% resolution.
-    \end{itemize}
-
-    \item \textbf{Color Normalization (r\_norm, g\_norm, b\_norm):}
-    \begin{itemize}
-        \item \textbf{Range:} $[0, 100]\%$.
-        \item \textbf{Ideal Type:} \texttt{uint8\_t} (1 byte). Since the maximum value is 100, it fits perfectly within the 0-255 range of a single byte, saving 3 bytes compared to using integers.
-    \end{itemize}
-
-    \item \textbf{Accelerometer Axes (x, y, z):}
-    \begin{itemize}
-        \item \textbf{Range:} $[-20.0, 20.0] m/s^2$ (approx).
-        \item \textbf{Scaled Range:} $[-200, 200]$ (Factor $10^1$).
-        \item \textbf{Ideal Type:} \texttt{int8\_t} (1 byte). By slightly reducing the precision or range to fit within $[-128, 127]$, we can represent movement with a single byte per axis, which is the most efficient choice for vibration detection.
-    \end{itemize}
-
-    \item \textbf{Time and Satellites:}
-    \begin{itemize}
-        \item \textbf{Ideal Type:} \texttt{uint8\_t} (1 byte each). Hours (0-23), Minutes (0-59), Seconds (0-59), and Satellite count (0-20+) all fall well below the 255 limit of an 8-bit unsigned integer.
-    \end{itemize}
+    \item \textbf{Range:} $[-90 : 90]$ decimal degrees with 6 decimal places.
+    \item \textbf{Scaled Range:} $[-90,000,000 : 90,000,000]$ (Factor $10^6$).
+    \item \textbf{Ideal Type:} \texttt{int32\_t} (4 bytes). Although the value fits within a smaller range than longitude, \texttt{int32\_t} is required to maintain 6-decimal precision, because of that, a 16-bit integer is insufficient.
 \end{itemize}
 
-\autoref{fig:trama} and \autoref{tab:lorawan_payload_structure} illustrate the final distribution of the binary frame. The use of \texttt{\_\_attribute\_\_((packed))} in C prevents the compiler from adding padding, ensuring the frame is exactly as described.
+\textbf{Longitude (lon):} 
+\begin{itemize}
+    \item \textbf{Range:} $[-180 : 180]$ decimal degrees with 6 decimal places.
+    \item \textbf{Scaled Range:} $[-180,000,000 : 180,000,000]$ (Factor $10^6$).
+    \item \textbf{Ideal Type:} \texttt{int32\_t} (4 bytes). This provides the necessary range for global coverage with decametric precision, fitting well within the $\pm 2.1 \times 10^9$ limit of the data type.
+\end{itemize}
+
+\textbf{Altitude (alt):}
+\begin{itemize}
+    \item \textbf{Range:} $[0 : 10,000]$ meters with centimeter precision.
+    \item \textbf{Scaled Range:} $[0 : 1,000,000]$ (Factor $10^2$).
+    \item \textbf{Ideal Type:} \texttt{int32\_t} (4 bytes). While a 16-bit integer is capped at 65,535, \texttt{int32\_t} comfortably handles altitude in centimeters without risk of overflow.
+\end{itemize}
+
+\textbf{Time and Satellites:}
+\begin{itemize}
+    \item \textbf{Ideal Type:} \texttt{uint8\_t} (1 byte each). Hours (0-23), minutes (0-59), seconds (0-59), and satellite count are all stored in 8-bit integers as they never exceed the byte limit (0-255).
+\end{itemize}
+
+\textbf{Temperature (temp):}
+\begin{itemize}
+    \item \textbf{Range:} $[-10 : 50] ^\circ C$ with two decimal places. 
+    \item \textbf{Scaled Range:} $[-1000 : 5000]$ (Factor $10^2$).
+    \item \textbf{Ideal Type:} \texttt{int16\_t} (2 bytes). This type provides a $50\%$ size reduction compared to a \texttt{float}, while maintaining the required $0.01^\circ C$ resolution.
+\end{itemize}
+
+\textbf{Relative Humidity(hum):}
+\begin{itemize}
+    \item \textbf{Range:} $[0 : 100]\%$ with two decimal places.
+    \item \textbf{Scaled Range:} $[0 : 10000]$ (Factor $10^2$).
+    \item \textbf{Ideal Type:} \texttt{uint16\_t} (2 bytes). Since a single byte (\texttt{uint8\_t}) is limited to 255, a 16-bit container is necessary to store the $0.1\%$ resolution.
+\end{itemize}
+
+\textbf{Light, and Moisture (light, moisture):}
+\begin{itemize}
+    \item \textbf{Range:} $[0 : 100]\%$ with one decimal place.
+    \item \textbf{Scaled Range:} $[0 : 1000]$ (Factor $10^1$).
+    \item \textbf{Ideal Type:} \texttt{uint16\_t} (2 bytes). Same as Relative Humidity.
+\end{itemize}
+
+\textbf{Color Normalization (r\_norm, g\_norm, b\_norm):}
+\begin{itemize}
+    \item \textbf{Range:} $[0 : 100]\%$.
+    \item \textbf{Ideal Type:} \texttt{uint8\_t} (1 byte). The percentage fits perfectly within the 8-bit range (0-255), minimizing the footprint for color representation.
+\end{itemize}
+
+\textbf{Accelerometer Axes (x, y, z):}
+\begin{itemize}
+    \item \textbf{Range:} $\pm 12.7 \, m/s^2$ (covers gravity and moderate tilt).
+    \item \textbf{Scaled Range:} $[-127 : 127]$ (Factor $10^1$).
+    \item \textbf{Ideal Type:} \texttt{int8\_t} (1 byte per axis). This maximizes payload efficiency while providing $0.1 \, m/s^2$ resolution, sufficient for detecting orientation and structural failure.
+\end{itemize}
+
+The system architecture prioritizes high-resolution environmental readings over the full dynamic range of the accelerometer. Given that the accelerometer's primary function is to detect orientation or determine if the plant has tipped over, the full $\pm 19.6 \, m/s^2$ range is unnecessary. By capping this range, the system can compress each axis into a single byte. This optimization saves significant bandwidth, which is instead allocated to maintaining decimal precision for Temperature, Relative Humidity, Light, and Moisture.
+
+\autoref{fig:trama} and \autoref{tab:lorawan_payload_structure} illustrate the final distribution of the binary frame. The \texttt{\_\_attribute\_\_((packed))} in C prevents the compiler from adding padding, ensuring the frame is exactly as described.
+
+\begin{table}[H]
+    \centering
+    \caption{\acrshort{LoRaWAN} Binary Payload Structure}
+    \label{tab:lorawan_payload_structure}
+    \begin{tabular}{p{0.15\textwidth}p{0.15\textwidth}p{0.15\textwidth}p{0.1\textwidth}p{0.2\textwidth}}
+        \toprule
+        \textbf{Byte Offset} & \textbf{Field} & \textbf{Data Type} & \textbf{Scaling} & \textbf{Range} \\ \midrule
+        0 - 3   & Latitude  & int32\_t  & $10^6$ & $\pm 90.000000^\circ$ \\ 
+        4 - 7   & Longitude & int32\_t  & $10^6$ & $\pm 180.000000^\circ$ \\ 
+        8 - 11  & Altitude  & int32\_t  & $10^2$ & 0 - 10,000.00 m \\ 
+        12 - 14 & Time      & uint8\_t[3] & -    & HH:MM:SS \\ 
+        15      & GPS Sats  & uint8\_t  & -    & 0 - 255 \\ 
+        16 - 17 & Temp      & int16\_t  & $10^2$ & -10.00 - 50.00$^\circ C$ \\ 
+        18 - 19 & Humidity  & uint16\_t & $10^2$ & 0 - 100.00\% \\ 
+        20 - 21 & Light     & uint16\_t & $10^1$ & 0 - 100.0\% \\ 
+        22 - 23 & Moisture  & uint16\_t & $10^1$ & 0 - 100.0\% \\ 
+        24 - 26 & RGB Norm  & uint8\_t[3] & \%   & 0 - 100\% \\ 
+        27 - 29 & Accel XYZ & int8\_t[3]  & $10^1$ & -12.8 to 12.7 $m/s^2$ \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=1\textwidth]{images/lora_bytes.png}
-    \caption{LoRaWAN Binary Payload Structure}
+    \caption{\acrshort{LoRaWAN} Binary Payload Structure}
     \label{fig:trama}
 \end{figure}
 
-\begin{table}[H]
-    \centering
-    \caption{LoRaWAN Binary Payload Structure}
-    \label{tab:lorawan_payload_structure}
-    \begin{tabular}{|c|c|c|c|l|}
-        \hline
-        \textbf{Byte Offset} & \textbf{Field} & \textbf{Data Type} & \textbf{Scaling} & \textbf{Logical Range} \\ \hline
-        0 - 3   & Latitude  & int32\_t  & $10^6$ & $\pm 180^\circ$ \\ \hline
-        4 - 7   & Longitude & int32\_t  & $10^6$ & $\pm 180^\circ$ \\ \hline
-        8 - 11  & Altitude  & int32\_t  & $10^2$ & 0 - 10,000 m \\ \hline
-        12 - 14 & Time      & uint8\_t[3] & -    & HH:MM:SS \\ \hline
-        15      & GPS Sats  & uint8\_t  & -    & 0 - 255 \\ \hline
-        16 - 17 & Temp      & int16\_t  & $10^2$ & -327.68 to 327.67 \\ \hline
-        18 - 19 & Humidity  & uint16\_t & $10^2$ & 0 to 655.35 \\ \hline
-        20 - 21 & Light     & uint16\_t & $10^1$ & 0 to 6553.5 \\ \hline
-        22 - 23 & Moisture  & uint16\_t & $10^1$ & 0 to 6553.5 \\ \hline
-        24 - 26 & RGB Norm  & uint8\_t[3] & \%   & 0 - 100\% \\ \hline
-        27 - 29 & Accel XYZ & int8\_t[3]  & $10^1$ & -12.8 to 12.7 $m/s^2$ \\ \hline
-    \end{tabular}
-\end{table}
-
 \subsubsection{Main Application Control Flow}
 
-The \texttt{main} function acts as the system coordinator, ensuring timing compliance and thread synchronization through Zephyr semaphores. The loop follows a 60-second duty cycle to monitor the plant health and transmit the report via the LoRaWAN stack. \todo{añadir que 60s por error de lora}
+The \textbf{main} function acts as the system coordinator, ensuring timing compliance and thread synchronization through Zephyr semaphores. The loop follows a 60-second duty cycle to monitor the plant health and transmit the report via the \gls{LoRaWAN} stack. The transmission interval was increased from 30 to 60 seconds to ensure long-term system stability. During initial testing, a shorter duty cycle led to buffer saturation issues.
 
 \begin{lstlisting}[language=C, caption={Core Application Logic in main()}]
 int main(void)
@@ -257,9 +258,9 @@ int main(void)
 
 \subsubsection{get\_measurements() and display\_measurements() Functions}
 
-The data processing logic is divided into two primary functions that handle the translation between raw sensor data, human-readable units, and the optimized binary format required for LoRaWAN transmission.
+The data processing logic is divided into two primary functions that handle the translation between raw sensor data, human-readable units, and the optimized binary format required for \gls{LoRaWAN} transmission. 
 
-The \texttt{get\_measurements} function retrieves the latest values from the shared atomic measurement structure. In this phase, the function has been optimized to perform binary scaling instead of string formatting to fit the 30-byte payload limit.
+The \texttt{get\_measurements} function retrieves the latest values from the shared atomic measurement structure.
 
 \begin{lstlisting}[language=C, caption={Get measurements and binary scaling}]
 static void get_measurements(void)
@@ -299,7 +300,7 @@ static void get_measurements(void)
 }
 \end{lstlisting}
 
-While the binary data is sent to the ResIOT platform, the \texttt{display\_measurements} function provides local feedback via the serial console. This is essential for verifying that the sensors are correctly calibrated and that the data being prepared for LoRaWAN transmission matches the physical reality.
+The \textbf{display\_measurements} function provides local feedback via the serial console. 
 
 \begin{lstlisting}[language=C, caption={Local sensor report via Serial}]
 static void display_measurements(void)
@@ -343,8 +344,9 @@ static void display_measurements(void)
            main_data.r_norm, main_data.g_norm, main_data.b_norm);
 
     // 7. Accelerometer
-    printk("ACCEL:     Raw X:%ld Y:%ld Z:%ld | Value X:%.1f Y:%.1f Z:%.1f m/s2\n",
+    printk("ACCEL:     Raw X:%ld Y:%ld Z:%ld | LoRa: X: %d Y: %d Z: %d | Value X:%.1f Y:%.1f Z:%.1f m/s2\n",
            atomic_get(&measure.accel_x), atomic_get(&measure.accel_y), atomic_get(&measure.accel_z),
+           main_data.x_axis, main_data.y_axis, main_data.z_axis,
            (double)main_data.x_axis / 10.0, (double)main_data.y_axis / 10.0, (double)main_data.z_axis / 10.0);
 
     printk("------------------------------------------\n\n");
@@ -353,16 +355,16 @@ static void display_measurements(void)
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\textwidth]{images/logs.png}
-    \caption{LoRaWAN Local Feedback}
+    \includegraphics[width=1\textwidth]{images/logs.png}
+    \caption{\acrshort{LoRaWAN} Local Feedback}
     \label{fig:local_feedback}
 \end{figure}
 
 \subsubsection{Downlink Control Logic}
 
-The system is capable of receiving remote commands (Downlinks) from the ResIOT platform[cite: 395]. This is managed via a callback function that listens for specific strings to control the plant's status indicator (\gls{RGB} \gls{LED}).
+The system is capable of receiving remote commands (Downlink) from the ResIoT platform. This is managed via a callback function that listens for specific strings to control the plant's status indicator (\gls{RGB} \gls{LED}).
 
-\begin{lstlisting}[language=C, caption={Downlink Callback for Actuator Control}]
+\begin{lstlisting}[language=C, caption={Downlink Callback for \acrshort{RGB} Control}]
 static void dl_callback(uint8_t port, uint8_t flags, int16_t rssi, int8_t snr, 
                         uint8_t len, const uint8_t *hex_data) {
     if (hex_data) {
@@ -378,7 +380,7 @@ static void dl_callback(uint8_t port, uint8_t flags, int16_t rssi, int8_t snr,
 
 \subsubsection{prj\_nucleo\_wl55jc.conf}
 
-The project configuration file (\texttt{prj\_nucleo\_wl55jc.conf}) defines the kernel services and device drivers required for the LoRaWAN-enabled plant monitoring system. Beyond enabling basic \gls{GPIO}, \gls{ADC}, and \gls{I2C} peripherals, this file is critical for activating the \textbf{LoRaWAN stack} and the \textbf{EU868 regional settings}. 
+The project configuration file (\texttt{prj\_nucleo\_wl55jc.conf}) defines the kernel services and device drivers required for the \gls{LoRaWAN}-enabled plant monitoring system. Beyond enabling basic \gls{GPIO}, \gls{ADC}, and \gls{I2C} peripherals, this file is critical for activating the \gls{LoRaWAN} stack and the EU868 regional settings. 
 
 Additionally, it configures \gls{NVS} and the Zephyr Settings subsystem to persist network parameters such as the DevNonce, which is mandatory for secure \gls{OTAA} joins.
 
@@ -572,19 +574,9 @@ During the compilation process, Zephyr generates a memory usage summary that ind
     \label{fig:build}
 \end{figure}
 
-\subsection{Flashing the Firmware onto the STM32WL55}\todo{actualizar}
+\subsection{Flashing the Firmware onto the STM32WL55}
 
-The \autoref{fig:flash} corresponds to the flashing process performed using \texttt{STM32CubeProgrammer}, which communicates with the NUCLEO-WL55JC board via the onboard ST-LINK debugger. The tool successfully identifies the target device, displaying key details such as:
-
-\begin{itemize}
-    \item \textbf{Device:} STM32WLxx.
-    \item \textbf{Flash Size:} 256KB.
-    \item \textbf{Core:} \gls{ARM} Cortex-M4.
-    \item \textbf{Supply Voltage:} 3.27V.
-    \item \textbf{Connection Mode:} Under Reset.
-\end{itemize}
-
-After loading the generated \texttt{zephyr.hex} file (132.26KB), the programmer performs the necessary steps to start the application.
+The \autoref{fig:flash} corresponds to the flashing process performed using \texttt{STM32CubeProgrammer}, which communicates with the NUCLEO-WL55JC board via the onboard ST-LINK debugger. The tool successfully identifies the target device, displaying key details. After loading the generated \texttt{zephyr.hex} file (\textbf{132.26KB}), the programmer performs the necessary steps to start the application.
 
 \begin{figure}[H]
     \centering

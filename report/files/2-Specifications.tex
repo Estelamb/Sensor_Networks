@@ -1,68 +1,56 @@
-\section{Project Specifications}\todo{revisar}
+\section{Project Specifications}
 
-\subsection{System Requirements and Infrastructure}
+\subsection{System Infrastructure}
 
-The objective of the system is to acquire environmental data from a plant and transmit it to a \gls{LoRaWAN} network server using the integrated radio of the STM32WL55 platform. The infrastructure relies on a star-of-stars topology consisting of the following elements:
+The infrastructure relies on a star-of-stars topology consisting of the following elements:
 
 \begin{itemize}
-    \item \textbf{\gls{LoRaWAN} Nodes}: Hardware based on the STM32WL55JC microcontroller equipped with environmental and health sensors.
-    \item \textbf{Gateways}: A \gls{LoRaWAN} Gateway located on the roof of Building 8 at the university campus. It operates in \textit{Packet Forwarder} mode, relaying messages to the server address \texttt{eu72udp.resiot.io}.
-    \item \textbf{Network and Application Server}: The ResIOT.io platform is used for device management, data decoding via LUA scripts, and dashboard visualization.
+    \item \textbf{\gls{LoRaWAN} Nodes}: Hardware based on the STM32WL55JC microcontroller\cite{STM32WL55JCProductSTMicroelectronics} equipped with sensors.
+    \item \textbf{Gateways}: A \gls{LoRaWAN} Gateway located on the roof of Building 8 at the university campus. It relays messages to the server address \texttt{eu72udp.resiot.io}.
+    \item \textbf{Network and Application Server}: The ResIoT.io platform\cite{ResIOTLoRaWANNetwork2025} is used for device management, data decoding via LUA scripts, and dashboard visualization.
 \end{itemize}
-
-
 
 \subsection{Hardware Specifications}
 
-The system utilizes the STM32WL55JC long-range wireless and ultra-low-power device. \autoref{tab:hardware_summary} summarizes the sensors and interfaces used for monitoring all required parameters related to the plant's health.
+The hardware components utilized in this project are detailed in \autoref{tab:hardware_summary}.
 
 \begin{table}[H]
     \centering
-    \caption{Summary of Hardware for the \gls{LoRaWAN} \gls{IoT} System}
+    \caption{Summary of Hardware for the \acrshort{LoRaWAN} \gls{IoT} System}
     \label{tab:hardware_summary}
-    \begin{tabular}{p{0.30\textwidth}p{0.30\textwidth}p{0.25\textwidth}}
+    \begin{tabular}{p{0.35\textwidth}p{0.30\textwidth}p{0.15\textwidth}}
         \toprule
         \textbf{Parameter} & \textbf{Sensor / Module} & \textbf{Interface}  \\ 
         \midrule
-        \gls{MCU} Board & STM32WL55JC & \gls{LoRaWAN} (Internal) \\ 
-        Status / Downlink & \gls{RGB} \gls{LED} & \gls{GPIO} \\ 
-        Ambient Light & Analog Light Sensor & \gls{ADC} \\ 
-        Soil Moisture & Analog Moisture Probe & \gls{ADC} \\ 
-        Temp / Humidity & \gls{I2C} Environmental Sensor & \gls{I2C} \\ 
-        Leaf Colour & \gls{RGB} Colour Sensor & \gls{I2C} \\ 
-        Accelerometer & 3-axis Accelerometer & \gls{I2C} \\ 
-        Global Location & External \gls{GPS} Module & \gls{UART} \\ 
+        \gls{MCU} Board & STM32WL55JC\cite{STM32WL55JCProductSTMicroelectronics} & \gls{LoRaWAN} \\ 
+        Ambient Light & HW5P-1 Phototransistor\cite{industriesPhotoTransistorLight} & \acrshort{ADC} \\ 
+        Soil Moisture & SEN-13322\cite{SparkFunSoilMoisture} & \acrshort{ADC} \\ 
+        Temperature / Humidity & Si7021\cite{industriesAdafruitSi7021Temperature} & \acrshort{I2C} \\ 
+        Leaf Colour & TCS34725\cite{industriesRGBColorSensor} & \acrshort{I2C} \\ 
+        Acceleration & MMA8451Q\cite{industriesAdafruitTripleAxisAccelerometer} & \acrshort{I2C} \\ 
+        Global Location & Adafruit Ultimate \acrshort{GPS}\cite{industriesAdafruitUltimateGPS} & \acrshort{UART} \\ 
+        Downlink Commands & \gls{RGB} \gls{LED} & \acrshort{GPIO} \\ 
         \bottomrule
     \end{tabular}
 \end{table}
 
 \subsection{Software and Connectivity Requirements}
 
-The project development is structured into three phases, evolving from basic \gls{LoRaWAN} connectivity to a fully optimized monitoring application.
-
-\subsubsection{\gls{LoRaWAN} Configuration}
-The node is configured using \textbf{\gls{OTAA}}. The following identifiers are implemented in the \texttt{main.c} file to establish the connection:
-\begin{itemize}
-    \item \textbf{Device \gls{EUI}}: Unique identifier for every node.
-    \item \textbf{Join \gls{EUI} (App \gls{EUI})}: \texttt{0x70B3D57ED000FC4D}.
-    \item \textbf{App Key}: Secret key for secure network join.
-\end{itemize}
-
-\subsubsection{Data Transmission and Optimization (Phase 3)}
-As per Phase 3 requirements, the system optimizes the data format using binary types to minimize message length.
+A summary of the connectivity parameters and payload configuration is presented in \autoref{tab:connectivity_specs}.
 
 \begin{table}[H]
     \centering
     \caption{Connectivity and Payload Specifications}
     \label{tab:connectivity_specs}
-    \begin{tabular}{p{0.25\textwidth}p{0.65\textwidth}}
+    \begin{tabular}{p{0.25\textwidth}p{0.5\textwidth}}
         \toprule
         \textbf{Feature} & \textbf{Requirement} \\
         \midrule
-        Transmission Interval & 60 seconds (defined by \texttt{DELAY}) \\
+        Activation Mode & \gls{OTAA} \\
+        Join \gls{EUI} & \texttt{0x70B3D57ED000FC4D} \\
+        Transmission Interval & 60 seconds \\
         Max Message Length & 30 bytes \\
         Implemented Payload & 30 bytes (\texttt{packed} structure) \\
-        Activation Mode & \gls{OTAA} \\
         Downlink Control & Remote \gls{LED} change via "OFF", "Green", or "Red" \\
         \bottomrule
     \end{tabular}
@@ -70,20 +58,20 @@ As per Phase 3 requirements, the system optimizes the data format using binary t
 
 \subsection{Additional Specifications Implemented}
 
-In addition to the core requirements, several robustness mechanisms were implemented to improve system reliability:
+The technical measures for resiliency and data handling are listed in \autoref{tab:additional_specs_lora}.
 
 \begin{table}[H]
     \centering
     \caption{Additional Specifications Implemented}
     \label{tab:additional_specs_lora}
-    \begin{tabular}{p{0.05\textwidth}p{0.20\textwidth}p{0.65\textwidth}}
+    \begin{tabular}{p{0.2\textwidth}p{0.75\textwidth}}
         \toprule
-        \textbf{ID} & \textbf{Requirement} & \textbf{Description} \\ 
+        \textbf{Requirement} & \textbf{Description} \\ 
         \midrule
-        AS1 & \textbf{Join Resiliency} & The system implements up to 30 join retries with a delay between attempts to handle gateway saturation. \\ 
-        AS2 & \textbf{Atomic Storage} & Shared measurements use Zephyr atomic variables to prevent race conditions between sensor threads and the main \gls{LoRaWAN} loop. \\ 
-        AS3 & \textbf{LUA Decoding} & A custom LUA script on the ResIOT server parses the binary payload into human-readable variables for the dashboard. \\ 
-        AS4 & \textbf{\gls{GPS} Fail-safe} & Predefined coordinates are used if the \gls{GPS} signal is not fixed, ensuring the transmission loop continues. \\ 
+        \textbf{Join Resiliency} & 30 join retries with a delay between attempts. \\ 
+        \textbf{Atomic Storage} & Measurements use Zephyr atomic variables to prevent race conditions between sensor threads and the main \gls{LoRaWAN} loop. \\ 
+        \textbf{LUA Decoding} & A LUA script on the ResIoT server parses the hexadecimal payload. \\ 
+        \textbf{\acrshort{GPS} Fail-safe} & Predefined coordinates are used if the \gls{GPS} signal is not fixed. \\ 
         \bottomrule
     \end{tabular}
 \end{table}
