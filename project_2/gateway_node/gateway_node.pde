@@ -228,7 +228,7 @@ bool wifiCheckConnection() {
 
 /**
  * @brief Formats sensor data into a ThingSpeak-compatible string and publishes via MQTT.
- * * @param topic The MQTT topic to publish to.
+ * @param topic The MQTT topic to publish to.
  * @param temp Temperature value.
  * @param hum Humidity value.
  * @param pres Pressure value.
@@ -283,6 +283,8 @@ bool mqttPublish(char* topic, float temp, float hum, float pres, int batt, float
 
     // 4. Send and Close
     error_wifi = WIFI_PRO.send(socket_handle, buf, len);
+    delay(2000);
+    
     WIFI_PRO.closeSocket(socket_handle);
     
     // Avoid "Socket in use"
@@ -350,7 +352,7 @@ void sendAlarmMQTT() {
 
   // 6. Send Data
   error_wifi = WIFI_PRO.send(socket_handle, buf, len);
-  delay(500);
+  delay(2000);
 
   if (error_wifi == 0) {
     USB.print(F("ALARM ThingSpeak OK: ")); USB.println(payload);
@@ -366,8 +368,6 @@ void sendAlarmMQTT() {
   // 7. Close Socket and Change Port
   WIFI_PRO.closeSocket(socket_handle);
   LOCAL_PORT[3] = (LOCAL_PORT[3] == '9') ? '0' : (LOCAL_PORT[3] + 1);
-  
-  delay(1000);
 }
 
 /**

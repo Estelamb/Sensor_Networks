@@ -1,0 +1,40 @@
+\section{Overview and Introduction}
+
+The fundamental objective of this project is the design, development, and deployment of a complete \gls{WSN} using a \gls{M2M} architecture. This system is designed to monitor environmental and physical parameters in real-time, integrating low-power local communication with global cloud-based visualization platforms.
+
+\subsection{Project Scope and Objectives}
+The project requires the coordination of multiple hardware and software layers to achieve a robust monitoring system. The primary goals include:
+\begin{itemize}
+    \item \textbf{Data Collection}: Periodically measuring temperature, humidity, pressure, and battery levels from multiple nodes.
+    \item \textbf{Event-Driven Monitoring}: Implementing high-priority interrupts to detect and report critical events such as free falls and human presence (motion).
+    \item \textbf{Energy Optimization}: Configuring end nodes to operate in low-power states to maximize battery life.
+    \item \textbf{Protocol Integration}: Utilizing \gls{IEEE} 802.15.4 for the local sensor network and bridging that data to the Internet via WiFi using the \gls{MQTT} protocol.
+\end{itemize}
+
+\subsection{System Architecture}
+The system follows a two-tier hierarchy as illustrated in the project specifications:
+\begin{enumerate}
+    \item \textbf{The Sensor Network (Local Link)}: Consists of Libelium Waspmote nodes. An \texttt{End Node} collects sensor data and transmits it to a \texttt{Gateway} node using XBee 802.15.4 PRO S1 modules.
+    \item \textbf{The \gls{IP} Network (Cloud Bridge)}: The \texttt{Gateway} node acts as an Edge-node. It receives local data, performs its own measurements, and publishes all information to the \textbf{ThingSpeak} cloud via a \gls{MQTT} broker.
+\end{enumerate}
+
+\subsection{Technological Stack}
+The implementation relies on several key technologies:
+\begin{table}[H]
+    \centering
+    \caption{Technological Components of the Project}
+    \begin{tabular}{p{0.3\textwidth}p{0.3\textwidth}}
+        \toprule
+        \textbf{Component} & \textbf{Technology / Protocol} \\ 
+        \midrule
+        Hardware Platforms & Libelium Waspmote (v15 \& v30) \\ 
+        Local Wireless Link & \gls{IEEE} 802.15.4 (XBee) \\ 
+        Internet Connectivity & WiFi \\ 
+        \gls{M2M} Protocol & \gls{MQTT} \\ 
+        Cloud Platform & ThingSpeak.com \\ 
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\subsection{Workflow Overview}
+The operational flow begins with the End Node sensing the environment every 30 seconds. If a fall or motion is detected, the node bypasses the timer to send an immediate priority alarm. The Gateway node remains grid-powered and constantly listens for these transmissions and executes the same measurements. Upon reception, the Gateway parses the raw data and encapsulates it into a \gls{MQTT} packet, which is sent over WiFi to the designated ThingSpeak channels for user visualization.

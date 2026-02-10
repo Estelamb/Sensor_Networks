@@ -1,0 +1,104 @@
+\section{Nodes implementation}
+
+\subsection{End Node}
+
+The End Node is a core component of the sensor network, responsible for environmental data acquisition and event detection. In this project, the node is optimized for autonomous operation using a battery, which necessitates a strict power management strategy.
+
+\subsubsection{Functional Specifications}
+The End Node is equipped with a sensor board and an XBee 802.15.4 communication module. Its primary functions are:
+\begin{itemize}
+    \item \textbf{Periodic Sensing}: Measures temperature, humidity, pressure, and battery level every 30 seconds.
+    \item \textbf{Inertial Monitoring}: Constant monitoring of the 3-axis accelerometer to detect free-fall events.
+    \item \textbf{Motion Detection}: Integration with a \gls{PIR} sensor to identify human presence.
+    \item \textbf{Power Management}: Utilization of deep sleep modes to minimize current consumption during idle periods.
+\end{itemize}
+
+\subsubsection{Logic and Operational Flow}
+The node operates in a cyclic manner. Upon startup, it initializes the hardware, stabilizes the \gls{PIR} sensor, and joins the XBee network. It then enters a \texttt{deepSleep} state, from which it can be awakened by three specific triggers:
+\begin{enumerate}
+    \item \textbf{\gls{RTC} Alarm}: A timer-based wake-up every 30 seconds for periodic reporting.
+    \item \textbf{Accelerometer Interrupt}: Triggered immediately if the $G$-force threshold for a free fall is met.
+    \item \textbf{Sensor Event Interrupt}: Triggered by the \gls{PIR} sensor when motion is detected.
+\end{enumerate}
+
+\subsubsection{Flow Diagram}
+The following diagram describes the internal logic of the \texttt{loop()} function:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/end_node.png}
+    \caption{End Node Loop Diagram}
+    \label{fig:end_node_loop}
+\end{figure}
+
+\subsubsection{Code Implementation}
+The implementation relies on the \texttt{WaspFrame} library to encapsulate data and the \texttt{PWR} library for energy savings. A critical part of the code is the interrupt handling, which ensures that alarms are sent before the node returns to sleep.
+
+\begin{lstlisting}[language=C, caption={Power Management and Wake-up Logic}]
+void loop() {
+  // Check for Alarms first
+  if (intFlag & (ACC_INT | SENS_INT)) handleAlarms();
+  
+  // Check for Periodic measurement
+  if (intFlag & RTC_INT) {
+    intFlag &= ~(RTC_INT); // Clear flag
+    readSensors();
+    sendPeriodicData();
+  }
+  
+  // Return to low power mode
+  PWR.deepSleep(SAMPLING_PERIOD, RTC_OFFSET, RTC_ALM1_MODE1, ALL_OFF);
+}
+\end{lstlisting}
+
+\subsubsection{Payload Structure}
+To ensure the Gateway can parse the information correctly, a key-value format is used. For example, a periodic packet looks like:
+\texttt{node\_01:T=\%s;H=\%s;P=\%s;B=\%d;X=\%s;Y=\%s;Z=\%s;}. This format allows for easy string manipulation at the Gateway and ensures that individual parameters can be mapped to specific ThingSpeak fields.
+
+\subsection{Gateway Node}
+
+The Gateway node acts as the critical interface between the \gls{IEEE} 802.15.4 sensor network and the Internet. Unlike the End Nodes, the Gateway is designed to be grid-connected, allowing it to remain in a constant state of wakefulness to process incoming data and maintain a persistent connection to the cloud.
+
+\subsubsection{System Role and Responsibilities}
+The Gateway performs three main concurrent tasks:
+\begin{itemize}
+    \item \textbf{XBee Reception}: It acts as a receiver for all End Node transmissions (periodic data and alarms) within the \gls{IEEE} 802.15.4 network.
+    \item \textbf{Local Monitoring}: Like the End Node, it samples its own environment every 30 seconds to provide a baseline for the gateway location.
+    \item \textbf{\acrshort{MQTT} Bridge}: It translates the raw string data received via XBee into formatted \acrshort{MQTT} packets to be published to the ThingSpeak broker.
+\end{itemize}
+
+\subsubsection{Network Integration and Connectivity}
+The Gateway utilizes two communication modules simultaneously:
+\begin{enumerate}
+    \item \textbf{XBee 802.15.4}: Configured with a matching \gls{PAN ID} (\texttt{0x1234}) and Channel (\texttt{0x0F}) to communicate with the End Nodes.
+    \item \textbf{WiFi PRO}: Connects to a local Access Point to provide IP connectivity. The implementation includes a robust \texttt{wifiCheckConnection()} function to ensure the system automatically recovers from network drops.
+\end{enumerate}
+
+\subsubsection{Data Parsing and Logic Flow}
+A significant portion of the Gateway's logic is dedicated to parsing the incoming XBee strings. Since the data arrives in a raw format (e.g., \texttt{T=24.5;H=48.2...}), the Gateway uses the \texttt{strtok()} function to tokenize and extract individual sensor values before re-packaging them for \gls{MQTT}.
+
+The following diagram illustrates the flow from a remote sensor trigger to the cloud update:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{images/gateway.png}
+    \caption{Gateway Sequence Diagram}
+    \label{fig:gateway}
+\end{figure}
+
+\subsubsection{Code Implementation: The \acrshort{MQTT} Bridge}
+The Gateway implements a specific \texttt{mqttPublish} function that manages \gls{TCP} socket creation, \gls{MQTT} packet serialization (Connect and Publish), and socket closure to prevent resource exhaustion.
+
+\begin{lstlisting}[language=C, caption={Gateway Bridge Logic}]
+void loop() {
+  wifiCheckConnection(); // Ensure IP is active
+  
+  receiveXBee(); // Listen for remote nodes (500ms timeout)
+  
+  if (intFlag & RTC_INT) { // Periodic Local Sensing
+    readSensors();
+    mqttPublish(MQTT_TOPIC_GATEWAY, gateway_temp, gateway_humd, ...);
+    RTC.setAlarm1(SAMPLING_PERIOD, RTC_OFFSET, RTC_ALM1_MODE1);
+  }
+}
+\end{lstlisting}

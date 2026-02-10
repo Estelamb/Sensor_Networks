@@ -217,7 +217,7 @@ void displayData(const char* device, float temp, float humd, float pres, uint8_t
 
 /**
  * @brief Packages and transmits periodic sensor readings.
- * * Formats data into a "Key=Value" string suitable for Gateway parsing.
+ * Formats data into a "Key=Value" string suitable for Gateway parsing.
  */
 void sendPeriodicData() {
   char payload[100];

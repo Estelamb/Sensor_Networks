@@ -1,0 +1,45 @@
+\documentclass[10pt,a4paper]{article}
+\input{config.tex}
+
+\title{Project 2 - Sensor Networks}
+\author{Alejandro Botas Bárcena}
+\author{Javier Grimaldos Chavarría}
+\author{Estela Mora Barba}
+\author{Group Orange}
+\date{MIoT 2025-2026}
+
+\begin{document}
+\frontmatter
+\include{cover}
+
+\addcontentsline{toc}{section}{List of Contents}
+\tableofcontents
+\clearpage
+
+\addcontentsline{toc}{section}{List of Figures}
+\listoffigures
+
+\addcontentsline{toc}{section}{List of Tables}
+\listoftables
+
+\addcontentsline{toc}{section}{List of Listings}
+\lstlistoflistings
+
+\include{files/Glossary}
+
+
+\mainmatter
+\pagestyle{fancy}
+\lhead[]{\href{https://github.com/Estelamb/Sensor_Networks}{\textbf{Project 2}}}
+\rhead[]{\textbf{SN-MIoT}}
+\cfoot{\thepage}
+
+\include{files/1-Introduction}
+\include{files/2-Implementation}
+\include{files/3-Results}
+\include{files/4-Conclusions}
+
+\nocite{*}
+\printbibliography[title={Bibliography}, heading=bibnumbered]
+
+\end{document}
