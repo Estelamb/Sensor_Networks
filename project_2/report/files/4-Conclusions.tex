@@ -1,5 +1,23 @@
-\section{Conclusions and Future Works}
+\section{Conclusions and Future Work}
+
+The implementation of this \gls{M2M} architecture has successfully demonstrated the integration of heterogeneous networks to create a functional \gls{IoT} monitoring system. The project met all the structural and operational requirements established in the initial specifications.
 
 \subsection{Conclusions}
+The development process led to several key technical realizations:
+\begin{itemize}
+    \item \textbf{Protocol Synergy}: The combination of \gls{IEEE} 802.15.4 for local low-power communication and \gls{MQTT} for cloud integration proved to be a highly efficient solution for remote sensing. 
+    \item \textbf{Interrupt-Driven Reliability}: The use of hardware interrupts for the accelerometer and \gls{PIR} sensors was essential to ensure that critical alarms (Free Fall and Motion) were transmitted with minimal latency, fulfilling the priority requirements.
+    \item \textbf{Energy Management}: Implementing deep sleep modes on the End Node allowed for a significant reduction in power consumption, confirming that the Libelium Waspmote is a viable platform for battery-operated deployments.
+    \item \textbf{Data Visualization}: The dual-platform approach using ThingSpeak and the \gls{IoT} \gls{MQTT} Panel for real-time mobile monitoring, provided a comprehensive user experience that satisfies both professional and portable use cases.
+\end{itemize}
 
-\subsection{Future Works}
+\subsection{Future Work}
+While the current system is fully operational, several enhancements could be explored in future iterations:
+\begin{itemize}
+    \item \textbf{Network Scalability}: The Gateway's parsing logic is currently optimized for a single End Node. Implementing a dynamic node registration system would allow the network to support dozens of concurrent sensors without manual code updates.
+    \item \textbf{Advanced Security}: Although XBee supports \gls{AES} encryption, future versions could implement \gls{SSL}/\gls{TLS} at the \gls{MQTT} level on the Gateway to secure the data transition to the cloud.
+    \item \textbf{Edge Computing}: The Gateway could be programmed to perform local data analytics, such as trend prediction or local filtering, to reduce the number of \gls{MQTT} messages sent to the cloud, thereby staying further below ThingSpeak's rate limits.
+    \item \textbf{Expanded Mobility}: Integrating \gls{GPS} modules into the End Nodes would allow for real-time tracking on the ThingSpeak map widget, transforming the system into a complete asset-tracking solution.
+\end{itemize}
+
+In conclusion, this project has provided a robust foundation for building sophisticated sensor networks, demonstrating that the modularity of the Libelium hardware and the flexibility of the \gls{MQTT} protocol are powerful tools for modern \gls{IoT} applications.

@@ -1,4 +1,4 @@
-\section{Nodes implementation}
+\section{System Implementation}
 
 \subsection{End Node}
 
@@ -102,3 +102,85 @@ void loop() {
   }
 }
 \end{lstlisting}
+
+\subsection{ThingSpeak Cloud Configuration}
+
+The visualization and data management layer is implemented using the ThingSpeak cloud platform. Following the system requirements, the information is organized into three distinct channels to optimize data throughput and ensure clear separation between sensor nodes and critical alerts.
+
+\subsubsection{Channel Architecture}
+As seen in the platform configuration, the system utilizes three private channels, each updated via \gls{MQTT}:
+\begin{itemize}
+    \item \textbf{End Node (\gls{ID}: 3256681)}: Dedicated to the remote sensor data received via XBee.
+    \item \textbf{Gateway Node (\gls{ID}: 3256684)}: Used for the local environmental data collected by the gateway itself.
+    \item \textbf{Alarms (\gls{ID}: 3256686)}: A specialized channel for high-priority event visualization.
+\end{itemize}
+
+\subsubsection{Field Mapping and Visualization}
+Each channel is configured with seven active fields to represent the full suite of sensor data. The Node channels settings serve as the template for periodic data:
+\begin{table}[H]
+  \centering
+  \caption{ThingSpeak Field Mapping for Periodic Data}
+  \begin{tabular}{p{0.1\textwidth}p{0.3\textwidth}p{0.1\textwidth}p{0.3\textwidth}}
+    \toprule
+    \textbf{Field} & \textbf{Parameter} & \textbf{Field} & \textbf{Parameter} \\ 
+    \midrule
+    Field 1 & Temperature ($^{\circ}$C) & Field 5 & X-Axis Acceleration ($m/s^2$) \\ 
+    Field 2 & Humidity (\%) & Field 6 & Y-Axis Acceleration ($m/s^2$) \\ 
+    Field 3 & Pressure (Pa) & Field 7 & Z-Axis Acceleration ($m/s^2$) \\ 
+    Field 4 & Battery Level (\%) & & \\ 
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Data is visualized through a combination of \texttt{Gauge widgets} for real-time status and \texttt{Historical Line Charts} to track environmental evolution over time. Additionally, a \texttt{Map widget} is used to display the static location of the nodes.
+
+
+\subsubsection{Alarm Prioritization}
+The "Alarms" channel is designed for rapid identification of critical events. It uses binary status indicators:
+\begin{itemize}
+    \item \textbf{Visual Indicators}: Large red status lamps (widgets) turn bright when a Free Fall or Motion event is active.
+    \item \textbf{Historical Logging}: Line charts track the frequency and timing of alarms for both the End Node and Gateway.
+\end{itemize}
+
+\subsubsection{\acrshort{MQTT} Device Management}
+To facilitate secure \gls{M2M} communication, a "Gateway" device has been authorized within the ThingSpeak \gls{MQTT} settings. This device is granted both \texttt{publish} and \texttt{subscribe} permissions across all three channels, utilizing a unique Client \gls{ID} and a Password to authenticate every transmission. Also, a "Phone" device is created with \texttt{subscribe} permissions to allow for mobile application integration, enabling real-time monitoring.
+
+\subsection{Mobile Application Integration}
+
+To provide a portable, real-time monitoring solution, the system includes a mobile application interface developed using the \texttt{\acrshort{IoT} \gls{MQTT} Panel} application\cite{IoTMQTTPanel}. This integration allows for the visualization of sensor data and immediate notification of alarms directly on a smartphone, facilitating remote supervision without the need for a desktop browser.
+
+\subsubsection{Mobile Broker and Client Configuration}
+The application acts as a \gls{MQTT} client. For this project, a specific \gls{MQTT} device named \textbf{"Phone"} was authorized within the ThingSpeak cloud settings. The connection is established using the following parameters and credentials:
+\begin{itemize}
+    \item \textbf{Broker Host}: \texttt{mqtt3.thingspeak.com}.
+    \item \textbf{Port}: \texttt{1883}.
+    \item \textbf{\gls{MQTT} Client \gls{ID}}: \texttt{IzMtDSU5ExotMwscGD0mOj0}.
+    \item \textbf{Authorized Access}: The device is granted both \texttt{publish} and \texttt{subscribe} permissions for the End Node, Gateway, and Alarms channels to ensure full bidirectional data flow capability.
+\end{itemize}
+
+\subsubsection{Subscription Topics and Data Harvesting}
+The mobile application is configured to bypass the default dashboard prefix to use ThingSpeak's field-specific subscription architecture. The data is retrieved using the following topic format:
+\begin{center}
+    \texttt{channels/<ChannelID>/subscribe/fields/field<FieldNumber>}
+\end{center}
+For example, as shown in the application configuration for the Gateway node's temperature, the client subscribes to: \texttt{channels/3256684/subscribe/fields/field1}. This method ensures that the mobile interface updates only when specific data points change, reducing unnecessary battery and data consumption on the mobile device.
+
+\subsubsection{Dashboard Interface Design}
+The interface is structured into three primary tabs for organized data management: \texttt{Principal}, \texttt{End Node}, and \texttt{Gateway}.
+
+\textbf{Sensor Monitoring (End Node and Gateway Tabs)}
+Each node has a dedicated view featuring specialized widgets for different data types:
+\begin{itemize}
+    \item \textbf{Analog Gauges}: Used for Temperature (e.g., $23.25^{\circ}$C) and Humidity (e.g., $54.14\%$) to provide immediate visual context.
+    \item \textbf{Linear Progress Bars}: Employed to track battery levels, showing the current charge status (e.g., 83\% for the End Node and 100\% for the Gateway).
+    \item \textbf{Digital Displays}: Show high-precision atmospheric pressure values in Pascals (e.g., $93861$ Pa).
+    \item \textbf{Time-Series Charts}: A multi-variable accelerometer graph plots the X, Y, and Z axes (e.g., Z constant at $\sim 9.8$ $m/s^2$ while static) to monitor inertial stability.
+\end{itemize}
+
+\textbf{Alarm Management}
+The \textbf{Principal} tab serves as a high-priority notification center. It utilizes large "Lamp" indicator widgets that represent the status of critical events:
+\begin{itemize}
+    \item \textbf{Dynamic Feedback}: Indicators remain gray (inactive) during normal operation.
+    \item \textbf{Alarm Trigger}: Upon detection of a "Free Fall" or "Motion" event, the corresponding lamp turns bright red (e.g., \texttt{Free Fall - End Node} active).
+    \item \textbf{Latency}: The mobile app reflects these states within seconds of the physical trigger on the Waspmote hardware.
+\end{itemize}

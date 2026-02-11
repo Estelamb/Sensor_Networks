@@ -1,1 +1,30 @@
-\section{Results}
+\section{Test and Results}
+
+The validation of the system was performed through a series of functional tests designed to verify data integrity, alarm latency, and cloud synchronization. The results were monitored simultaneously via the \gls{USB} serial interface, the ThingSpeak web dashboard, and the \acrshort{IoT} \gls{MQTT} Panel mobile application.
+
+\subsection{Periodic Data Acquisition}
+The system successfully executed its sampling cycle every 30 seconds. As shown in the ThingSpeak dashboard and mobile app, the sensors provided stable and accurate readings:
+\begin{itemize}
+    \item \textbf{Environmental Accuracy}: The Gateway node recorded a temperature of $23.26^{\circ}$C and humidity of $54.26\%$, while the End Node showed slightly lower values of $20.04^{\circ}$C and $64.25\%$, reflecting different local environments.
+    \item \textbf{Atmospheric Pressure}: Both nodes reported consistent pressure values around $93,800$ Pa, with the Gateway reaching $93,849$ Pa as displayed in the historical charts.
+    \item \textbf{Static Inertial Data}: The accelerometer charts for both nodes showed a constant value of approximately $9.46$ to $9.81$ $m/s^2$ on the Z-axis, confirming the nodes were resting horizontally in a static state.
+\end{itemize}
+
+\subsection{Alarm Triggering and Latency}
+High-priority event handling was tested by simulating free-fall and motion conditions.
+\begin{itemize}
+    \item \textbf{Free Fall Detection}: Upon dropping the End Node, the internal accelerometer successfully triggered an interrupt. The red \gls{LED} switched on immediately to indicate transmission, and the event was reflected in the "Alarms" channel and mobile "Principal" tab within approximately 2-4 seconds.
+    \item \textbf{Visual Confirmation}: The "Free Fall - End Node" lamp widget on the mobile application turned bright red, and the historical chart in ThingSpeak logged a binary value of $1$ at the precise time of the event.
+    \item \textbf{Motion Sensing}: The \gls{PIR} sensor on the End Node correctly identified movement, clearing the stabilization phase and sending a "MOTION" alarm string that was parsed by the Gateway and published to the cloud.
+\end{itemize}
+
+\subsection{Communication Reliability}
+The transition of data through the \gls{M2M} layers was verified by examining the Gateway's serial output:
+\begin{itemize}
+    \item \textbf{XBee Link}: The Gateway successfully received and parsed payloads with the expected 7 fields (T, H, P, B, X, Y, Z).
+    \item \textbf{\gls{MQTT} Stability}: The Gateway managed \gls{TCP} connections to \texttt{mqtt3.thingspeak.com} without exhaustion. The implementation of port rotation (\texttt{LOCAL\_PORT}) successfully avoided "Socket in use" errors during rapid alarm bursts.
+    \item \textbf{WiFi Recovery}: Manual disconnection of the Access Point triggered the \texttt{wifiCheckConnection()} routine, which successfully re-initialized the WiFi PRO module and restored cloud publishing once the signal was recovered.
+\end{itemize}
+
+\subsection{Power Consumption Observation}
+While the Gateway remained active, the End Node demonstrated effective use of \texttt{deepSleep}. During the 30-second sleep interval, current consumption was minimized, and the node successfully woke up only for \gls{RTC} alarms or sensor interruptions, confirming the energy-efficient design required for battery-powered operation.
